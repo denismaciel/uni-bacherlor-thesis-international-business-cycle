@@ -1,0 +1,55 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww14300\viewh12800\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 #BKK International Business Cycle\
+\
+The statistical analysis of the paper was all done using the software R. R can be downloaded at https://www.r-project.org for free. \
+\
+##Files containing code (.R)\
+\
+The file that aggregates almost all code is +Code.R. The reader should run it once and be able to reproduce the most relevant results of the paper. Please make sure that all files are in one single folder.\
+\
+After running +Code.R, the reader can access the most relevant results by running the file Central Results.R, where each R object is accompanied by a short explanation.\
+\
+By running +Code.R, the following code files will also be automatically be run: \
+\
+###Code.R      \
+* bkk-con.R      \
+* bkk-emp.R      \
+* bkk-gdp.R      \
+* bkk-gov.R      \
+* bkk-inv.R      \
+* bkk-netexp.R      \
+* bkk-sol.R      \
+* Averaged Correlations.R \
+\
+\
+### Files to be run independently\
+The following files must be run independently by the reader after running +Code.R: \
+\
+* Fig Correlation Distribution.R -\uc0\u128 \u147  Plot with the distribution of cross-country \
+correlation of output and consumption\
+* Fig Cross GDPCor Plot.R - Plot of cross-country correlations of output and consumption\
+* Fig HP Filter Image.R - Plot of filtered GDP \
+* Which measure to use?.R - This file contain the code used to decide which measure to use (Appendix A of the paper) \
+\
+###Data Files (.csv)\
+\
+####Data from OECD's National Accounts\
+* bkk-consumption.csv\
+* bkk-employment.csv \
+* bkk-gdp.csv \
+* bkk-government.csv\
+* bkk-investment.csv \
+* bkk-netexports.csv \
+\
+####Data used to select the unit of measurement (GDP in all measures available)\
+* gdp-measure-choice.csv \
+\
+####OECD'\uc0\u128 \u153 s Main Economic Indicators. Downloaded from FRED St. Louis website.  \
+* FRAEMPTOTQISMEI.csv \
+* GBREMPTOTQPSMEI.csv \
+* ITAEMPTOTQPSMEI.csv }

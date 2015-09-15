@@ -15,11 +15,12 @@ colnames(c)[3:4] <- c("gdp", "con")
 dummy <- c$gdp >= c$con
 c <- cbind(c, dummy)
 
+
   
 
 gdpcon.plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
                       geom_point(size = 5) + 
-                      xlim(0,1) + ylim(0,1) +
+                      xlim(-1,1) + ylim(-1,1) +
                       ylab("Output Correlation")+
                       xlab("Consumption Correlation") + 
                       geom_abline(intercept = 0, slope = 1) +
@@ -27,6 +28,6 @@ gdpcon.plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
                             axis.title=element_text(size=20,face="bold"), 
                             legend.position="none")
 
-png(filename="gdpco.plot.png", width=2600, height=2000, res = 300)
+png(filename="gdpconplot.png", width=2600, height=2000, res = 300)
 plot(gdpcon.plot)
 dev.off()

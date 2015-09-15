@@ -50,12 +50,16 @@ png(filename="gbremployment.png", width=2600, height=2000, res = 300)
 plot(gbremp.plot)
 dev.off()
 
-#take average of two columns and add it to the data set
-Value <- rowMeans(cbind(gbr.merge$Value.x, gbr.merge$Value.y), na.rm = TRUE)
+#Chaining 
+gbr.merge
+factor <- gbr.merge[171,2]/gbr.merge[171,4]
+gbr.merge[,4] <- factor*gbr.merge[,4]
+Value <- c(gbr.merge[1:171,2], gbr.merge[172:184,4])
+
 gbr.merge <- cbind(gbr.merge, Value)
-head(gbr.merge)
 
 gbr.emp.def <- gbr.merge[c("location", "TIME", "Value")]
+
 
 
 ##### Italy #### 
@@ -90,10 +94,12 @@ png(filename="itaemployment.png", width=2600, height=2000, res = 300)
 plot(itaemp.plot)
 dev.off()
 
-#take average of two columns and add it to the data set
-Value <- rowMeans(cbind(ita.merge$Value.x, ita.merge$Value.y), na.rm = TRUE)
+#Chaining 
+factor <- ita.merge[212,2]/ita.merge[212,4]
+ita.merge[,4] <- factor*ita.merge[,4]
+Value <- c(ita.merge[1:212,2], ita.merge[213:225,4])
+
 ita.merge <- cbind(ita.merge, Value)
-head(ita.merge)
 
 ita.emp.def <- ita.merge[c("location", "TIME", "Value")]
 
@@ -130,19 +136,24 @@ fraemp.plot <- ggplot(fra.merge, aes(TIME, y = value, color = variable)) +
 png(filename="fraemployment.png", width=2600, height=2000, res = 300)
 plot(fraemp.plot)
 dev.off()
-  
-#take average of two columns and add it to the data set
-Value <- rowMeans(cbind(fra.merge$Value.x, fra.merge$Value.y), na.rm = TRUE)
+
+
+#Chaining 
+fra.merge
+factor <- fra.merge[136,2]/fra.merge[136,4]
+fra.merge[,4] <- factor*fra.merge[,4]
+Value <- c(fra.merge[1:136,2], fra.merge[137:149,4])
 fra.merge <- cbind(fra.merge, Value)
-head(fra.merge)
 
 fra.emp.def <- fra.merge[c("location", "TIME", "Value")]
+
 #Exclude last five observations because they seem wrong
 fra.emp.def <- head(fra.emp.def, -5)
 #check how it looks like now
 qplot(fra.emp.def$TIME, fra.emp.def$Value) 
 
 fra.emp.def
+
 
 
 #### NEW DATA SET ####
