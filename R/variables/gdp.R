@@ -35,7 +35,7 @@ panel <- subset(gdp, select = c("location", "TIME", "filtered"))
 str(panel)
 
 gdpcor <- panel %>%
-  spread(location, filtered) %>%
+  pivot_wider(names_from = location, values_from = filtered, names_sort = TRUE) %>%
   select(-TIME) %>%
   cor(., use = "pairwise.complete.obs")
 

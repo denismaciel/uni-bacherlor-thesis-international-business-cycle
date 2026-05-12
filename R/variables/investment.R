@@ -56,7 +56,7 @@ panel <- subset(inv, select = c("location", "TIME", "filtered"))
 str(panel)
 
 invcor <- panel %>%
-  spread(location, filtered) %>%
+  pivot_wider(names_from = location, values_from = filtered, names_sort = TRUE) %>%
   select(-TIME) %>%
   cor(., use = "pairwise.complete.obs")
 

@@ -1,5 +1,5 @@
 
-measurefull <- read.csv("gdp-measure-choice.csv")
+measurefull <- read.csv("data/raw/oecd/gdp_measure_choice.csv")
 
 #[1] CARSA      CPCARSA    CQR        CQRSA      DNBSA      DOBSA      LNBQR      LNBQRSA   
 #[9] VIXOBSA    VOBARSA    VPVOBARSA  LNBARSA    HCPCARSA   HVPVOBARSA
@@ -52,7 +52,7 @@ for (x in unique(measurefull$MEASURE)) {
   str(panel)
   
   cordf <- panel %>%
-    spread(X...LOCATION, filtered) %>%
+    pivot_wider(names_from = X...LOCATION, values_from = filtered, names_sort = TRUE) %>%
     select(-TIME) %>%
     cor(., use = "pairwise.complete.obs")
   

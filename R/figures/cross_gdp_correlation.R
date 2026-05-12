@@ -28,6 +28,6 @@ gdpcon.plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
                             axis.title=element_text(size=20,face="bold"), 
                             legend.position="none")
 
-png(filename="gdpconplot.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/gdpconplot.png", width=2600, height=2000, res = 300)
 plot(gdpcon.plot)
 dev.off()

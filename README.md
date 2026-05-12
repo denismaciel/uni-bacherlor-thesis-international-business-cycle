@@ -1,48 +1,68 @@
 # BKK International Business Cycle
 
-The statistical analysis of the paper was all done using the software R. R can be downloaded at https://www.r-project.org for free. 
+This repository contains the R code and data for the bachelor thesis:
 
-## Files containing code (.R)
+> Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?
 
-The file that aggregates almost all code is +Code.R. The reader should run it once and be able to reproduce the most relevant results of the paper. After running +Code.R, the reader can access the most relevant results by runining the file Central Results.R, where each R object is accompained by a short explanation.
+## Running
 
-By running +Code.R, the following code files will also be automatically be run: 
+Use Nix:
 
-### Code.R
+```sh
+nix run .
+```
 
-* bkk-con.R      
-* bkk-emp.R      
-* bkk-gdp.R      
-* bkk-gov.R      
-* bkk-inv.R      
-* bkk-netexp.R      
-* bkk-sol.R      
-* Averaged Correlations.R 
+Check that the exported thesis tables still match the committed reference artifacts:
 
-The following files must be run independently be the reader after running +Code.R: 
+```sh
+nix run .#check
+```
 
-### Files containg plots
+For an interactive R environment with all required packages:
 
-* Fig Correlation Distribution.R – Plot with the distribution of cross-country 
-correlation of output and consumption
-* Fig Cross GDPCor Plot.R – Plot of cross-country correlations of output and consumption
-* Fig HP Filter Image.R – Plot of filtered GDP 
+```sh
+nix develop
+```
 
-This file contain the code used to decide which measure to use (Appendix A of the paper) Which measure to use?.R 
+## Layout
 
-### Data Files (.csv)
+- `R/main.R`: main reproduction script.
+- `R/variables/`: variable-specific transformations.
+- `R/figures/`: figure scripts.
+- `scripts/export_results.R`: exports Tables 3-7 to `output/tables/`.
+- `scripts/compare_results.R`: compares generated tables against `reference/tables/`.
+- `data/raw/oecd/`: OECD CSV inputs.
+- `data/raw/fred/`: FRED employment CSV inputs.
+- `reference/tables/`: committed regression artifacts.
+- `output/tables/`: generated table outputs.
+- `output/figures/`: generated figures, ignored by Git.
 
-* Data from OECD’s National Accounts bkk-consumption.csv
-* bkk-employment.csv 
-* bkk-gdp.csv 
-* bkk-government.csv
-* bkk-investment.csv 
-* bkk-netexports.csv 
+## Main Result Objects
 
-GDP with all measures available at OECD gdp-measure-choice.csv 
+After sourcing `R/main.R`, the most relevant objects are:
 
-OECD’s Main Economic Indicators. Downloaded from FRED St. Louis’ website.
+- `timespan`: Table 3.
+- `standard.deviations`: Table 4.
+- `cor.with.gdp.def`: Table 5.
+- `usa.correlation.matrix`: Table 6.
+- `sum.cor`: Table 7.
 
-* FRAEMPTOTQISMEI.csv 
-* GBREMPTOTQPSMEI.csv 
-* ITAEMPTOTQPSMEI.csv 
+`R/results.R` prints the central result objects.
+
+## Data
+
+OECD National Accounts:
+
+- `data/raw/oecd/consumption.csv`
+- `data/raw/oecd/employment.csv`
+- `data/raw/oecd/gdp.csv`
+- `data/raw/oecd/government.csv`
+- `data/raw/oecd/investment.csv`
+- `data/raw/oecd/net_exports.csv`
+- `data/raw/oecd/gdp_measure_choice.csv`
+
+FRED/OECD Main Economic Indicators:
+
+- `data/raw/fred/fra_employment.csv`
+- `data/raw/fred/gbr_employment.csv`
+- `data/raw/fred/ita_employment.csv`

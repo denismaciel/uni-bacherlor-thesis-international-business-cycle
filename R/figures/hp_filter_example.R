@@ -8,6 +8,6 @@ plot(x)
 
 
 
-png(filename="filteredgdp.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/filteredgdp.png", width=2600, height=2000, res = 300)
 plot(x)
 dev.off()

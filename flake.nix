@@ -47,7 +47,15 @@
             name = "run-thesis-code";
             runtimeInputs = [ rEnv ];
             text = ''
-              Rscript "+Code.R"
+              Rscript -e 'invisible(suppressWarnings(capture.output(source("R/main.R")))); message("Thesis code completed.")'
+            '';
+          };
+          checkResults = pkgs.writeShellApplication {
+            name = "check-thesis-results";
+            runtimeInputs = [ rEnv ];
+            text = ''
+              Rscript "scripts/export_results.R"
+              Rscript "scripts/compare_results.R"
             '';
           };
         in
@@ -55,6 +63,10 @@
           default = {
             type = "app";
             program = "${runMain}/bin/run-thesis-code";
+          };
+          check = {
+            type = "app";
+            program = "${checkResults}/bin/check-thesis-results";
           };
         }
       );

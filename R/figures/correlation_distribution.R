@@ -34,10 +34,10 @@ concor.plot <- ggplot(df, aes(x=1:nrow(df), y=Corr, col= Var2=='USA')) + geom_po
   theme(plot.title = element_text(size = rel(1.5)))
 concor.plot
 
-png(filename="concor.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/concor.png", width=2600, height=2000, res = 300)
 plot(concor.plot)
 dev.off()
 
-png(filename="gdpcor.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/gdpcor.png", width=2600, height=2000, res = 300)
 plot(gdpcor.plot)
 dev.off()

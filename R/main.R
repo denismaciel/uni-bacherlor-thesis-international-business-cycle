@@ -1,5 +1,3 @@
-rm(list =ls())
-
 # install.packages("mFilter")
 # install.packages("dplyr")
 # install.packages("tidyr")
@@ -7,27 +5,31 @@ rm(list =ls())
 # install.packages(ggplot2)
 # install.packages(zoo)
 
-library(mFilter)
-library(dplyr)
-library(tidyr)
-library(xtable)
-library(ggplot2)
-library(zoo)
+suppressPackageStartupMessages({
+  library(mFilter)
+  library(dplyr)
+  library(tidyr)
+  library(xtable)
+  library(ggplot2)
+  library(zoo)
+})
 
-gdp <- read.csv("bkk-gdp.csv")
-con <- read.csv("bkk-consumption.csv")
-inv <- read.csv("bkk-investment.csv")
-gov <- read.csv("bkk-government.csv")
-net <- read.csv("bkk-netexports.csv")
-emp <- read.csv("bkk-employment.csv")
+dir.create("output/figures", recursive = TRUE, showWarnings = FALSE)
 
-source("bkk-gdp.R")
-source("bkk-con.R")
-source("bkk-inv.R")
-source("bkk-gov.R")
-source("bkk-netexp.R")
-source("bkk-emp.R")
-source("bkk-sol.R")
+gdp <- read.csv("data/raw/oecd/gdp.csv")
+con <- read.csv("data/raw/oecd/consumption.csv")
+inv <- read.csv("data/raw/oecd/investment.csv")
+gov <- read.csv("data/raw/oecd/government.csv")
+net <- read.csv("data/raw/oecd/net_exports.csv")
+emp <- read.csv("data/raw/oecd/employment.csv")
+
+source("R/variables/gdp.R")
+source("R/variables/consumption.R")
+source("R/variables/investment.R")
+source("R/variables/government.R")
+source("R/variables/net_exports.R")
+source("R/variables/employment.R")
+source("R/variables/solow_residuals.R")
 
 #### USA correlation matrix ####
 usa.correlation.matrix <- cbind(usa.gdpcor, usa.concor,usa.invcor, usa.govcor, usa.netcor)
@@ -79,6 +81,15 @@ df <- rbind (gdp[c("location", "TIME", "Subject", "filtered")],
              gov[c("location", "TIME", "Subject", "filtered")],
              netX[c("location", "TIME", "Subject", "filtered")])
 
+gdp.subject <- "Gross domestic product - expenditure approach"
+table5.subjects <- c(
+  gdp = gdp.subject,
+  cons = "Private final consumption expenditure",
+  inv = "Gross fixed capital formation",
+  gov = "General government final consumption expenditure",
+  net = "Net Exports"
+)
+
 cor.with.gdp <- c()
 for (i in unique(df$location)) {
   a <- gdp[gdp$location == i,]
@@ -87,18 +98,18 @@ for (i in unique(df$location)) {
   autocor <- round(autocor, 2)
   
   a <- df[df$location ==i,]
-  b <- spread(a, Subject, filtered) %>%
+  b <- pivot_wider(a, names_from = Subject, values_from = filtered) %>%
     select(-TIME, -location)
   
   b <- cor(b, use = "pairwise.complete.obs")
   b <- round(b,2)
-  colnames(b) <- c("gdp", "cons", "inv", "gov", "net") 
   
-  z <- c(as.character(unique(a$location)), autocor, b[1,])
+  z <- c(as.character(unique(a$location)), autocor, b[gdp.subject, table5.subjects])
   
   cor.with.gdp <- rbind(cor.with.gdp, z)
 }
 colnames(cor.with.gdp)[1:2] <- c("Country", "Autorcorrelation")
+colnames(cor.with.gdp)[3:ncol(cor.with.gdp)] <- names(table5.subjects)
 cor.with.gdp
 
 
@@ -108,6 +119,11 @@ empX <- cbind(emp, rep("civilian employment", nrow(emp)))
 colnames(empX)[ncol(empX)] <- "Subject"
 solX <- cbind(sol, rep("Solow Residulas", nrow(sol)))
 colnames(solX)[ncol(solX)] <- "Subject"
+table5.labor.subjects <- c(
+  gdp = gdp.subject,
+  emp = "civilian employment",
+  sol = "Solow Residulas"
+)
 
 gdpX <- gdp[gdp$location != "CHE" & gdp$location != "EU15",]
 
@@ -121,14 +137,13 @@ for (i in unique(df$location)) {
   c <- gdp[gdp$location == i,]$filtered
   
   a <- df[df$location ==i,]
-  b <- spread(a, Subject, filtered) %>%
+  b <- pivot_wider(a, names_from = Subject, values_from = filtered) %>%
     select(-TIME, -location)
   
   b <- cor(b, use = "pairwise.complete.obs")
   b <- round(b,2)
-  colnames(b) <- c("gdp","emp","sol") 
   
-  z <- c(as.character(unique(a$location)), b[1,])
+  z <- c(as.character(unique(a$location)), b[gdp.subject, table5.labor.subjects])
   
   cor.with.gdp2 <- rbind(cor.with.gdp2, z)
 }
@@ -137,8 +152,9 @@ for (i in unique(df$location)) {
 cor.with.gdp2 <- cor.with.gdp2[,-2]
 #name first row
 colnames(cor.with.gdp2)[1] <- "Country"
+colnames(cor.with.gdp2)[2:ncol(cor.with.gdp2)] <- c("emp", "sol")
 #merge Part 1 with Part 2
 cor.with.gdp.def <- merge(cor.with.gdp,cor.with.gdp2, by = "Country", all = TRUE)
 
 
-source("Averaged Correlations.R")
+source("R/average_correlations.R")

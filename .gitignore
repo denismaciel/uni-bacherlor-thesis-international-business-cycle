@@ -1,0 +1,7 @@
+.Rhistory
+.RData
+.Rproj.user/
+
+# Legacy/generated figures
+*.png
+output/figures/

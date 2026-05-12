@@ -23,7 +23,7 @@ emp.timespan1
 ##### Great Britain #### 
 
 #load data from St. Louis FED
-gbr.emp <- read.csv("GBREMPTOTQPSMEI.csv")
+gbr.emp <- read.csv("data/raw/fred/gbr_employment.csv")
 colnames(gbr.emp) <- c("TIME", "Value") 
 #subset OECD data
 gbr.emp2 <- emp[emp$location == "GBR",]
@@ -46,7 +46,7 @@ gbremp.plot <- ggplot(gbr.merge, aes(TIME, y = value, color = variable)) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
-png(filename="gbremployment.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/gbremployment.png", width=2600, height=2000, res = 300)
 plot(gbremp.plot)
 dev.off()
 
@@ -65,7 +65,7 @@ gbr.emp.def <- gbr.merge[c("location", "TIME", "Value")]
 ##### Italy #### 
 
 #load data from St. Louis FED
-ita.emp <- read.csv("ITAEMPTOTQPSMEI.csv")
+ita.emp <- read.csv("data/raw/fred/ita_employment.csv")
 colnames(ita.emp) <- c("TIME", "Value") 
 #subset OECD data
 ita.emp2 <- emp[emp$location == "ITA",]
@@ -90,7 +90,7 @@ itaemp.plot <- ggplot(ita.merge, aes(TIME, y = value, color = variable)) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
-png(filename="itaemployment.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/itaemployment.png", width=2600, height=2000, res = 300)
 plot(itaemp.plot)
 dev.off()
 
@@ -107,7 +107,7 @@ ita.emp.def <- ita.merge[c("location", "TIME", "Value")]
 ##### France #### 
 
 #load data from St. Louis FED
-fra.emp <- read.csv("FRAEMPTOTQISMEI.csv")
+fra.emp <- read.csv("data/raw/fred/fra_employment.csv")
 colnames(fra.emp) <- c("TIME", "Value") 
 #subset OECD data
 fra.emp2 <- emp[emp$location == "FRA",]
@@ -133,7 +133,7 @@ fraemp.plot <- ggplot(fra.merge, aes(TIME, y = value, color = variable)) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
-png(filename="fraemployment.png", width=2600, height=2000, res = 300)
+png(filename="output/figures/fraemployment.png", width=2600, height=2000, res = 300)
 plot(fraemp.plot)
 dev.off()
 
@@ -207,7 +207,7 @@ panel <- subset(emp, select = c("location", "TIME", "filtered"))
 str(panel)
 
 empcor <- panel %>%
-  spread(location, filtered) %>%
+  pivot_wider(names_from = location, values_from = filtered, names_sort = TRUE) %>%
   select(-TIME) %>%
   cor(., use = "pairwise.complete.obs")
 
