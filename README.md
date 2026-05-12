@@ -24,6 +24,12 @@ Build the thesis PDF from the generated tables and figures:
 nix run .#paper
 ```
 
+Lint the LaTeX source:
+
+```sh
+nix run .#lint-tex
+```
+
 For an interactive R environment with all required packages:
 
 ```sh

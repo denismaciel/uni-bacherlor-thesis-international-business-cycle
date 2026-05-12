@@ -14,25 +14,24 @@ Confronted with the dilemma of which unit of measurement to use, we have followe
   \item We compared the results and chose the one most similar to BKK's.
 \end{enumerate}
 
-If the data between 1947:1 and 2015:2 are considered, there are enough observations, such that the cross-correlation of output between the US and other the other sample can be computed in \textit{nine} units of measurement. But if only the BKK's interval (1970:1 - 1990:2) is considered, correlations between the US and all other countries can be computed in only \textit{four} different measures. Table \ref{tab:measure} displays the cross-correlations of the United States resulting from these 4 measures along with the same correlations calculated by BKK and ACZ.
+If the data between 1947:1 and 2015:2 are considered, there are enough observations, such that the cross-correlation of output between the US and other the other sample can be computed in \textit{nine} units of measurement. But if only the BKK's interval (1970:1 - 1990:2) is considered, correlations between the US and all other countries can be computed in only \textit{four} different measures. \Cref{tab:measure} displays the cross-correlations of the United States resulting from these 4 measures along with the same correlations calculated by BKK and ACZ.
 
-\renewcommand{\baselinestretch}{1.3}
-\begin{table}[h!]
-  \center
-\begin{tabular}{rrrrrrrrrrH}
-  \hline\hline
+\begin{table}[htbp]
+  \centering
+\begin{tabular}{lrrrrrrrrrr}
+  \toprule
  & AUS & AUT & CAN & CHE & DEU & FRA & GBR & ITA & JPN & USA \\
-  \hline
+  \midrule
   \cite{Backus:1993aa} & .51 & .38 & .76 & .42 & .69 & .41 & .55 & .41 & .60 & 1.00 \\
 \cite{Ambler:2004aa} & .40 & .32 & .77 & .35 & .50 & .27 & .68 & .33 & .39 & 1.00 \\
 CARSA & .00 & .08 & .29 & .11 & .29 & -.14 & -.01 & -.04 & .22 & 1.00 \\
   CPCARSA & .27 & -.00 & .56 & .26 & .41 & .11 & .30 & .24 & .38 & 1.00 \\
   VOBARSA & .35 & .29 & .71 & .41 & .66 & .39 & .62 & .37 & .60 & 1.00 \\
   VPVOBARSA & .35 & .29 & .71 & .41 & .66 & .39 & .62 & .37 & .60 & 1.00 \\
-   \hline
+   \bottomrule
 \end{tabular}
-\caption{Cross-country Correlation of US Output in four different Mesaures , 1970:1 - 1990:2 \label{tab:measure}}
-\label{tab:table}
+\caption{Cross-country Correlation of US Output in four different Mesaures, 1970:1 - 1990:2}
+\label{tab:measure}
 \end{table}
 
 We first dismiss CARSA and CPCARSA measures. They not only yield correlations that strongly differ from BKK's figures but also both refer to current prices. This contrasts sharply with BKK's data, which are expressed in real terms.
@@ -41,37 +40,36 @@ VOBARSA and VPVOBARSA measures are clearly the closest not only to BKK's but als
 
 \subsection{Civilian Employment Series \label{app:employment}}
 
-BKK's quarterly data on civilian employment come from OECD's \textit{Main Economic Indicators}. Yet, the \textit{Main Economic Indicators}'s data on quarterly civilian employment  are not available on OECD's website as of this writing. Instead, OECD provides quarterly data on employed population in its \textit{Short-Term Labour Market Statistics}. As can be seen from Table \ref{tab:emptimespan}, the length of the series of some countries available in \textit{Short-Term Labour Market Statistics} are too short for the comparison with BKK's results to be reasonable. Fortunately, data on civilian employment from OECD's \textit{Main Economic Indicators} were available for France, United Kingdom and Italy in the Federal Reserve Bank of St. Louis website\footnote{https://research.stlouisfed.org/}, which allowed us to expand these series. Similar data for Switzerland and the European aggregate were not found and given the short length of \textit{Short-Term Labour Market Statistics}'s series for these two, we opted to exclude from our calculations of comovements of civilian employment.
+BKK's quarterly data on civilian employment come from OECD's \textit{Main Economic Indicators}. Yet, the \textit{Main Economic Indicators}'s data on quarterly civilian employment  are not available on OECD's website as of this writing. Instead, OECD provides quarterly data on employed population in its \textit{Short-Term Labour Market Statistics}. As can be seen from \cref{tab:emptimespan}, the length of the series of some countries available in \textit{Short-Term Labour Market Statistics} are too short for the comparison with BKK's results to be reasonable. Fortunately, data on civilian employment from OECD's \textit{Main Economic Indicators} were available for France, United Kingdom and Italy in the Federal Reserve Bank of St. Louis website\footnote{\url{https://research.stlouisfed.org/}}, which allowed us to expand these series. Similar data for Switzerland and the European aggregate were not found and given the short length of \textit{Short-Term Labour Market Statistics}'s series for these two, we opted to exclude from our calculations of comovements of civilian employment.
 
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Aug 30 21:16:21 2015
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{\begin{tabular}{rccccccccccc}
-  \hline\hline
+  \toprule
 Country & AUS & AUT & CAN & FRA & DEU & ITA & JPN & CHE & GBR & USA & EA19 \\
-  \hline
+  \midrule
   Last  & 2015:2 & 2015:1 & 2015:2 & 2015:1 & 2015:1 & 2015:1 & 2015:2 & 2015:1 & 2015:1 & 2015:2 & 2015:1 \\
   First  & 1967:1 & 1969:1 & 1955:1 & 2003:1 & 1962:1 & 1998:1 & 1955:1 & 1998:2 & 1999:2 & 1955:1 & 2005:1 \\
-   \hline
+   \bottomrule
 \end{tabular}}
-\caption{Length of \textit{Employed Population} series from \textit{Short-Term Labour Market Statistics} \label{tab:emptimespan}}
+\caption{Length of \textit{Employed Population} series from \textit{Short-Term Labour Market Statistics}}
+\label{tab:emptimespan}
 \end{table}
 
-Before deciding whether to combine the \textit{Short-Term Labour Market Statistics} and \textit{Main Economic Indicators} series on employment, we have plotted in Figure \ref{fig:emp} the series together to see how similar they are. It turns out they are similar enough. For this reason and in order to obtain longer series, we have decided to chain the two series for France, United Kingdom and Italy. We multiply the \textit{Short-Term Labour Market} series by a factor such that both series have the same value at the period for which the \textit{Main Economic Indicators} series has its last observation. The two series were then merged with \textit{Short-Term Labour Market} complementing the missing values of \textit{Main Economic Indicators}. The length of the resulting time series can be seen in Table \ref{tab:timespan}.
+Before deciding whether to combine the \textit{Short-Term Labour Market Statistics} and \textit{Main Economic Indicators} series on employment, we have plotted in \cref{fig:emp} the series together to see how similar they are. It turns out they are similar enough. For this reason and in order to obtain longer series, we have decided to chain the two series for France, United Kingdom and Italy. We multiply the \textit{Short-Term Labour Market} series by a factor such that both series have the same value at the period for which the \textit{Main Economic Indicators} series has its last observation. The two series were then merged with \textit{Short-Term Labour Market} complementing the missing values of \textit{Main Economic Indicators}. The length of the resulting time series can be seen in \cref{tab:timespan}.
 
 \begin{figure}[htb]
 \centering
 \subfloat[France]{
-\fbox{\includegraphics[width=0.44\textwidth]{../output/figures/fraemployment.png}}
+\fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/fraemployment.png}}
 \label{fig:fraemp}}
 \qquad
 \subfloat[United Kingdom]{
-\fbox{\includegraphics[width=0.44\textwidth]{../output/figures/gbremployment.png}}
+\fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/gbremployment.png}}
 \label{fig:gbremp}}
 \qquad
 \subfloat[Italy]{
-\fbox{\includegraphics[width=0.6\textwidth]{../output/figures/itaemployment.png}}
+\fbox{\includegraphics[width=0.6\textwidth]{\generatedfigures/itaemployment.png}}
 \label{fig:itaemp}}
 \caption{Civilian Employment Series}
 \label{fig:emp}

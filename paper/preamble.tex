@@ -1,0 +1,78 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage[
+  a4paper,
+  textwidth=16.5cm,
+  textheight=24cm,
+  top=2.5cm,
+  head=24pt,
+  hcentering
+]{geometry}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage[group-minimum-digits=4]{siunitx}
+\usepackage[lofdepth,lotdepth]{subfig}
+\usepackage{placeins}
+\usepackage[authoryear]{natbib}
+\usepackage[automark]{scrlayer-scrpage}
+\usepackage[
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  pdfauthor={Denis Maciel},
+  pdftitle={Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?}
+]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\sisetup{
+  detect-all,
+  input-symbols = (),
+  table-number-alignment = center
+}
+
+\pagestyle{scrheadings}
+\automark{section}
+\clearpairofpagestyles
+\ohead{\headmark}
+\cfoot{\pagemark}
+\setlength{\footheight}{24pt}
+
+\bibliographystyle{ecta}
+\doublespacing
+\renewcommand{\labelitemii}{-}
+
+\newcommand\cites[1]{\citeauthor{#1}'s\ (\citeyear{#1})}
+\newcommand{\generatedfigures}{../output/figures}
+\newcommand{\generatedtables}{../output/tables}
+\newcommand{\generatedtable}[3]{%
+  \begin{table}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{\input{\generatedtables/#1}}%
+    \caption{#2}
+    \label{#3}
+  \end{table}
+}
+\newcommand{\generatedfigure}[4][0.8\textwidth]{%
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=#1]{\generatedfigures/#2}
+    \caption{#3}
+    \label{#4}
+  \end{figure}
+}
+
+\crefname{section}{section}{sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{subsection}{subsections}
+\Crefname{subsection}{Subsection}{Subsections}

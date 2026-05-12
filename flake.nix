@@ -74,6 +74,32 @@
               latexmk -pdf -interaction=nonstopmode -halt-on-error -cd "paper/main.tex"
             '';
           };
+          lintTex = pkgs.writeShellApplication {
+            name = "lint-thesis-tex";
+            runtimeInputs = [
+              pkgs.texlivePackages.chktex
+              self.packages.${system}.paper
+            ];
+            text = ''
+              export TEXMFCNF="${self.packages.${system}.paper}/share/texmf-var/web2c:"
+              chktex -q -g0 -I0 \
+                -n 1 \
+                -n 8 \
+                -n 12 \
+                -n 13 \
+                -n 18 \
+                -n 24 \
+                -n 27 \
+                -n 36 \
+                -n 38 \
+                -n 46 \
+                paper/main.tex \
+                paper/preamble.tex \
+                paper/frontmatter/*.tex \
+                paper/chapters/*.tex \
+                paper/appendix/*.tex
+            '';
+          };
         in
         {
           default = {
@@ -88,6 +114,10 @@
             type = "app";
             program = "${buildPaper}/bin/build-thesis-paper";
           };
+          lint-tex = {
+            type = "app";
+            program = "${lintTex}/bin/lint-thesis-tex";
+          };
         }
       );
 
@@ -101,6 +131,7 @@
             packages = [
               self.packages.${system}.default
               self.packages.${system}.paper
+              pkgs.texlivePackages.chktex
             ];
           };
         }
