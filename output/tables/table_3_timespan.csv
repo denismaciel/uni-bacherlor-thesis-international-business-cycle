@@ -1,4 +1,4 @@
-"Country","Last Observation.x","First Observation.x","Last Observation.x","First Observation.x","Last Observation.x","First Observation.x","Last Observation.x","First Observation.x","Last Observation.x","First Observation.x","Last Observation.y","First Observation.y"
+"Country","GDP Last","GDP First","Consumption Last","Consumption First","Investment Last","Investment First","Government Last","Government First","Net Exports Last","Net Exports First","Employment Last","Employment First"
 "AUS","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q2","1967-Q1"
 "AUT","2015-Q2","1960-Q1","2015-Q2","1960-Q1","2015-Q2","1960-Q1","2015-Q2","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1969-Q1"
 "CAN","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q1","1960-Q1","2015-Q2","1955-Q1"
