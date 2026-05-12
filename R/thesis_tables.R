@@ -1,48 +1,50 @@
 series_from_panel <- function(panel, variable_name) {
   panel |>
-    filter(.data[[VARIABLE_COL]] == .env$variable_name) |>
+    filter(.data[[variable_col]] == .env$variable_name) |>
     transmute(
-      location = .data[[LOCATION_COL]],
-      TIME = as.ordered(.data[[TIME_COL]]),
-      Subject = .data[[SUBJECT_COL]],
-      Value = value,
-      filtered = .data[[FILTERED_COL]]
-    ) |>
-    as.data.frame()
+      location = .data[[location_col]],
+      time = as.ordered(.data[[time_col]]),
+      subject = .data[[subject_col]],
+      value = value,
+      filtered = .data[[filtered_col]]
+    )
 }
 
 build_variable_results <- function(panel, employment_initial_timespan = NULL) {
-  variable_results <- lapply(names(STD_DEV_COLUMNS), function(variable) {
+  variable_results <- lapply(names(std_dev_columns), function(variable) {
     series <- series_from_panel(panel, variable)
     correlation <- cross_country_correlation(series)
     list(
       series = series,
       correlation = correlation,
       usa_correlation = usa_correlations(correlation),
-      stdv = standard_deviation_by_country(series, output_col = STD_DEV_COLUMNS[[variable]]),
+      stdv = standard_deviation_by_country(series, output_col = std_dev_columns[[variable]]),
       timespan = timespan_by_country(series)
     )
   })
-  names(variable_results) <- names(STD_DEV_COLUMNS)
+  names(variable_results) <- names(std_dev_columns)
 
   variable_results$employment$initial_timespan <- employment_initial_timespan
   variable_results
 }
 
 build_standard_deviations <- function(results) {
-  standard_deviations <- data.frame(
+  standard_deviations <- tibble::tibble(
     results$gdp$stdv,
     con_stdv = results$consumption$stdv$con_stdv,
     inv_stdv = results$investment$stdv$inv_stdv,
     gov_stdv = results$government$stdv$gov_stdv
   )
-  standard_deviations <- merge(standard_deviations, results$net_exports$stdv, by = "country")
-  standard_deviations <- merge(
-    standard_deviations,
-    merge(results$employment$stdv, results$solow_residuals$stdv),
-    all = TRUE
+  employment_solow <- full_join(
+    results$employment$stdv,
+    results$solow_residuals$stdv,
+    by = "country"
   )
-  colnames(standard_deviations) <- c("Country", "y", "c", "x", "g", "nx", "n", "z")
+  standard_deviations <- standard_deviations |>
+    full_join(results$net_exports$stdv, by = "country") |>
+    full_join(employment_solow, by = "country") |>
+    arrange(country)
+  colnames(standard_deviations) <- c("country", "y", "c", "x", "g", "nx", "n", "z")
   standard_deviations[-1] <- standard_deviations[-1] * 100
   standard_deviations$c <- standard_deviations$c / standard_deviations$y
   standard_deviations$x <- standard_deviations$x / standard_deviations$y
@@ -50,38 +52,42 @@ build_standard_deviations <- function(results) {
   standard_deviations$n <- standard_deviations$n / standard_deviations$y
   standard_deviations$z <- standard_deviations$z / standard_deviations$y
   standard_deviations[-1] <- round(standard_deviations[-1], 2)
-  standard_deviations[, c("Country", "y", "nx", "c", "x", "g", "n", "z")]
+  standard_deviations[, c("country", "y", "nx", "c", "x", "g", "n", "z")]
 }
 
 build_timespan <- function(results) {
-  timespan_without_country <- function(timespan) {
-    timespan[c("Last Observation", "First Observation")]
+  prefixed_timespan <- function(timespan, prefix) {
+    timespan |>
+      rename(
+        !!paste0(prefix, "_last") := last_observation,
+        !!paste0(prefix, "_first") := first_observation
+      )
   }
 
-  timespan <- data.frame(
-    results$gdp$timespan,
-    timespan_without_country(results$consumption$timespan),
-    timespan_without_country(results$investment$timespan),
-    timespan_without_country(results$government$timespan),
-    timespan_without_country(results$net_exports$timespan),
-    check.names = FALSE
-  )
-  merge(timespan, results$employment$timespan, by = "Country", all = TRUE)
+  prefixed_timespan(results$gdp$timespan, "gdp") |>
+    full_join(prefixed_timespan(results$consumption$timespan, "consumption"), by = "country") |>
+    full_join(prefixed_timespan(results$investment$timespan, "investment"), by = "country") |>
+    full_join(prefixed_timespan(results$government$timespan, "government"), by = "country") |>
+    full_join(prefixed_timespan(results$net_exports$timespan, "net_exports"), by = "country") |>
+    full_join(prefixed_timespan(results$employment$timespan, "employment"), by = "country") |>
+    arrange(country)
 }
 
 build_usa_correlation_matrix <- function(results) {
-  usa_correlation_matrix <- data.frame(
-    gdp = results$gdp$usa_correlation,
-    consumption = results$consumption$usa_correlation,
-    investment = results$investment$usa_correlation,
-    government = results$government$usa_correlation,
-    net_exports = results$net_exports$usa_correlation
+  usa_correlation_matrix <- tibble::tibble(
+    country = names(results$gdp$usa_correlation),
+    gdp = as.numeric(results$gdp$usa_correlation),
+    consumption = as.numeric(results$consumption$usa_correlation),
+    investment = as.numeric(results$investment$usa_correlation),
+    government = as.numeric(results$government$usa_correlation),
+    net_exports = as.numeric(results$net_exports$usa_correlation)
   )
-  employment_solow <- data.frame(
-    employment = results$employment$usa_correlation,
-    solow = results$solow_residuals$usa_correlation
+  employment_solow <- tibble::tibble(
+    country = names(results$employment$usa_correlation),
+    employment = as.numeric(results$employment$usa_correlation),
+    solow = as.numeric(results$solow_residuals$usa_correlation)
   )
-  merge(usa_correlation_matrix, employment_solow, by = 0, all = TRUE)
+  full_join(usa_correlation_matrix, employment_solow, by = "country")
 }
 
 build_within_country_correlations <- function(results) {
@@ -93,69 +99,68 @@ build_within_country_correlations <- function(results) {
   employment <- results$employment$series
   solow <- results$solow_residuals$series
 
-  net_exports_x <- mutate(net_exports, Subject = "Net Exports")
+  net_exports_x <- mutate(net_exports, subject = "net_exports")
   core_data <- bind_series_rows(
-    gdp[c("location", "TIME", "Subject", "filtered")],
-    consumption[c("location", "TIME", "Subject", "filtered")],
-    investment[c("location", "TIME", "Subject", "filtered")],
-    government[c("location", "TIME", "Subject", "filtered")],
-    net_exports_x[c("location", "TIME", "Subject", "filtered")]
+    gdp[c("location", "time", "subject", "filtered")],
+    consumption[c("location", "time", "subject", "filtered")],
+    investment[c("location", "time", "subject", "filtered")],
+    government[c("location", "time", "subject", "filtered")],
+    net_exports_x[c("location", "time", "subject", "filtered")]
   )
 
   table5_subjects <- c(
-    gdp = GDP_SUBJECT,
+    gdp = gdp_subject,
     cons = "Private final consumption expenditure",
     inv = "Gross fixed capital formation",
     gov = "General government final consumption expenditure",
-    net = "Net Exports"
+    net = "net_exports"
   )
 
   core_rows <- lapply(unique(core_data$location), function(country) {
     country_gdp <- gdp[gdp$location == country, ]$filtered
     autocorrelation <- round(cor(country_gdp, lag(country_gdp, 1), use = "pairwise.complete"), 2)
     country_data <- core_data[core_data$location == country, ]
-    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
-      select(-TIME, -location)
+    wide_data <- pivot_wider(country_data, names_from = subject, values_from = filtered) |>
+      select(-time, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
-    correlation_values <- as.list(as.character(correlations[GDP_SUBJECT, table5_subjects]))
+    correlation_values <- as.list(as.character(correlations[gdp_subject, table5_subjects]))
     names(correlation_values) <- names(table5_subjects)
-    data.frame(
-      Country = as.character(country),
-      Autorcorrelation = as.character(autocorrelation),
-      correlation_values,
-      check.names = FALSE
+    tibble::tibble(
+      country = as.character(country),
+      autocorrelation = as.character(autocorrelation),
+      !!!correlation_values
     )
   })
   core_with_gdp_correlations <- bind_rows(core_rows)
 
-  employment_x <- mutate(employment, Subject = "civilian employment")
-  solow_x <- mutate(solow, Subject = "Solow Residulas")
+  employment_x <- mutate(employment, subject = "employment")
+  solow_x <- mutate(solow, subject = "solow_residuals")
   gdp_x <- gdp[gdp$location != "CHE" & gdp$location != "EU15", ]
   labor_data <- bind_series_rows(
-    gdp_x[c("location", "TIME", "Subject", "filtered")],
-    employment_x[c("location", "TIME", "Subject", "filtered")],
-    solow_x[c("location", "TIME", "Subject", "filtered")]
+    gdp_x[c("location", "time", "subject", "filtered")],
+    employment_x[c("location", "time", "subject", "filtered")],
+    solow_x[c("location", "time", "subject", "filtered")]
   )
   table5_labor_subjects <- c(
-    gdp = GDP_SUBJECT,
-    emp = "civilian employment",
-    sol = "Solow Residulas"
+    gdp = gdp_subject,
+    emp = "employment",
+    sol = "solow_residuals"
   )
   labor_rows <- lapply(unique(labor_data$location), function(country) {
     country_data <- labor_data[labor_data$location == country, ]
-    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
-      select(-TIME, -location)
+    wide_data <- pivot_wider(country_data, names_from = subject, values_from = filtered) |>
+      select(-time, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
-    data.frame(
-      Country = as.character(country),
-      emp = as.character(correlations[GDP_SUBJECT, table5_labor_subjects[["emp"]]]),
-      sol = as.character(correlations[GDP_SUBJECT, table5_labor_subjects[["sol"]]]),
-      check.names = FALSE
+    tibble::tibble(
+      country = as.character(country),
+      emp = as.character(correlations[gdp_subject, table5_labor_subjects[["emp"]]]),
+      sol = as.character(correlations[gdp_subject, table5_labor_subjects[["sol"]]])
     )
   })
   within_country_labor_correlations <- bind_rows(labor_rows)
 
-  merge(core_with_gdp_correlations, within_country_labor_correlations, by = "Country", all = TRUE)
+  full_join(core_with_gdp_correlations, within_country_labor_correlations, by = "country") |>
+    arrange(country)
 }
 
 build_average_cross_country_correlations <- function(results) {

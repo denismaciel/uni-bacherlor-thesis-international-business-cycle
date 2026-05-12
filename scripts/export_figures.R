@@ -17,7 +17,7 @@ main <- function() {
   }
 
   gdp_usa <- results$series$gdp[results$series$gdp$location == "USA", ]
-  gdp_hp_filter <- hpfilter(gdp_usa$Value, type = "lambda", freq = HP_FILTER_LAMBDA)
+  gdp_hp_filter <- hpfilter(gdp_usa$value, type = "lambda", freq = hp_filter_lambda)
   gdp_hp_filter$xname <- "Logged GDP of the United States"
   write_base_png(
     "output/figures/filteredgdp.png",
@@ -83,28 +83,28 @@ main <- function() {
 
   employment_comparison <- function(country, fred_employment, raw_employment) {
     employment <- normalize_oecd_location(raw_employment)
-    employment <- employment[employment$SUBJECT == "LFEMTTTT", ]
-    employment[[TIME_COL]] <- as.ordered(employment[[TIME_COL]])
+    employment <- employment[employment$subject_code == "LFEMTTTT", ]
+    employment[[time_col]] <- as.ordered(employment[[time_col]])
 
     fred <- fred_employment
-    names(fred) <- c(TIME_COL, VALUE_COL)
-    oecd <- employment[employment$location == country, c(LOCATION_COL, TIME_COL, VALUE_COL)]
+    names(fred) <- c(time_col, value_col)
+    oecd <- employment[employment$location == country, c(location_col, time_col, value_col)]
 
     if (country == "FRA") {
-      fra_reference_value <- oecd[oecd$TIME == "2005-Q2", ]$Value
-      fred$Value <- fred$Value * fra_reference_value / 100
+      fra_reference_value <- oecd[oecd$time == "2005-Q2", ]$value
+      fred$value <- fred$value * fra_reference_value / 100
     }
 
     fred <- format_fred_quarters(fred)
     bind_rows(
-      data.frame(TIME = as.character(fred$TIME), value = fred$Value, source = "FRED"),
-      data.frame(TIME = as.character(oecd$TIME), value = oecd$Value, source = "OECD")
+      data.frame(time = as.character(fred$time), value = fred$value, source = "FRED"),
+      data.frame(time = as.character(oecd$time), value = oecd$value, source = "OECD")
     )
   }
 
   write_employment_plot <- function(country, fred_employment, path) {
     comparison <- employment_comparison(country, fred_employment, raw_data$employment)
-    comparison$quarter <- as.yearqtr(comparison$TIME, format = "%Y-Q%q")
+    comparison$quarter <- as.yearqtr(comparison$time, format = "%Y-Q%q")
 
     plot <- ggplot(comparison, aes(quarter, value, color = source)) +
       geom_line(linewidth = 0.7, na.rm = TRUE) +

@@ -1,6 +1,6 @@
 load_raw_data <- function(data_dir = "data/raw") {
   read_data <- function(path) {
-    as.data.frame(read_csv(path, show_col_types = FALSE))
+    read_csv(path, show_col_types = FALSE)
   }
 
   list(

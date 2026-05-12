@@ -3,7 +3,6 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(tidyr)
   library(readr)
-  library(xtable)
   library(ggplot2)
   library(zoo)
 })

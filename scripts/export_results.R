@@ -102,6 +102,34 @@ main <- function() {
     )
   }
 
+  legacy_timespan_table <- function(variable_results) {
+    timespan_without_country <- function(timespan) {
+      timespan[c("last_observation", "first_observation")]
+    }
+
+    timespan <- data.frame(
+      variable_results$gdp$timespan,
+      timespan_without_country(variable_results$consumption$timespan),
+      timespan_without_country(variable_results$investment$timespan),
+      timespan_without_country(variable_results$government$timespan),
+      timespan_without_country(variable_results$net_exports$timespan),
+      check.names = FALSE
+    )
+    names(timespan)[names(timespan) == "country"] <- "Country"
+    employment_timespan <- variable_results$employment$timespan
+    names(employment_timespan) <- c("Country", "Last Observation", "First Observation")
+    table <- suppressWarnings(
+      merge(timespan, employment_timespan, by = "Country", all = TRUE)
+    )
+    names(table) <- c(
+      "Country",
+      rep(c("Last Observation.x", "First Observation.x"), 5),
+      "Last Observation.y",
+      "First Observation.y"
+    )
+    table
+  }
+
   write_table_with_key <- function(x, key, path) {
     key_column <- data.frame(row_key = rownames(x), row.names = NULL, check.names = FALSE)
     names(key_column) <- key
@@ -109,35 +137,42 @@ main <- function() {
     write_table(x, path)
   }
 
+  table_3_timespan <- legacy_timespan_table(results$variable_results)
   write_table(
-    results$tables$timespan,
+    table_3_timespan,
     "output/tables/table_3_timespan.csv"
   )
   write_timespan_latex(
-    results$tables$timespan,
+    table_3_timespan,
     "output/tables/table_3_timespan.tex"
   )
 
+  table_4_standard_deviations <- rename(results$tables$standard_deviations, Country = country)
   write_table(
-    results$tables$standard_deviations,
+    table_4_standard_deviations,
     "output/tables/table_4_standard_deviations.csv"
   )
   write_latex_tabular(
-    results$tables$standard_deviations,
+    table_4_standard_deviations,
     "output/tables/table_4_standard_deviations.tex",
     align = "l *{7}{S[table-format=1.3]}",
-    header = latex_header(names(results$tables$standard_deviations))
+    header = latex_header(names(table_4_standard_deviations))
   )
 
-  write_table(
+  table_5_within_country_correlations <- rename(
     results$tables$within_country_correlations,
+    Country = country,
+    Autorcorrelation = autocorrelation
+  )
+  write_table(
+    table_5_within_country_correlations,
     "output/tables/table_5_within_country_correlations.csv"
   )
   write_latex_tabular(
-    results$tables$within_country_correlations,
+    table_5_within_country_correlations,
     "output/tables/table_5_within_country_correlations.tex",
     align = "l *{8}{S[table-format=-1.3]}",
-    header = latex_header(names(results$tables$within_country_correlations))
+    header = latex_header(names(table_5_within_country_correlations))
   )
 
   table_6_us_correlations <- results$tables$usa_correlation_matrix
@@ -172,10 +207,11 @@ main <- function() {
     row.names = NULL,
     check.names = FALSE
   )
+  names(table_7_average_correlations)[names(table_7_average_correlations) == "mean"] <- "Mean"
+  names(table_7_average_correlations)[names(table_7_average_correlations) == "usa_mean"] <- "USA Mean"
 
-  write_table_with_key(
-    results$tables$average_cross_country_correlations,
-    "Variable",
+  write_table(
+    table_7_average_correlations,
     "output/tables/table_7_average_cross_country_correlations.csv"
   )
   write_latex_tabular(

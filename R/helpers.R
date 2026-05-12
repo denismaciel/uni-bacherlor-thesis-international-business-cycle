@@ -1,22 +1,21 @@
-HP_FILTER_LAMBDA <- 1600
-CAPITAL_SHARE <- 0.36
-GDP_SUBJECT <- "Gross domestic product - expenditure approach"
-LOCATION_COL <- "location"
-OECD_LOCATION_COL <- "LOCATION"
-TIME_COL <- "TIME"
-VALUE_COL <- "Value"
-FILTERED_COL <- "filtered"
-VARIABLE_COL <- "variable"
-SUBJECT_COL <- "Subject"
+hp_filter_lambda <- 1600
+capital_share_value <- 0.36
+gdp_subject <- "Gross domestic product - expenditure approach"
+location_col <- "location"
+time_col <- "time"
+value_col <- "value"
+filtered_col <- "filtered"
+variable_col <- "variable"
+subject_col <- "subject"
 
-STANDARD_VARIABLES <- c(
-  gdp = GDP_SUBJECT,
+standard_variables <- c(
+  gdp = gdp_subject,
   consumption = "Private final consumption expenditure",
   investment = "Gross fixed capital formation",
   government = "General government final consumption expenditure"
 )
 
-STD_DEV_COLUMNS <- c(
+std_dev_columns <- c(
   gdp = "gdp_stdv",
   consumption = "con_stdv",
   investment = "inv_stdv",
@@ -27,18 +26,22 @@ STD_DEV_COLUMNS <- c(
 )
 
 normalize_oecd_location <- function(data) {
-  if (OECD_LOCATION_COL %in% names(data)) {
-    data <- rename(data, !!LOCATION_COL := all_of(OECD_LOCATION_COL))
-  }
-  data
+  rename(
+    data,
+    location = any_of("LOCATION"),
+    time = any_of("TIME"),
+    subject_code = any_of("SUBJECT"),
+    subject = any_of("Subject"),
+    value = any_of("Value")
+  )
 }
 
 bind_series_rows <- function(...) {
   parts <- lapply(list(...), function(part) {
-    part[[TIME_COL]] <- as.character(part[[TIME_COL]])
+    part[[time_col]] <- as.character(part[[time_col]])
     part
   })
   result <- bind_rows(parts)
-  result[[TIME_COL]] <- as.ordered(result[[TIME_COL]])
+  result[[time_col]] <- as.ordered(result[[time_col]])
   result
 }
