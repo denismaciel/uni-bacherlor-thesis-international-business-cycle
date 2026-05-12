@@ -1,16 +1,3 @@
-apply_hp_filter_by_country <- function(data, value_col = "Value", country_col = "location", lambda = HP_FILTER_LAMBDA) {
-  filtered <- c()
-
-  for (country in unique(data[[country_col]])) {
-    country_values <- data[data[[country_col]] == country, value_col]
-    hp_filter <- hpfilter(country_values, type = "lambda", freq = lambda)
-    filtered <- append(filtered, hp_filter$cycle)
-  }
-
-  data$filtered <- filtered
-  data
-}
-
 hp_cycle <- function(values, lambda = HP_FILTER_LAMBDA) {
   hpfilter(values, type = "lambda", freq = lambda)$cycle
 }

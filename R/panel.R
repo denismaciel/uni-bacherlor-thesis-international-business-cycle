@@ -127,37 +127,6 @@ build_analysis_panel <- function(raw_data) {
   )
 }
 
-series_from_panel <- function(panel, variable_name) {
-  panel %>%
-    filter(.data[[VARIABLE_COL]] == .env$variable_name) %>%
-    transmute(
-      location = .data[[LOCATION_COL]],
-      TIME = as.ordered(.data[[TIME_COL]]),
-      Subject = .data[[SUBJECT_COL]],
-      Value = value,
-      filtered = .data[[FILTERED_COL]]
-    ) %>%
-    as.data.frame()
-}
-
-build_variable_results <- function(panel, employment_initial_timespan = NULL) {
-  variable_results <- lapply(names(STD_DEV_COLUMNS), function(variable) {
-    series <- series_from_panel(panel, variable)
-    correlation <- cross_country_correlation(series)
-    list(
-      series = series,
-      correlation = correlation,
-      usa_correlation = usa_correlations(correlation),
-      stdv = standard_deviation_by_country(series, output_col = STD_DEV_COLUMNS[[variable]]),
-      timespan = timespan_by_country(series)
-    )
-  })
-  names(variable_results) <- names(STD_DEV_COLUMNS)
-
-  variable_results$employment$initial_timespan <- employment_initial_timespan
-  variable_results
-}
-
 format_fred_quarters <- function(data) {
   data[[TIME_COL]] <- as.yearqtr(data[[TIME_COL]], format = "%Y-%m-%d")
   data[[TIME_COL]] <- as.character(data[[TIME_COL]])
