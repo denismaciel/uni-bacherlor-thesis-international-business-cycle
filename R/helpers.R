@@ -1,6 +1,16 @@
 HP_FILTER_LAMBDA <- 1600
 CAPITAL_SHARE <- 0.36
 GDP_SUBJECT <- "Gross domestic product - expenditure approach"
+LOCATION_COL <- "location"
+OECD_LOCATION_COL <- "LOCATION"
+TIME_COL <- "TIME"
+VALUE_COL <- "Value"
+FILTERED_COL <- "filtered"
+
+normalize_oecd_location <- function(data) {
+  names(data)[names(data) == OECD_LOCATION_COL] <- LOCATION_COL
+  data
+}
 
 apply_hp_filter_by_country <- function(data, value_col = "Value", country_col = "location", lambda = HP_FILTER_LAMBDA) {
   filtered <- c()
@@ -15,13 +25,13 @@ apply_hp_filter_by_country <- function(data, value_col = "Value", country_col = 
   data
 }
 
-cross_country_correlation <- function(data, value_col = "filtered") {
-  panel <- subset(data, select = c("location", "TIME", value_col))
-  names(panel)[names(panel) == value_col] <- "value"
+cross_country_correlation <- function(data, value_col = FILTERED_COL) {
+  panel <- subset(data, select = c(LOCATION_COL, TIME_COL, value_col))
+  panel <- rename(panel, value = all_of(value_col))
 
   correlation_matrix <- panel %>%
-    pivot_wider(names_from = location, values_from = value, names_sort = TRUE) %>%
-    select(-TIME) %>%
+    pivot_wider(names_from = all_of(LOCATION_COL), values_from = value, names_sort = TRUE) %>%
+    select(-all_of(TIME_COL)) %>%
     cor(., use = "pairwise.complete.obs")
 
   round(correlation_matrix, 3)
@@ -31,17 +41,17 @@ usa_correlations <- function(correlation_matrix) {
   correlation_matrix["USA",]
 }
 
-standard_deviation_by_country <- function(data, value_col = "filtered", output_col = "stdv") {
-  rows <- lapply(unique(data$location), function(country) {
+standard_deviation_by_country <- function(data, value_col = FILTERED_COL, output_col = "stdv") {
+  rows <- lapply(unique(data[[LOCATION_COL]]), function(country) {
     data.frame(
       country = country,
-      value = sd(data[data$location == country, value_col]),
+      value = sd(data[data[[LOCATION_COL]] == country, value_col]),
       stringsAsFactors = FALSE
     )
   })
 
   result <- do.call(rbind, rows)
-  names(result)[2] <- output_col
+  result <- rename(result, !!output_col := value)
   result
 }
 
@@ -61,10 +71,9 @@ timespan_by_country <- function(data, country_col = "location") {
 }
 
 process_standard_variable <- function(raw_data, stdv_col) {
-  data <- raw_data
-  colnames(data)[1] <- "location"
-  data$Value <- log(data$Value)
-  data$TIME <- as.ordered(data$TIME)
+  data <- normalize_oecd_location(raw_data)
+  data[[VALUE_COL]] <- log(data[[VALUE_COL]])
+  data[[TIME_COL]] <- as.ordered(data[[TIME_COL]])
   data <- apply_hp_filter_by_country(data)
 
   list(
