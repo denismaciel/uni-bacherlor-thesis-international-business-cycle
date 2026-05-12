@@ -49,7 +49,6 @@ nix develop
 - `output/tables/`: generated table outputs.
 - `output/figures/`: generated figures, ignored by Git.
 - `paper/`: organized LaTeX thesis source.
-- `archive/legacy/`: original scripts and exploratory files retained for historical reference.
 
 ## Main Result Objects
 
