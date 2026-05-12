@@ -12,6 +12,16 @@ normalize_oecd_location <- function(data) {
   data
 }
 
+bind_series_rows <- function(...) {
+  parts <- lapply(list(...), function(part) {
+    part[[TIME_COL]] <- as.character(part[[TIME_COL]])
+    part
+  })
+  result <- bind_rows(parts)
+  result[[TIME_COL]] <- as.ordered(result[[TIME_COL]])
+  result
+}
+
 apply_hp_filter_by_country <- function(data, value_col = "Value", country_col = "location", lambda = HP_FILTER_LAMBDA) {
   filtered <- c()
 
@@ -97,5 +107,9 @@ summarize_cross_country_correlations <- function(correlation_matrix, usa_correla
   values <- values[!is.na(values)]
 
   usa_entries <- names(usa_correlation) %in% c("USA")
-  c(mean(values), mean(usa_correlation[!usa_entries]), quantile(values, prob = probabilities, type = 1))
+  c(
+    Mean = mean(values),
+    `USA Mean` = mean(usa_correlation[!usa_entries]),
+    quantile(values, prob = probabilities, type = 1)
+  )
 }

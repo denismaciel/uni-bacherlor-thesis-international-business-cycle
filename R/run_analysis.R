@@ -114,7 +114,7 @@ process_employment <- function(raw_employment, fred_employment, output_figures =
     select = c("location", "TIME", "Value")
   )
 
-  emp <- rbind(emp_base, gbr_emp_def, ita_emp_def, fra_emp_def)
+  emp <- bind_series_rows(emp_base, gbr_emp_def, ita_emp_def, fra_emp_def)
   emp_timespan <- timespan_by_country(emp)
   emp$Value <- log(emp$Value)
   emp <- apply_hp_filter_by_country(emp)
@@ -210,9 +210,8 @@ build_within_country_correlations <- function(results) {
   employment <- results$employment$series
   solow <- results$solow_residuals$series
 
-  net_exports_x <- cbind(net_exports, rep("Net Exports", nrow(net_exports)))
-  colnames(net_exports_x)[ncol(net_exports_x)] <- "Subject"
-  core_data <- rbind(
+  net_exports_x <- mutate(net_exports, Subject = "Net Exports")
+  core_data <- bind_series_rows(
     gdp[c("location", "TIME", "Subject", "filtered")],
     consumption[c("location", "TIME", "Subject", "filtered")],
     investment[c("location", "TIME", "Subject", "filtered")],
@@ -235,18 +234,21 @@ build_within_country_correlations <- function(results) {
     wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) %>%
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
-    c(as.character(country), autocorrelation, correlations[GDP_SUBJECT, table5_subjects])
+    correlation_values <- as.list(as.character(correlations[GDP_SUBJECT, table5_subjects]))
+    names(correlation_values) <- names(table5_subjects)
+    data.frame(
+      Country = as.character(country),
+      Autorcorrelation = as.character(autocorrelation),
+      correlation_values,
+      check.names = FALSE
+    )
   })
-  core_with_gdp_correlations <- do.call(rbind, core_rows)
-  colnames(core_with_gdp_correlations)[1:2] <- c("Country", "Autorcorrelation")
-  colnames(core_with_gdp_correlations)[3:ncol(core_with_gdp_correlations)] <- names(table5_subjects)
+  core_with_gdp_correlations <- bind_rows(core_rows)
 
-  employment_x <- cbind(employment, rep("civilian employment", nrow(employment)))
-  colnames(employment_x)[ncol(employment_x)] <- "Subject"
-  solow_x <- cbind(solow, rep("Solow Residulas", nrow(solow)))
-  colnames(solow_x)[ncol(solow_x)] <- "Subject"
+  employment_x <- mutate(employment, Subject = "civilian employment")
+  solow_x <- mutate(solow, Subject = "Solow Residulas")
   gdp_x <- gdp[gdp$location != "CHE" & gdp$location != "EU15",]
-  labor_data <- rbind(
+  labor_data <- bind_series_rows(
     gdp_x[c("location", "TIME", "Subject", "filtered")],
     employment_x[c("location", "TIME", "Subject", "filtered")],
     solow_x[c("location", "TIME", "Subject", "filtered")]
@@ -261,28 +263,31 @@ build_within_country_correlations <- function(results) {
     wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) %>%
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
-    c(as.character(country), correlations[GDP_SUBJECT, table5_labor_subjects])
+    data.frame(
+      Country = as.character(country),
+      emp = as.character(correlations[GDP_SUBJECT, table5_labor_subjects[["emp"]]]),
+      sol = as.character(correlations[GDP_SUBJECT, table5_labor_subjects[["sol"]]]),
+      check.names = FALSE
+    )
   })
-  within_country_labor_correlations <- do.call(rbind, labor_rows)
-  within_country_labor_correlations <- within_country_labor_correlations[, -2]
-  colnames(within_country_labor_correlations)[1] <- "Country"
-  colnames(within_country_labor_correlations)[2:ncol(within_country_labor_correlations)] <- c("emp", "sol")
+  within_country_labor_correlations <- bind_rows(labor_rows)
 
   merge(core_with_gdp_correlations, within_country_labor_correlations, by = "Country", all = TRUE)
 }
 
 build_average_cross_country_correlations <- function(results) {
-  average_cross_country_correlations <- rbind(
-    summarize_cross_country_correlations(results$gdp$correlation, results$gdp$usa_correlation),
-    summarize_cross_country_correlations(results$consumption$correlation, results$consumption$usa_correlation),
-    summarize_cross_country_correlations(results$investment$correlation, results$investment$usa_correlation),
-    summarize_cross_country_correlations(results$government$correlation, results$government$usa_correlation),
-    summarize_cross_country_correlations(results$net_exports$correlation, results$net_exports$usa_correlation),
-    summarize_cross_country_correlations(results$employment$correlation, results$employment$usa_correlation),
-    summarize_cross_country_correlations(results$solow_residuals$correlation, results$solow_residuals$usa_correlation)
+  average_cross_country_correlations <- do.call(
+    rbind,
+    list(
+      y = summarize_cross_country_correlations(results$gdp$correlation, results$gdp$usa_correlation),
+      c = summarize_cross_country_correlations(results$consumption$correlation, results$consumption$usa_correlation),
+      x = summarize_cross_country_correlations(results$investment$correlation, results$investment$usa_correlation),
+      g = summarize_cross_country_correlations(results$government$correlation, results$government$usa_correlation),
+      nx = summarize_cross_country_correlations(results$net_exports$correlation, results$net_exports$usa_correlation),
+      n = summarize_cross_country_correlations(results$employment$correlation, results$employment$usa_correlation),
+      z = summarize_cross_country_correlations(results$solow_residuals$correlation, results$solow_residuals$usa_correlation)
+    )
   )
-  colnames(average_cross_country_correlations)[1:2] <- c("Mean", "USA Mean")
-  rownames(average_cross_country_correlations) <- c("y", "c", "x", "g", "nx", "n", "z")
   average_cross_country_correlations
 }
 
