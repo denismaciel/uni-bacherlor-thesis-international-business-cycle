@@ -6,18 +6,10 @@ source("R/thesis_tables.R")
 
 run_analysis <- function(data_dir = "data/raw", output_figures = FALSE) {
   raw_data <- load_raw_data(data_dir)
-
-  variable_results <- list(
-    gdp = process_standard_variable(raw_data$gdp, "gdp_stdv"),
-    consumption = process_standard_variable(raw_data$consumption, "con_stdv"),
-    investment = process_standard_variable(raw_data$investment, "inv_stdv"),
-    government = process_standard_variable(raw_data$government, "gov_stdv")
-  )
-  variable_results$net_exports <- process_net_exports(raw_data$net_exports, variable_results$gdp$series)
-  variable_results$employment <- process_employment(raw_data$employment, raw_data$fred_employment, output_figures)
-  variable_results$solow_residuals <- process_solow_residuals(
-    variable_results$gdp$series,
-    variable_results$employment$series
+  panel_data <- build_analysis_panel(raw_data)
+  variable_results <- build_variable_results(
+    panel_data$panel,
+    panel_data$employment_initial_timespan
   )
 
   tables <- list(
@@ -30,6 +22,7 @@ run_analysis <- function(data_dir = "data/raw", output_figures = FALSE) {
 
   list(
     tables = tables,
+    panel = panel_data$panel,
     series = lapply(variable_results, `[[`, "series"),
     correlations = lapply(variable_results, `[[`, "correlation"),
     variable_results = variable_results
