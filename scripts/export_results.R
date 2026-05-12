@@ -17,8 +17,9 @@ main <- function() {
   }
 
   write_table_with_key <- function(x, key, path) {
-    x <- data.frame(key = rownames(x), x, row.names = NULL, check.names = FALSE)
-    names(x)[1] <- key
+    key_column <- data.frame(row_key = rownames(x), row.names = NULL, check.names = FALSE)
+    names(key_column) <- key
+    x <- data.frame(key_column, x, check.names = FALSE)
     write_table(x, path)
   }
 

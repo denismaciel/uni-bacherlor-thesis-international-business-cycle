@@ -149,9 +149,9 @@ process_solow_residuals <- function(gdp_series, employment_series, capital_share
 build_standard_deviations <- function(results) {
   standard_deviations <- data.frame(
     results$gdp$stdv,
-    results$consumption$stdv[,2],
-    results$investment$stdv[,2],
-    results$government$stdv[,2]
+    con_stdv = results$consumption$stdv$con_stdv,
+    inv_stdv = results$investment$stdv$inv_stdv,
+    gov_stdv = results$government$stdv$gov_stdv
   )
   standard_deviations <- merge(standard_deviations, results$net_exports$stdv, by = "country")
   standard_deviations <- merge(
@@ -171,27 +171,32 @@ build_standard_deviations <- function(results) {
 }
 
 build_timespan <- function(results) {
-  timespan <- cbind(
+  timespan_without_country <- function(timespan) {
+    timespan[c("Last Observation", "First Observation")]
+  }
+
+  timespan <- data.frame(
     results$gdp$timespan,
-    results$consumption$timespan[, -1],
-    results$investment$timespan[, -1],
-    results$government$timespan[, -1],
-    results$net_exports$timespan[, -1]
+    timespan_without_country(results$consumption$timespan),
+    timespan_without_country(results$investment$timespan),
+    timespan_without_country(results$government$timespan),
+    timespan_without_country(results$net_exports$timespan),
+    check.names = FALSE
   )
   merge(timespan, results$employment$timespan, by = "Country", all = TRUE)
 }
 
 build_usa_correlation_matrix <- function(results) {
-  usa_correlation_matrix <- cbind(
-    results$gdp$usa_correlation,
-    results$consumption$usa_correlation,
-    results$investment$usa_correlation,
-    results$government$usa_correlation,
-    results$net_exports$usa_correlation
+  usa_correlation_matrix <- data.frame(
+    gdp = results$gdp$usa_correlation,
+    consumption = results$consumption$usa_correlation,
+    investment = results$investment$usa_correlation,
+    government = results$government$usa_correlation,
+    net_exports = results$net_exports$usa_correlation
   )
-  employment_solow <- cbind(
-    results$employment$usa_correlation,
-    results$solow_residuals$usa_correlation
+  employment_solow <- data.frame(
+    employment = results$employment$usa_correlation,
+    solow = results$solow_residuals$usa_correlation
   )
   merge(usa_correlation_matrix, employment_solow, by = 0, all = TRUE)
 }
