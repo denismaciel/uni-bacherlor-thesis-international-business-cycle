@@ -16,7 +16,7 @@ main <- function() {
     dev.off()
   }
 
-  gdp_usa <- results$series$gdp[results$series$gdp$location == "USA",]
+  gdp_usa <- results$series$gdp[results$series$gdp$location == "USA", ]
   gdp_hp_filter <- hpfilter(gdp_usa$Value, type = "lambda", freq = HP_FILTER_LAMBDA)
   gdp_hp_filter$xname <- "Logged GDP of the United States"
   write_base_png(
@@ -30,7 +30,7 @@ main <- function() {
     diag(upper_triangle) <- NA
 
     data <- subset(as.data.frame(as.table(upper_triangle), responseName = "Corr"), !is.na(Corr))
-    data <- data[order(data$Corr),]
+    data <- data[order(data$Corr), ]
 
     ggplot(data, aes(x = seq_len(nrow(data)), y = Corr, col = Var2 == "USA")) +
       geom_point(size = 4) +
@@ -83,7 +83,7 @@ main <- function() {
 
   employment_comparison <- function(country, fred_employment, raw_employment) {
     employment <- normalize_oecd_location(raw_employment)
-    employment <- employment[employment$SUBJECT == "LFEMTTTT",]
+    employment <- employment[employment$SUBJECT == "LFEMTTTT", ]
     employment[[TIME_COL]] <- as.ordered(employment[[TIME_COL]])
 
     fred <- fred_employment
@@ -91,7 +91,7 @@ main <- function() {
     oecd <- employment[employment$location == country, c(LOCATION_COL, TIME_COL, VALUE_COL)]
 
     if (country == "FRA") {
-      fra_reference_value <- oecd[oecd$TIME == "2005-Q2",]$Value
+      fra_reference_value <- oecd[oecd$TIME == "2005-Q2", ]$Value
       fred$Value <- fred$Value * fra_reference_value / 100
     }
 

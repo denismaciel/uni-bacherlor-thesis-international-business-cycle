@@ -26,6 +26,7 @@
             packages = with pkgs.rPackages; [
               dplyr
               ggplot2
+              lintr
               mFilter
               readr
               tidyr

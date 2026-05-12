@@ -111,9 +111,9 @@ build_within_country_correlations <- function(results) {
   )
 
   core_rows <- lapply(unique(core_data$location), function(country) {
-    country_gdp <- gdp[gdp$location == country,]$filtered
+    country_gdp <- gdp[gdp$location == country, ]$filtered
     autocorrelation <- round(cor(country_gdp, lag(country_gdp, 1), use = "pairwise.complete"), 2)
-    country_data <- core_data[core_data$location == country,]
+    country_data <- core_data[core_data$location == country, ]
     wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
@@ -130,7 +130,7 @@ build_within_country_correlations <- function(results) {
 
   employment_x <- mutate(employment, Subject = "civilian employment")
   solow_x <- mutate(solow, Subject = "Solow Residulas")
-  gdp_x <- gdp[gdp$location != "CHE" & gdp$location != "EU15",]
+  gdp_x <- gdp[gdp$location != "CHE" & gdp$location != "EU15", ]
   labor_data <- bind_series_rows(
     gdp_x[c("location", "TIME", "Subject", "filtered")],
     employment_x[c("location", "TIME", "Subject", "filtered")],
@@ -142,7 +142,7 @@ build_within_country_correlations <- function(results) {
     sol = "Solow Residulas"
   )
   labor_rows <- lapply(unique(labor_data$location), function(country) {
-    country_data <- labor_data[labor_data$location == country,]
+    country_data <- labor_data[labor_data$location == country, ]
     wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
@@ -168,7 +168,10 @@ build_average_cross_country_correlations <- function(results) {
       g = summarize_cross_country_correlations(results$government$correlation, results$government$usa_correlation),
       nx = summarize_cross_country_correlations(results$net_exports$correlation, results$net_exports$usa_correlation),
       n = summarize_cross_country_correlations(results$employment$correlation, results$employment$usa_correlation),
-      z = summarize_cross_country_correlations(results$solow_residuals$correlation, results$solow_residuals$usa_correlation)
+      z = summarize_cross_country_correlations(
+        results$solow_residuals$correlation,
+        results$solow_residuals$usa_correlation
+      )
     )
   )
   average_cross_country_correlations

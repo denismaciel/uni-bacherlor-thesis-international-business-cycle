@@ -22,7 +22,7 @@ cross_country_correlation <- function(data, value_col = FILTERED_COL) {
 }
 
 usa_correlations <- function(correlation_matrix) {
-  correlation_matrix["USA",]
+  correlation_matrix["USA", ]
 }
 
 standard_deviation_by_country <- function(data, value_col = FILTERED_COL, output_col = "stdv") {

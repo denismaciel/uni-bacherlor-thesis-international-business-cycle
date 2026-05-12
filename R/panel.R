@@ -17,9 +17,9 @@ build_net_exports_panel <- function(raw_net_exports) {
   net <- normalize_oecd_location(raw_net_exports)
   net[[TIME_COL]] <- as.character(net[[TIME_COL]])
 
-  exports <- net[net$Subject == "Exports of goods and services",]
-  imports <- net[net$Subject == "Imports of goods and services",]
-  gdp_current_prices <- net[net$Subject == GDP_SUBJECT,]
+  exports <- net[net$Subject == "Exports of goods and services", ]
+  imports <- net[net$Subject == "Imports of goods and services", ]
+  gdp_current_prices <- net[net$Subject == GDP_SUBJECT, ]
 
   exports$net_exports <- exports[[VALUE_COL]] - imports[[VALUE_COL]]
   net_exports <- subset(exports, select = c(LOCATION_COL, TIME_COL, "net_exports"))
@@ -39,7 +39,7 @@ build_net_exports_panel <- function(raw_net_exports) {
 
 build_employment_panel <- function(raw_employment, fred_employment) {
   emp <- normalize_oecd_location(raw_employment)
-  emp <- emp[emp$SUBJECT == "LFEMTTTT",]
+  emp <- emp[emp$SUBJECT == "LFEMTTTT", ]
   emp[[TIME_COL]] <- as.ordered(emp[[TIME_COL]])
 
   emp_timespan_initial <- timespan_by_country(emp)
@@ -63,7 +63,7 @@ build_employment_panel <- function(raw_employment, fred_employment) {
   fra_emp_fred <- fred_employment$fra
   names(fra_emp_fred) <- c(TIME_COL, VALUE_COL)
   fra_emp_oecd <- emp[emp$location == "FRA", c(LOCATION_COL, TIME_COL, VALUE_COL)]
-  fra_reference_value <- fra_emp_oecd[fra_emp_oecd$TIME == "2005-Q2",]$Value
+  fra_reference_value <- fra_emp_oecd[fra_emp_oecd$TIME == "2005-Q2", ]$Value
   fra_emp_fred$Value <- fra_emp_fred$Value * fra_reference_value / 100
   fra_emp_fred <- format_fred_quarters(fra_emp_fred)
   fra_employment_splice <- merge(fra_emp_fred, fra_emp_oecd, by = TIME_COL, all = TRUE)
@@ -136,10 +136,10 @@ format_fred_quarters <- function(data) {
 }
 
 splice_employment_series <- function(splice, country, switch_time, end_time) {
-  splice <- splice[splice[[TIME_COL]] <= end_time,]
+  splice <- splice[splice[[TIME_COL]] <= end_time, ]
   splice[[LOCATION_COL]] <- country
 
-  switch_row <- splice[splice[[TIME_COL]] == switch_time,]
+  switch_row <- splice[splice[[TIME_COL]] == switch_time, ]
   splice_factor <- switch_row$fred_value / switch_row$oecd_value
   splice$oecd_value <- splice_factor * splice$oecd_value
   splice[[VALUE_COL]] <- ifelse(
