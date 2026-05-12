@@ -27,8 +27,8 @@ nix develop
 ## Layout
 
 - `R/main.R`: main reproduction script.
-- `R/variables/`: variable-specific transformations.
-- `R/figures/`: figure scripts.
+- `R/run_analysis.R`: list-based analysis pipeline.
+- `R/helpers.R`: shared HP-filter, correlation, standard-deviation and timespan helpers.
 - `scripts/export_results.R`: exports Tables 3-7 to `output/tables/`.
 - `scripts/compare_results.R`: compares generated tables against `reference/tables/`.
 - `data/raw/oecd/`: OECD CSV inputs.
@@ -36,16 +36,17 @@ nix develop
 - `reference/tables/`: committed regression artifacts.
 - `output/tables/`: generated table outputs.
 - `output/figures/`: generated figures, ignored by Git.
+- `archive/legacy/`: original scripts and exploratory files retained for historical reference.
 
 ## Main Result Objects
 
-After sourcing `R/main.R`, the most relevant objects are:
+After sourcing `R/main.R`, use `results$tables`:
 
-- `timespan`: Table 3.
-- `standard_deviations`: Table 4.
-- `within_country_correlations`: Table 5.
-- `usa_correlation_matrix`: Table 6.
-- `average_cross_country_correlations`: Table 7.
+- `results$tables$timespan`: Table 3.
+- `results$tables$standard_deviations`: Table 4.
+- `results$tables$within_country_correlations`: Table 5.
+- `results$tables$usa_correlation_matrix`: Table 6.
+- `results$tables$average_cross_country_correlations`: Table 7.
 
 `R/results.R` prints the central result objects.
 

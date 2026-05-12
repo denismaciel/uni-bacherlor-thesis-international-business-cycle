@@ -18,6 +18,6 @@
 
 ## Cleanup
 
-- [ ] Replace repeated HP-filter and correlation code with small helper functions.
+- [x] Replace repeated HP-filter and correlation code with small helper functions.
 - [x] Reduce global side effects in `R/main.R`.
 - [x] Remove or archive exploratory scripts/files that are not part of reproduction.
