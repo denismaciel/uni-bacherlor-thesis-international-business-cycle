@@ -1,0 +1,92 @@
+\section{The Data\label{sec:thedata}}
+\subsection{BKK's Two Papers}
+Before delving into the peculiarities of the data we have used, it is important to call the reader's attention to the fact that Backus, Kehoe and Kydland have dealt with the topic of international business cycles in two different papers. Both ``International Real Business Cycles" (1992) and ``International Business Cycles: Theory and Evidence" (1993) show cross-country correlations between the US and various countries for output and consumption. Nevertheless, the source of the data, the countries analyzed and the time frame of the observations are not the same. For that reason, there are some significant differences between the results of the two papers.
+
+BKK's (1993) time frame is the same for all countries and all variables, 1970:1 to 1990:2. The data came from OECD's both \textit{Quarterly National Accounts} and \textit{Main Economic Indicators}.\footnote{Data from IMF's \textit{International Financial Statistics} are also used in this paper but only to measure the exchange rate, which is not relevant for the scope of this paper.} BKK (1993) analyzes 11 countries, two less than BKK (1992). Both papers include an European aggregate. The length of the time series used by BKK (1992) to calculate the international comovements varies from country to country, the longest being for the United States (1960:1 - 1990:2) and the shortest for the European aggregate (1970:1 - 1986:4). The source of the data is IMF's \textit{International Financial Statistics}.
+
+The distinct sources and time frames of the data give rise to non-negligible differences between the two papers. For example, the cross-country correlation of  output between Australia and the US differs by 0.26, while the difference of cross-country correlation of consumption between France and the US is 0.40 (-0.18 in BKK (1992) and 0.22 in BKK (1993)). It is important to stress the differences in the results of the two papers to justify our approach in collecting and transforming the data. The example of BKK (1992) and BKK (1993) shows that differences in the source of data can have serious influence on the end results. Since our goal is to reassess BKK's (1993) results, our aim will be the collection of data from sources as similar as possible to those used by BKK (1993) lest such a comparison ceases to make sense.
+
+
+That being said, it should be noted that despite the differences, some important features of the data are the same for both BKK (1992) and BKK (1993). Output is positively correlated among all countries in the two papers, except for South Africa in BKK (1992). And consumption is far from being as highly correlated as in the model. There are even negative cross-country correlations of consumption between the US and four other countries: Australia in BKK (1993) and Finland, France and South Africa in BKK (1992).
+
+On the following, BKK will be used to refer only to the paper ``International Business Cycles: Theory and Evidence" (1993).
+
+\subsection{Our Data}
+
+The countries of our data set are the same as in BKK's: Australia (AUS), Austria (AUT), Canada (CAN), France (FRA), Germany (DEU), Italy (ITA), Japan (JPN), Switzerland (CHE), United Kingdom (GBR), United States (USA) and an European aggregate\footnote{In our paper, the European aggregate includes fifteen countries: Austria, Belgium, Denmark, Finland, France, Germany, Greece, Ireland, Italy, Luxembourg, Netherlands, Portugal, Spain, Sweden and United Kingdom. BKK did not specify which countries are part of their European aggregate.} (EU15).
+
+The data we are going to work with come also from OECD's \textit{Quarterly National Accounts} and \textit{Main Economic Indicators}. Unfortunately, BKK give relatively little information about how the data they have used are measured. It is only said that output, consumption, fixed investment and government purchases are measured in real terms while the ratio of net exports to output is measured in current prices. From the 20 measures OECD makes available, we have decided to use VPVOBARSA\footnote{VPVOBARSA refers to volume estimates (constant 2010 prices), converted with 2010 purchasing power parities, expressed in US dollars, at annual levels and seasonally adjusted} to measure output, consumption, investment and government spending. To calculate the ratio of net exports to output, we have used CPCARSA\footnote{CPCARSA refers to current prices and current purchasing power parities, expressed in US dollars, at annual levels and seasonally adjusted}, which is the current-prices equivalent to VPVOBARSA. For more details on how the decision to use these measures was made, see Appendix \ref{measure}.
+
+We follow the exact same approach used by BKK to calculate the implicitly defined Solow residuals and ignore capital $k$ in the equation: $ \log z = \log y - [\theta \log k + (1-\theta) \log n]$.
+
+The statistics of civilian employment were obtained by combining OECD's \textit{Short-Term Labour Market Statistics} with \textit{Main Economic Indicators} (see Appendix \ref{app:employment}). We summarize the data we have used in Table \ref{tab:variables} and provide the exact specification used by OECD.
+
+\begin{table}[htbp]
+  \centering
+
+\resizebox{\textwidth}{!}{\begin{tabular}{llcc}
+\hline \hline
+          & \multicolumn{1}{c}{Name}  & Code  & Measure \\
+\cline{2-4}
+    y     & Gross domestic product - expenditure approach & B1\_GE & VPVOBARSA \\
+    c     & Private final consumption expenditure & P31S14\_S15 & VPVOBARSA \\
+    x     & Gross fixed capital formation & P51   & VPVOBARSA \\
+    g     &  General government final consumption expenditure & P3S13 & VPVOBARSA \\
+ n     &  Employed population, Aged 15 and over, All persons & LFEMTTTT & STSA \\
+\cline{2-4}
+  \multirow{3}{*}{nx}   & \multicolumn{1}{l}{Exports of goods and services} & \multicolumn{1}{c}{P6}    & \multicolumn{1}{c}{CPCARSA} \\
+               & \multicolumn{1}{l}{Imports of goods and services} & \multicolumn{1}{c}{P7}    & \multicolumn{1}{c}{CPCARSA} \\
+              & \multicolumn{1}{l}{Gross domestic product - expenditure approach} & \multicolumn{1}{c}{B1\_GE} & \multicolumn{1}{c}{CPCARSA} \\\cline{2-4}
+\hline
+    \end{tabular}}%
+  \caption{Variable Specification of OECD \label{tab:variables}}%
+\end{table}%
+
+
+We have expanded BKK's time frame both into the future (to include 23 years of more recent data) and into the past (to include all observations that are available in the OECD's data base). A detailed description of the length of the time series for each variable and sample country can be found in Table \ref{tab:timespan}. Most of the variables have observations ranging from 1960:1 until 2015:1. The US and the UK are exceptions with the first observation of some variables dating back to 1947:1 and 1955:1, respectively. Estimates for even longer time frames, including the prewar period, are available in \cite{Backus:1992aaa}, but are not as reliable as the data gathered after 1945 and thus are not considered in this paper.
+
+
+\renewcommand{\baselinestretch}{1.3}
+% \begin{table}[htb]
+% \tiny
+% \centering
+% \begin{tabular}{Hccccccccccc}
+%   & & \multicolumn{2}{c}{GDP} & \multicolumn{2}{c}{Consumption}& \multicolumn{2}{c}{Investment}& \multicolumn{2}{c}{Government}& \multicolumn{2}{c}{Net Exports}\\
+%   \hline
+%  & Country & Last  & First  & Last & First  & Last  & First  & Last  & First  & Last  & First  \\
+%   \hline
+% 1 & AUS & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 \\
+%   2 & AUT & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 \\
+%   3 & CAN & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 \\
+%   4 & EU15 & 2015-Q1 & 1961-Q1 & 2014-Q4 & 1961-Q1 & 2014-Q4 & 1961-Q1 & 2014-Q4 & 1961-Q1 & 2015-Q1 & 1960-Q1 \\
+%   5 & FRA & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q1 & 1960-Q1 \\
+%   6 & DEU & 2015-Q2 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2014-Q4 & 1961-Q1 \\
+%   7 & ITA & 2015-Q2 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q2 & 1960-Q1 \\
+%   8 & JPN & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q2 & 1960-Q1 & 2015-Q1 & 1955-Q1 \\
+%   9 & CHE & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 & 2015-Q1 & 1960-Q1 \\
+%   10 & GBR & 2015-Q2 & 1955-Q1 & 2015-Q1 & 1955-Q1 & 2015-Q1 & 1955-Q1 & 2015-Q1 & 1955-Q1 & 2015-Q2 & 1960-Q1 \\
+%   11 & USA & 2015-Q2 & 1947-Q1 & 2015-Q2 & 1947-Q1 & 2015-Q2 & 1955-Q1 & 2015-Q2 & 1955-Q1 & 2015-Q2 & 1947-Q1 \\
+%    \hline
+% \end{tabular}
+% \end{table}
+\input{../output/tables/table_3_timespan.tex}
+
+\subsection{Hodrick-Prescott Filter}
+
+% \cite{marianne1} uses the same data source as in \cite{Backus:1993aa} but filters the data not with the HP filter but with the $BP_{12}(6,32)$ defined in \cite{Baxter:1999aa}
+
+The analysis of international comovements among countries requires a precise definition of business cycles. Time series of economic variables can be seen as the result of the interaction between two components: one with slow variations (growth trend) and one that changes rapidly (the business cycle). The problem is that these two components, trend and cycle, are unobservable. What can be observed are only the results of their interaction, i.e. the measured values of output, investment etc. Before starting the analysis, the researcher needs to decide how to estimate the trend component and consequently determine the cycles.
+
+The method used by BKK, also applied in this paper for comparability, is the Hodrick-Prescott filter described in \cite{Hodrick:1981aa}. This filter emphasizes the medium- and high-frequency movements in the data and ``can be thought of as removing a smooth trend line (like one might draw freehand) from the data" (\cite{Backus:1992aaa}). According to \cite{marianne1}, the resulting series will be stationary, if the filtered series is integrated of order four or less. Figure \ref{fig:filteredgdp} depicts the filtered GDP series of the US. The red line represents the trend; the blue line the cycles.
+
+The parameter $\lambda$, which penalizes variability in the trend component -- the larger the value of $\lambda$, the smoother is the trend --, is set to be $\lambda = 1,600$ following the suggestion of \cite{Hodrick:1981aa} for quarterly data.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=.15]{../output/figures/filteredgdp.png}
+\caption{GDP of the United States detrended with Hodrick-Prescott Filter\label{fig:filteredgdp}}
+\end{figure}
+
+Despite its wide application in the research of business cycles, the HP Filter have received some critics for its implications in determining the business cycle characteristics. \cite{King:1993aa} find that the HP Filter not only lowers the standard deviations of the filtered variables (which is expected from a filter) but it also alters the correlation between the filtered variables substantially. Moreover, the conditions, under which the HP filter is optimal in the sense of minimizing the mean squared error, are unlikely to be met in practice. They conclude that mechanically applying the HP filter removes important variations of the time series that are normally associated with the business cycles. Conversely, \cite{Cogley:1995aa} shows also that HP filter might create business cycle characteristics that do not exist in the actual data, if it is applied to integrated time-series. More recently, \cite{Phillips:2015aa} have found that, contrary to the dominant belief in applied macroeconomics, detrending with HP filter normally fail to filter stochastic trends from the series.
+
+The HP filter assumes that deviations from growth trend are short and output returns to its potential growth quickly. For that reason, it may deliver particular bad results in long recessions.\footnote{A summary of an interesting controversy about the HP filter that took place in the economic blogosphere can be found at http://bruegel.org/2012/07/blogs-review-hp-filters-and-business-cycles/.} In case of a deep slump, the HP filter will make the growth trend flatter, which in turn leads to the cycle component being not as large as it would otherwise be. In sum, HP filtering tend to underestimate the duration of economic downturns. For us, this might be a problem when dealing with the period of the Great Recession. If we analyze US output values filtered with HP filter, however, we see that output stayed below its trend from 2008:4 to 2011:4. According to the National Bureau of Economic Research, the Great Recession ended in June 2009. Thus, in this specific case at least, HP filter have not excessively shortened the duration of the recession.

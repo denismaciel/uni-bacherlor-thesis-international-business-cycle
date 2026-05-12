@@ -18,6 +18,12 @@ Check that the exported thesis tables still match the committed reference artifa
 nix run .#check
 ```
 
+Build the thesis PDF from the generated tables and figures:
+
+```sh
+nix run .#paper
+```
+
 For an interactive R environment with all required packages:
 
 ```sh
@@ -36,6 +42,7 @@ nix develop
 - `reference/tables/`: committed regression artifacts.
 - `output/tables/`: generated table outputs.
 - `output/figures/`: generated figures, ignored by Git.
+- `paper/`: organized LaTeX thesis source.
 - `archive/legacy/`: original scripts and exploratory files retained for historical reference.
 
 ## Main Result Objects

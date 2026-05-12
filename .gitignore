@@ -5,3 +5,20 @@
 # Legacy/generated figures
 *.png
 output/figures/
+output/tables/*.tex
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.lof
+paper/*.log
+paper/*.lot
+paper/*.out
+paper/*.pdf
+paper/*.run.xml
+paper/*.synctex.gz
+paper/*.toc

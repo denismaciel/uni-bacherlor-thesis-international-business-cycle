@@ -1,0 +1,218 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}      % Typical maths resource packages
+\usepackage{graphicx}                                         % Packages to allow inclusion of graphics
+\usepackage{hyperref}                                         % For creating hyperlinks in cross references
+\usepackage[authoryear]{natbib}                             % literature reference style
+\usepackage[bf]{caption}
+\usepackage{lscape}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{float}
+
+
+
+
+        %%%%%%%              %%%%%%
+                %%%%%%% MY PACKAGES  %%%%%%
+        %%%%%%%              %%%%%%
+\usepackage{array}       %in order to exlude columns from tables
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+
+\usepackage[lofdepth,lotdepth]{subfig} %merge two figures
+%\usepackage{showlabels}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\newcommand\cites[1]{\citeauthor{#1}'s\ (\citeyear{#1})}
+
+\usepackage{placeins}
+
+%\usepackage[german]{babel}
+% -------------------------------
+% --- some layout definitions ---
+% -------------------------------
+
+% define topline
+\usepackage[automark]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\automark{section}
+\clearpairofpagestyles
+\ohead{\headmark}
+\cfoot{\pagemark}
+
+% define citation style
+\bibliographystyle{ecta} %bibliography style of Econometrica
+
+% define page size, margin size
+\setlength{\headheight}{29pt}
+\voffset=-3cm
+\hoffset=-3cm
+\textheight24cm
+\textwidth16.5cm
+\topmargin2.5cm
+\oddsidemargin3.5cm
+\evensidemargin2.5cm
+
+% define line line spacing = 1.5 or =2
+\renewcommand{\baselinestretch}{2} %doublespacing
+
+% define second level for `itemizing'
+\renewcommand{\labelitemii}{-}
+
+
+
+
+% --------------------------------------
+% --------------------------------------
+% --------------------------------------
+% --- the structure the tex document ---
+% ---  (this our recommendation) -------
+% frontmatter:
+%   - titlepage (mandatory),
+%   - acknowledgement,
+%   - abstract,
+%   - table of contents (mandatory),
+%   - list of abbreviations (not mandatory),
+%   - list of figures (not mandatory),
+%   - list of tables  (not mandatory) .
+%
+% body of the thesis (the structure of the thesis body is not mandatory, but the list of literature is mandatory):
+%   - introduction,
+%   - methods,
+%   - data,
+%   - results,
+%   - conclusion,
+%   - literature (mandatory),
+%   - appendix (figures, tables).
+%
+% last page:
+%   - declaration of authorship (mandatory).
+% --------------------------------------
+% --------------------------------------
+% --------------------------------------
+
+\begin{document}
+
+% -------------------------------
+% --- frontmatter: Title page ---
+% -------------------------------
+
+\thispagestyle{empty}
+\input{frontmatter/titlepage}
+
+
+
+% ------------------------------------
+% --- frontmatter: Acknowledgement ---
+% ------------------------------------
+\newpage
+\pagenumbering{roman}   % define page number in roman style
+\setcounter{page}{1}    % start page numbering
+\input{frontmatter/acknowledgement}
+
+
+
+% -----------------------------
+% --- frontmatter: Abstract ---
+% -----------------------------
+\newpage
+\input{frontmatter/abstract}
+
+
+
+% -----------------------------
+% --- frontmatter: Contents ---
+% -----------------------------
+\newpage
+\tableofcontents
+\clearpage
+
+
+% ----------------------------------------------------
+% --- frontmatter: List of Figures (not mandatory) ---
+% ----------------------------------------------------
+\newpage
+\addcontentsline{toc}{section}{List of Abbreviations}
+\ohead[]{LIST OF ABBREVIATIONS}
+\input{frontmatter/abbreviations}
+
+
+
+% ----------------------------------------------------
+% --- frontmatter: List of Figures (not mandatory) ---
+% ----------------------------------------------------
+\newpage
+\addcontentsline{toc}{section}{List of Figures}
+\ohead[]{\rightmark}
+\listoffigures
+
+
+
+% ---------------------------------------------------
+% --- frontmatter: List of Tables (not mandatory) ---
+% ---------------------------------------------------
+\newpage
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+
+
+% -------------------------------
+% --- main body of the thesis ---
+% -------------------------------
+\newpage
+\setcounter{page}{1}    % start page numbering anew
+\pagenumbering{arabic}  % page numbers in arabic style
+
+
+\input{chapters/01-introduction}
+\newpage
+\input{chapters/02-model}
+\newpage
+\input{chapters/03-data}
+\newpage
+\input{chapters/04-results}
+%\newpage
+%\input{section3}
+%you can add more sections if you want
+\newpage
+\input{chapters/05-conclusion}
+
+% literature
+\newpage
+%\addcontentsline{toc}{section}{References}
+%\bibliography{literatur2}
+\nocite{*}
+%\bibliographystyle{plain}
+\bibliography{bibliography/references}
+
+% ----------------
+% --- appendix ---
+% ----------------
+\newpage
+%\section{Appendix}*
+\appendix
+
+\input{appendix/measurement-selection}
+%\input{RCode}
+
+
+% Less important figures belong here.
+%\newpage
+%\input{app_figures}
+
+% Less important tables belong here.
+%\input{app_tables}
+
+
+
+% --------------------------------------------
+% --- last page: Declaration of Authorship ---
+% --------------------------------------------
+
+\FloatBarrier
+\newpage
+\thispagestyle{empty}
+\input{frontmatter/authorship}
+
+
+\end{document}

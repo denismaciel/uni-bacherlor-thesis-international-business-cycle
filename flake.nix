@@ -33,9 +33,11 @@
               zoo
             ];
           };
+          paperTex = pkgs.texlive.combined.scheme-full;
         in
         {
           default = rEnv;
+          paper = paperTex;
         }
       );
 
@@ -59,6 +61,18 @@
               Rscript "scripts/compare_results.R"
             '';
           };
+          buildPaper = pkgs.writeShellApplication {
+            name = "build-thesis-paper";
+            runtimeInputs = [
+              rEnv
+              self.packages.${system}.paper
+            ];
+            text = ''
+              Rscript "scripts/export_results.R"
+              Rscript "scripts/export_figures.R"
+              latexmk -pdf -interaction=nonstopmode -halt-on-error -cd "paper/main.tex"
+            '';
+          };
         in
         {
           default = {
@@ -68,6 +82,10 @@
           check = {
             type = "app";
             program = "${checkResults}/bin/check-thesis-results";
+          };
+          paper = {
+            type = "app";
+            program = "${buildPaper}/bin/build-thesis-paper";
           };
         }
       );
@@ -81,6 +99,7 @@
           default = pkgs.mkShell {
             packages = [
               self.packages.${system}.default
+              self.packages.${system}.paper
             ];
           };
         }
