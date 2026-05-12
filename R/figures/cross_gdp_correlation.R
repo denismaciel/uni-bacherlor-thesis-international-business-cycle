@@ -18,7 +18,7 @@ c <- cbind(c, dummy)
 
   
 
-gdpcon.plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
+gdp_consumption_correlation_plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
                       geom_point(size = 5) + 
                       xlim(-1,1) + ylim(-1,1) +
                       ylab("Output Correlation")+
@@ -29,5 +29,5 @@ gdpcon.plot <- ggplot(c, aes(con, gdp, color = dummy, cex.lab = 2)) +
                             legend.position="none")
 
 png(filename="output/figures/gdpconplot.png", width=2600, height=2000, res = 300)
-plot(gdpcon.plot)
+plot(gdp_consumption_correlation_plot)
 dev.off()

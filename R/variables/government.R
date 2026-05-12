@@ -43,7 +43,7 @@ govcor <- round(govcor, 3)
 govcor
 
 #Correlation of USA with other countries
-usa.govcor <- govcor["USA",]
+usa_govcor <- govcor["USA",]
 
 
 ##Statistics about the correlation matrix (Off-Diagonal)
@@ -57,30 +57,30 @@ govcor == max(govcor[row(govcor)!=col(govcor)])
 
 sd(gov[gov$location == "USA",]$filtered)
 
-gov.stdv <- c()
+gov_stdv <- c()
 country <- c()
 for (i in unique(gov$location)){
   a <- sd(gov[gov$location == i,]$filtered)
-  gov.stdv <- append(gov.stdv, a)
+  gov_stdv <- append(gov_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-gov.stdv
-gov.stdv <- data.frame(country,gov.stdv)
+gov_stdv
+gov_stdv <- data.frame(country,gov_stdv)
 
 
 #When does the data start for each country?
 
-gov.timespan <- c()
+gov_timespan <- c()
 for (i in unique(gov$location)){
   a <- gov[gov$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  gov.timespan <- rbind(gov.timespan,z)
+  gov_timespan <- rbind(gov_timespan,z)
 }
-colnames(gov.timespan) <- c("Country", "Last Observation", "First Observation")
+colnames(gov_timespan) <- c("Country", "Last Observation", "First Observation")
 
-gov.timespan
+gov_timespan

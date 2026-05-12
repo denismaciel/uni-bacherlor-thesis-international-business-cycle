@@ -42,10 +42,10 @@ nix develop
 After sourcing `R/main.R`, the most relevant objects are:
 
 - `timespan`: Table 3.
-- `standard.deviations`: Table 4.
-- `cor.with.gdp.def`: Table 5.
-- `usa.correlation.matrix`: Table 6.
-- `sum.cor`: Table 7.
+- `standard_deviations`: Table 4.
+- `within_country_correlations`: Table 5.
+- `usa_correlation_matrix`: Table 6.
+- `average_cross_country_correlations`: Table 7.
 
 `R/results.R` prints the central result objects.
 

@@ -1,18 +1,18 @@
 # Correlation of USA variables with other countries'
-usa.correlation.matrix
-xtable(usa.correlation.matrix)
+usa_correlation_matrix
+xtable(usa_correlation_matrix)
 
 #Averaged Correlations across all countries, USA Mean Correlations and quantiles
-sum.cor
-xtable(sum.cor)
+average_cross_country_correlations
+xtable(average_cross_country_correlations)
 
 #Within-country Correlation between GDP and all other variables 
-cor.with.gdp.def
-xtable(cor.with.gdp.def)
+within_country_correlations
+xtable(within_country_correlations)
 
 #Standard Deviations for each country
-standard.deviations 
-xtable(standard.deviations)
+standard_deviations 
+xtable(standard_deviations)
 
 #Correlation Matrices between all countries for the following variables
 gdpcor #output
@@ -29,9 +29,9 @@ xtable(timespan)
 
 
 #Plots of time series of civilian employment
-gbremp.plot #plot of the two time series for UK
-itaemp.plot #plot of the two time series for Italy
-fraemp.plot #plot of the two time series for France
+gbr_employment_plot #plot of the two time series for UK
+ita_employment_plot #plot of the two time series for Italy
+fra_employment_plot #plot of the two time series for France
 
 
 

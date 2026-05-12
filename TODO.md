@@ -2,7 +2,7 @@
 
 ## Reproducibility
 
-- [x] Fix Table 5 construction so correlations are selected by column name, not by `spread()` column position. Current R/tidyr output for `cor.with.gdp.def` does not match the PDF because the GDP row is inferred positionally.
+- [x] Fix Table 5 construction so correlations are selected by column name, not by `spread()` column position. Current R/tidyr output used to mismatch the PDF because the GDP row was inferred positionally.
 - [x] Add a lightweight check that generated Tables 3-7 match the thesis PDF values after rounding.
 - [x] Add a Nix dev environment for running the code reproducibly.
 

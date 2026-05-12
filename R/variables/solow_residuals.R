@@ -47,23 +47,23 @@ solcor <- round(solcor, 3)
 solcor
 
 #Correlation of USA with other countries
-usa.solcor <- solcor["USA",]
+usa_solcor <- solcor["USA",]
 
 #### Standard Deviation within Countries
 sd(sol[sol$location == "USA",]$filtered)
 
-sol.stdv <- c()
+sol_stdv <- c()
 country <- c()
 for (i in unique(sol$location)){
   a <- sd(sol[sol$location == i,]$filtered)
-  sol.stdv <- append(sol.stdv, a)
+  sol_stdv <- append(sol_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-sol.stdv
-sol.stdv <- data.frame(country,sol.stdv)
+sol_stdv
+sol_stdv <- data.frame(country,sol_stdv)
 
 
 

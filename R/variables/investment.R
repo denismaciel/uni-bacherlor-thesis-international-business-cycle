@@ -64,7 +64,7 @@ invcor <- round(invcor, 3)
 invcor
 
 #Correlation of USA with other countries
-usa.invcor <- invcor["USA",]
+usa_invcor <- invcor["USA",]
 
 
 ##Statistics about the correlation matrix (Off-Diagonal)
@@ -78,32 +78,32 @@ invcor == max(invcor[row(invcor)!=col(invcor)])
 
 sd(inv[inv$location == "USA",]$filtered)
 
-inv.stdv <- c()
+inv_stdv <- c()
 country <- c()
 for (i in unique(inv$location)){
   a <- sd(inv[inv$location == i,]$filtered)
-  inv.stdv <- append(inv.stdv, a)
+  inv_stdv <- append(inv_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-inv.stdv
-inv.stdv <- data.frame(country,inv.stdv)
+inv_stdv
+inv_stdv <- data.frame(country,inv_stdv)
 
 
 #When does the data start for each country?
 
-inv.timespan <- c()
+inv_timespan <- c()
 for (i in unique(inv$location)){
   a <- inv[inv$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  inv.timespan <- rbind(inv.timespan,z)
+  inv_timespan <- rbind(inv_timespan,z)
 }
-colnames(inv.timespan) <- c("Country", "Last Observation", "First Observation")
+colnames(inv_timespan) <- c("Country", "Last Observation", "First Observation")
 
-inv.timespan
+inv_timespan
 
 

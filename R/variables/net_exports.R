@@ -8,7 +8,7 @@ net$TIME <- as.ordered(net$TIME)
 
 exp <- (net[net$Subject == "Exports of goods and services",])
 imp <- (net[net$Subject == "Imports of goods and services",])
-gdp.cp <- (net[net$Subject == "Gross domestic product - expenditure approach",])
+gdp_current_prices <- (net[net$Subject == "Gross domestic product - expenditure approach",])
 length(exp$Value)
 length(imp$Value)
 length(gdp$Value)
@@ -20,7 +20,7 @@ colnames(net)[ncol(net)] <- "Net Exports"
 
 
 a <- subset(net, select = c("location","TIME", "Net Exports"))
-b <- subset(gdp.cp, select = c("location","TIME", "Value"))  
+b <- subset(gdp_current_prices, select = c("location","TIME", "Value"))  
 
 head(a)
 head(b)
@@ -70,7 +70,7 @@ netcor <- round(netcor, 3)
 netcor
 
 #Correlation of USA with other countries
-usa.netcor <- netcor["USA",]
+usa_netcor <- netcor["USA",]
 
 
 ##Statistics about the correlation matrix (Off-Diagonal)
@@ -84,32 +84,32 @@ netcor == max(netcor[row(netcor)!=col(netcor)])
 
 sd(net[net$location == "USA",]$filtered)
 
-net.stdv <- c()
+net_stdv <- c()
 country <- c()
 for (i in unique(net$location)){
   a <- sd(net[net$location == i,]$filtered)
-  net.stdv <- append(net.stdv, a)
+  net_stdv <- append(net_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-net.stdv
-net.stdv <- data.frame(country,net.stdv)
+net_stdv
+net_stdv <- data.frame(country,net_stdv)
 
 
 
 
 #When does the data start for each location?
 
-net.timespan <- c()
+net_timespan <- c()
 for (i in unique(net$location)){
   a <- net[net$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  net.timespan <- rbind(net.timespan,z)
+  net_timespan <- rbind(net_timespan,z)
 }
-colnames(net.timespan) <- c("location", "Last Observation", "First Observation")
+colnames(net_timespan) <- c("location", "Last Observation", "First Observation")
 
-net.timespan
+net_timespan

@@ -8,151 +8,151 @@ unique(emp$location)
 emp$TIME <- as.ordered(emp$TIME)
 
 #create table to check that many series are too short
-emp.timespan1 <- c()
+emp_timespan_initial <- c()
 for (i in unique(emp$location)){
   a <- emp[emp$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  emp.timespan1 <- rbind(emp.timespan1,z)
+  emp_timespan_initial <- rbind(emp_timespan_initial,z)
 }
-colnames(emp.timespan1) <- c("Country", "Last Observation", "First Observation")
-emp.timespan1
+colnames(emp_timespan_initial) <- c("Country", "Last Observation", "First Observation")
+emp_timespan_initial
 
 
 ##### Great Britain #### 
 
 #load data from St. Louis FED
-gbr.emp <- read.csv("data/raw/fred/gbr_employment.csv")
-colnames(gbr.emp) <- c("TIME", "Value") 
+gbr_emp_fred <- read.csv("data/raw/fred/gbr_employment.csv")
+colnames(gbr_emp_fred) <- c("TIME", "Value") 
 #subset OECD data
-gbr.emp2 <- emp[emp$location == "GBR",]
-gbr.emp2 <- gbr.emp2[c("location", "TIME", "Value")]
+gbr_emp_oecd <- emp[emp$location == "GBR",]
+gbr_emp_oecd <- gbr_emp_oecd[c("location", "TIME", "Value")]
 
 #format index time
-gbr.emp$TIME <- as.yearqtr(gbr.emp$TIME, format = "%Y-%m-%d")
-gbr.emp$TIME <- as.character(gbr.emp$TIME)
-substr(gbr.emp$TIME,5,5) <- "-"
-gbr.emp$TIME <- as.ordered(gbr.emp$TIME)
-min(gbr.emp$TIME)
+gbr_emp_fred$TIME <- as.yearqtr(gbr_emp_fred$TIME, format = "%Y-%m-%d")
+gbr_emp_fred$TIME <- as.character(gbr_emp_fred$TIME)
+substr(gbr_emp_fred$TIME,5,5) <- "-"
+gbr_emp_fred$TIME <- as.ordered(gbr_emp_fred$TIME)
+min(gbr_emp_fred$TIME)
 
-gbr.merge <-  merge(gbr.emp, gbr.emp2, by = c("TIME"), all = TRUE)
-gbr.merge$location <- "GBR" 
+gbr_employment_splice <-  merge(gbr_emp_fred, gbr_emp_oecd, by = c("TIME"), all = TRUE)
+gbr_employment_splice$location <- "GBR" 
 
 #Plot the series to compare their similiratiy
-gbremp.plot <- ggplot(gbr.merge, aes(TIME, y = value, color = variable)) + 
+gbr_employment_plot <- ggplot(gbr_employment_splice, aes(TIME, y = value, color = variable)) + 
   geom_point(aes(y = Value.x, col = "Main Economic Indicators")) + 
   geom_point(aes(y = Value.y, col = "Short-Term Labour Market Statistics")) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
 png(filename="output/figures/gbremployment.png", width=2600, height=2000, res = 300)
-plot(gbremp.plot)
+plot(gbr_employment_plot)
 dev.off()
 
 #Chaining 
-gbr.merge
-factor <- gbr.merge[171,2]/gbr.merge[171,4]
-gbr.merge[,4] <- factor*gbr.merge[,4]
-Value <- c(gbr.merge[1:171,2], gbr.merge[172:184,4])
+gbr_employment_splice
+factor <- gbr_employment_splice[171,2]/gbr_employment_splice[171,4]
+gbr_employment_splice[,4] <- factor*gbr_employment_splice[,4]
+Value <- c(gbr_employment_splice[1:171,2], gbr_employment_splice[172:184,4])
 
-gbr.merge <- cbind(gbr.merge, Value)
+gbr_employment_splice <- cbind(gbr_employment_splice, Value)
 
-gbr.emp.def <- gbr.merge[c("location", "TIME", "Value")]
+gbr_emp_def <- gbr_employment_splice[c("location", "TIME", "Value")]
 
 
 
 ##### Italy #### 
 
 #load data from St. Louis FED
-ita.emp <- read.csv("data/raw/fred/ita_employment.csv")
-colnames(ita.emp) <- c("TIME", "Value") 
+ita_emp_fred <- read.csv("data/raw/fred/ita_employment.csv")
+colnames(ita_emp_fred) <- c("TIME", "Value") 
 #subset OECD data
-ita.emp2 <- emp[emp$location == "ITA",]
-ita.emp2 <- ita.emp2[c("location", "TIME", "Value")]
+ita_emp_oecd <- emp[emp$location == "ITA",]
+ita_emp_oecd <- ita_emp_oecd[c("location", "TIME", "Value")]
 
 #format index time
-ita.emp$TIME <- as.yearqtr(ita.emp$TIME, format = "%Y-%m-%d")
-ita.emp$TIME <- as.character(ita.emp$TIME)
-substr(ita.emp$TIME,5,5) <- "-"
-ita.emp$TIME <- as.ordered(ita.emp$TIME)
-min(ita.emp$TIME)
+ita_emp_fred$TIME <- as.yearqtr(ita_emp_fred$TIME, format = "%Y-%m-%d")
+ita_emp_fred$TIME <- as.character(ita_emp_fred$TIME)
+substr(ita_emp_fred$TIME,5,5) <- "-"
+ita_emp_fred$TIME <- as.ordered(ita_emp_fred$TIME)
+min(ita_emp_fred$TIME)
 
 
-ita.merge <-  merge(ita.emp, ita.emp2, by = c("TIME"), all = TRUE)
-ita.merge$location <- "ITA" 
+ita_employment_splice <-  merge(ita_emp_fred, ita_emp_oecd, by = c("TIME"), all = TRUE)
+ita_employment_splice$location <- "ITA" 
                     
                     
 #Plot the series to compare their similiratiy
-itaemp.plot <- ggplot(ita.merge, aes(TIME, y = value, color = variable)) + 
+ita_employment_plot <- ggplot(ita_employment_splice, aes(TIME, y = value, color = variable)) + 
   geom_point(aes(y = Value.x, col = "Main Economic Indicators")) + 
   geom_point(aes(y = Value.y, col = "Short-Term Labour Market Statistics")) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
 png(filename="output/figures/itaemployment.png", width=2600, height=2000, res = 300)
-plot(itaemp.plot)
+plot(ita_employment_plot)
 dev.off()
 
 #Chaining 
-factor <- ita.merge[212,2]/ita.merge[212,4]
-ita.merge[,4] <- factor*ita.merge[,4]
-Value <- c(ita.merge[1:212,2], ita.merge[213:225,4])
+factor <- ita_employment_splice[212,2]/ita_employment_splice[212,4]
+ita_employment_splice[,4] <- factor*ita_employment_splice[,4]
+Value <- c(ita_employment_splice[1:212,2], ita_employment_splice[213:225,4])
 
-ita.merge <- cbind(ita.merge, Value)
+ita_employment_splice <- cbind(ita_employment_splice, Value)
 
-ita.emp.def <- ita.merge[c("location", "TIME", "Value")]
+ita_emp_def <- ita_employment_splice[c("location", "TIME", "Value")]
 
 
 ##### France #### 
 
 #load data from St. Louis FED
-fra.emp <- read.csv("data/raw/fred/fra_employment.csv")
-colnames(fra.emp) <- c("TIME", "Value") 
+fra_emp_fred <- read.csv("data/raw/fred/fra_employment.csv")
+colnames(fra_emp_fred) <- c("TIME", "Value") 
 #subset OECD data
-fra.emp2 <- emp[emp$location == "FRA",]
-fra.emp2 <- fra.emp2[c("location", "TIME", "Value")]
+fra_emp_oecd <- emp[emp$location == "FRA",]
+fra_emp_oecd <- fra_emp_oecd[c("location", "TIME", "Value")]
 
-a <- fra.emp2[fra.emp2$TIME == "2005-Q2",]$Value
-fra.emp$Value <- fra.emp$Value*a/100
+a <- fra_emp_oecd[fra_emp_oecd$TIME == "2005-Q2",]$Value
+fra_emp_fred$Value <- fra_emp_fred$Value*a/100
 
 #format index time
-fra.emp$TIME <- as.yearqtr(fra.emp$TIME, format = "%Y-%m-%d")
-fra.emp$TIME <- as.character(fra.emp$TIME)
-substr(fra.emp$TIME,5,5) <- "-"
-fra.emp$TIME <- as.ordered(fra.emp$TIME)
-min(fra.emp$TIME)
+fra_emp_fred$TIME <- as.yearqtr(fra_emp_fred$TIME, format = "%Y-%m-%d")
+fra_emp_fred$TIME <- as.character(fra_emp_fred$TIME)
+substr(fra_emp_fred$TIME,5,5) <- "-"
+fra_emp_fred$TIME <- as.ordered(fra_emp_fred$TIME)
+min(fra_emp_fred$TIME)
 
-fra.merge <-  merge(fra.emp, fra.emp2, by = c("TIME"), all = TRUE)
-fra.merge$location <- "FRA" 
+fra_employment_splice <-  merge(fra_emp_fred, fra_emp_oecd, by = c("TIME"), all = TRUE)
+fra_employment_splice$location <- "FRA" 
 
 #Plot the series to compare their similiratiy
-fraemp.plot <- ggplot(fra.merge, aes(TIME, y = value, color = variable)) + 
+fra_employment_plot <- ggplot(fra_employment_splice, aes(TIME, y = value, color = variable)) + 
   geom_point(aes(y = Value.x, col = "Main Economic Indicators")) + 
   geom_point(aes(y = Value.y, col = "Short-Term Labour Market Statistics")) +
   ylab("People employed (in Thousands)")+
   xlab("Quarters")
 #print
 png(filename="output/figures/fraemployment.png", width=2600, height=2000, res = 300)
-plot(fraemp.plot)
+plot(fra_employment_plot)
 dev.off()
 
 
 #Chaining 
-fra.merge
-factor <- fra.merge[136,2]/fra.merge[136,4]
-fra.merge[,4] <- factor*fra.merge[,4]
-Value <- c(fra.merge[1:136,2], fra.merge[137:149,4])
-fra.merge <- cbind(fra.merge, Value)
+fra_employment_splice
+factor <- fra_employment_splice[136,2]/fra_employment_splice[136,4]
+fra_employment_splice[,4] <- factor*fra_employment_splice[,4]
+Value <- c(fra_employment_splice[1:136,2], fra_employment_splice[137:149,4])
+fra_employment_splice <- cbind(fra_employment_splice, Value)
 
-fra.emp.def <- fra.merge[c("location", "TIME", "Value")]
+fra_emp_def <- fra_employment_splice[c("location", "TIME", "Value")]
 
 #Exclude last five observations because they seem wrong
-fra.emp.def <- head(fra.emp.def, -5)
+fra_emp_def <- head(fra_emp_def, -5)
 #check how it looks like now
-qplot(fra.emp.def$TIME, fra.emp.def$Value) 
+qplot(fra_emp_def$TIME, fra_emp_def$Value) 
 
-fra.emp.def
+fra_emp_def
 
 
 
@@ -164,20 +164,20 @@ c <- subset(emp, emp$location != "GBR" & emp$location != "FRA" & emp$location !=
             select = c("location", "TIME", "Value"))
 unique(c$location)
 
-emp <- rbind(c, gbr.emp.def, ita.emp.def, fra.emp.def)
+emp <- rbind(c, gbr_emp_def, ita_emp_def, fra_emp_def)
 unique(emp$location)
 
 #Get new Time Frame with expanded series
-emp.timespan <- c()
+emp_timespan <- c()
 for (i in unique(emp$location)){
   a <- emp[emp$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  emp.timespan <- rbind(emp.timespan,z)
+  emp_timespan <- rbind(emp_timespan,z)
 }
-colnames(emp.timespan) <- c("Country", "Last Observation", "First Observation")
-emp.timespan
+colnames(emp_timespan) <- c("Country", "Last Observation", "First Observation")
+emp_timespan
 
 
 
@@ -215,21 +215,21 @@ empcor <- round(empcor, 3)
 empcor
 
 #Correlation of USA with other countries
-usa.empcor <- empcor["USA",]
+usa_empcor <- empcor["USA",]
 
 #### Standard Deviation within Countries
 sd(emp[emp$location == "USA",]$filtered)
 
 
-emp.stdv <- c()
+emp_stdv <- c()
 country <- c()
 for (i in unique(emp$location)){
   a <- sd(emp[emp$location == i,]$filtered)
-  emp.stdv <- append(emp.stdv, a)
+  emp_stdv <- append(emp_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-emp.stdv
-emp.stdv <- data.frame(country,emp.stdv)
+emp_stdv
+emp_stdv <- data.frame(country,emp_stdv)

@@ -41,7 +41,7 @@ concor <- round(concor, 3)
 concor
 
 #Correlation of USA with other countries
-usa.concor <- concor["USA",]
+usa_concor <- concor["USA",]
 
 
 ##Statistics about the correlation matrix (Off-Diagonal)
@@ -55,32 +55,32 @@ concor == max(concor[row(concor)!=col(concor)])
 
 sd(con[con$location == "USA",]$filtered)
 
-con.stdv <- c()
+con_stdv <- c()
 country <- c()
 for (i in unique(con$location)){
   a <- sd(con[con$location == i,]$filtered)
-  con.stdv <- append(con.stdv, a)
+  con_stdv <- append(con_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-con.stdv
-con.stdv <- data.frame(country,con.stdv)
+con_stdv
+con_stdv <- data.frame(country,con_stdv)
 
 
 #When does the data start for each country?
 
-con.timespan <- c()
+con_timespan <- c()
 for (i in unique(con$location)){
   a <- con[con$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  con.timespan <- rbind(con.timespan,z)
+  con_timespan <- rbind(con_timespan,z)
 }
-colnames(con.timespan) <- c("Country", "Last Observation", "First Observation")
+colnames(con_timespan) <- c("Country", "Last Observation", "First Observation")
 
-con.timespan
+con_timespan
 
 

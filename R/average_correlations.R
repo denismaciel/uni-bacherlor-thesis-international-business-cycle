@@ -10,12 +10,12 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.gdpcor <- mean(x)
-sum.gdpcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.gdpcor) %in% c("USA")
-mean.usacor <- mean(usa.gdpcor[!e])
+mean_gdpcor <- mean(x)
+sum_gdpcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_gdpcor) %in% c("USA")
+mean_usa_cor <- mean(usa_gdpcor[!e])
 
-sum.gdpcor <- c(mean.gdpcor, mean.usacor, sum.gdpcor)
+sum_gdpcor <- c(mean_gdpcor, mean_usa_cor, sum_gdpcor)
 
 
 #Consumption
@@ -25,12 +25,12 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.concor <- mean(x)
-sum.concor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.concor) %in% c("USA")
-mean.usacor <- mean(usa.concor[!e])
+mean_concor <- mean(x)
+sum_concor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_concor) %in% c("USA")
+mean_usa_cor <- mean(usa_concor[!e])
 
-sum.concor <- c(mean.concor, mean.usacor, sum.concor)
+sum_concor <- c(mean_concor, mean_usa_cor, sum_concor)
 
 #Investment
 x <- invcor  
@@ -39,12 +39,12 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.invcor <- mean(x)
-sum.invcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.invcor) %in% c("USA")
-mean.usacor <- mean(usa.invcor[!e])
+mean_invcor <- mean(x)
+sum_invcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_invcor) %in% c("USA")
+mean_usa_cor <- mean(usa_invcor[!e])
 
-sum.invcor <- c(mean.invcor, mean.usacor, sum.invcor)
+sum_invcor <- c(mean_invcor, mean_usa_cor, sum_invcor)
 
 #Government
 x <- govcor  
@@ -53,12 +53,12 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.govcor <- mean(x)
-sum.govcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.govcor) %in% c("USA")
-mean.usacor <- mean(usa.govcor[!e])
+mean_govcor <- mean(x)
+sum_govcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_govcor) %in% c("USA")
+mean_usa_cor <- mean(usa_govcor[!e])
 
-sum.govcor <- c(mean.govcor, mean.usacor, sum.govcor)
+sum_govcor <- c(mean_govcor, mean_usa_cor, sum_govcor)
 
 #Net Expots
 x <- netcor  
@@ -67,12 +67,12 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.netcor <- mean(x)
-sum.netcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.netcor) %in% c("USA")
-mean.usacor <- mean(usa.netcor[!e])
+mean_netcor <- mean(x)
+sum_netcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_netcor) %in% c("USA")
+mean_usa_cor <- mean(usa_netcor[!e])
 
-sum.netcor <- c(mean.netcor, mean.usacor, sum.netcor)
+sum_netcor <- c(mean_netcor, mean_usa_cor, sum_netcor)
 
 #Employment
 x <- empcor  
@@ -81,11 +81,11 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.empcor <- mean(x)
-sum.empcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.empcor) %in% c("USA")
-mean.usacor <- mean(usa.empcor[!e])
-sum.empcor <- c(mean.empcor, mean.usacor, sum.empcor)
+mean_empcor <- mean(x)
+sum_empcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_empcor) %in% c("USA")
+mean_usa_cor <- mean(usa_empcor[!e])
+sum_empcor <- c(mean_empcor, mean_usa_cor, sum_empcor)
 
 #Solow Residual
 x <- solcor  
@@ -94,19 +94,19 @@ diag(x) <- NA
 x <- as.vector(x)
 x <- x[order(x)]
 x <- x[!is.na(x)]
-mean.solcor <- mean(x)
-sum.solcor <-  quantile(x, prob = a, type = 1)
-e <- names(usa.solcor) %in% c("USA")
-mean.usacor <- mean(usa.solcor[!e])
-sum.solcor <- c(mean.solcor, mean.usacor, sum.solcor)
+mean_solcor <- mean(x)
+sum_solcor <-  quantile(x, prob = a, type = 1)
+e <- names(usa_solcor) %in% c("USA")
+mean_usa_cor <- mean(usa_solcor[!e])
+sum_solcor <- c(mean_solcor, mean_usa_cor, sum_solcor)
 
 #### Merge the results
 
-sum.cor <- rbind(sum.gdpcor, sum.concor, sum.invcor, sum.govcor, 
-                 sum.netcor, sum.empcor, sum.solcor)
-colnames(sum.cor)[1:2] <- c("Mean", "USA Mean")
-rownames(sum.cor) <- c("y", "c", "x", "g", "nx", "n", "z")
+average_cross_country_correlations <- rbind(sum_gdpcor, sum_concor, sum_invcor, sum_govcor, 
+                 sum_netcor, sum_empcor, sum_solcor)
+colnames(average_cross_country_correlations)[1:2] <- c("Mean", "USA Mean")
+rownames(average_cross_country_correlations) <- c("y", "c", "x", "g", "nx", "n", "z")
 
-sum.cor
+average_cross_country_correlations
 
-xtable(sum.cor)
+xtable(average_cross_country_correlations)

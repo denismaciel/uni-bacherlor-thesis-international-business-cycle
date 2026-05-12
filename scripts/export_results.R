@@ -28,22 +28,34 @@ main <- function() {
   )
 
   write_table(
-    standard.deviations,
+    standard_deviations,
     "output/tables/table_4_standard_deviations.csv"
   )
 
   write_table(
-    cor.with.gdp.def,
+    within_country_correlations,
     "output/tables/table_5_within_country_correlations.csv"
   )
 
+  table_6_us_correlations <- usa_correlation_matrix
+  names(table_6_us_correlations) <- c(
+    "Row.names",
+    "usa.gdpcor",
+    "usa.concor",
+    "usa.invcor",
+    "usa.govcor",
+    "usa.netcor",
+    "usa.empcor",
+    "usa.solcor"
+  )
+
   write_table(
-    usa.correlation.matrix,
+    table_6_us_correlations,
     "output/tables/table_6_us_correlations.csv"
   )
 
   write_table_with_key(
-    sum.cor,
+    average_cross_country_correlations,
     "Variable",
     "output/tables/table_7_average_cross_country_correlations.csv"
   )

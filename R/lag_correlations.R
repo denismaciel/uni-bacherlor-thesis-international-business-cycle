@@ -1,7 +1,7 @@
 rm(k, x, y, z, country, usa, matrix)
 
 ### FOR USA ONLY
-usa.lag.matrix <- c()
+usa_lag_matrix <- c()
 for (i in unique(gdp$location)) {
   
   usa <-  gdp[gdp$location == "USA"  & gdp$TIME >= "1961-Q2" & gdp$TIME <= "2014-Q4",]$filtered
@@ -15,7 +15,7 @@ for (i in unique(gdp$location)) {
     country <- print(i)
     z <- c(country, x ,y)
     
-    usa.lag.matrix <- rbind(usa.lag.matrix, z)
+    usa_lag_matrix <- rbind(usa_lag_matrix, z)
     
   }
 
@@ -30,7 +30,7 @@ h$lag
 
 ### FOR ALL COUNTRIES
 
-gdp.lag.matrix <- c()
+gdp_lag_matrix <- c()
 for (i in unique(gdp$location)) {
 
 usa <-  gdp[gdp$location == i  & gdp$TIME >= "1961-Q2" & gdp$TIME <= "2014-Q4",]$filtered
@@ -46,17 +46,17 @@ y <- print(max(matrix$cor))
 country <- c(print(i), print(u))
 z <- c(country, x ,y)
 
-gdp.lag.matrix <- rbind(gdp.lag.matrix, z)
+gdp_lag_matrix <- rbind(gdp_lag_matrix, z)
 
 }}
 
-colnames(gdp.lag.matrix) <- c("country1", "country2", "lag", "cor")
+colnames(gdp_lag_matrix) <- c("country1", "country2", "lag", "cor")
 
-str(gdp.lag.matrix)
+str(gdp_lag_matrix)
 
-gdp.lag.matrix <- data.frame(gdp.lag.matrix)
-rownames(gdp.lag.matrix) <- c()              
-g <- as.data.frame(gdp.lag.matrix)
+gdp_lag_matrix <- data.frame(gdp_lag_matrix)
+rownames(gdp_lag_matrix) <- c()              
+g <- as.data.frame(gdp_lag_matrix)
 
 str(g)
 g$cor <- as.numeric(as.character(g$cor))

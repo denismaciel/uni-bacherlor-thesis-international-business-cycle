@@ -43,7 +43,7 @@ gdpcor <- round(gdpcor, 3)
 gdpcor
 
 #Correlation of USA with other countries
-usa.gdpcor <- gdpcor["USA",]
+usa_gdpcor <- gdpcor["USA",]
 
 
 ##Statistics about the correlation matrix (Off-Diagonal)
@@ -57,30 +57,30 @@ gdpcor == max(gdpcor[row(gdpcor)!=col(gdpcor)])
 
 sd(gdp[gdp$location == "USA",]$filtered)
 
-gdp.stdv <- c()
+gdp_stdv <- c()
 country <- c()
 for (i in unique(gdp$location)){
   a <- sd(gdp[gdp$location == i,]$filtered)
-  gdp.stdv <- append(gdp.stdv, a)
+  gdp_stdv <- append(gdp_stdv, a)
   x <- print(i)
   country <- c(country,x)
 }
 
 country
-gdp.stdv
-gdp.stdv <- data.frame(country,gdp.stdv)
+gdp_stdv
+gdp_stdv <- data.frame(country,gdp_stdv)
 
 
 #When does the data start for each country?
 
-gdp.timespan <- c()
+gdp_timespan <- c()
 for (i in unique(gdp$location)){
   a <- gdp[gdp$location == i,]
   x <- rbind(as.character(max(a$TIME)), as.character(min(a$TIME)))
   y <- as.character(unique(a$location))
   z <- c(as.character(y),x)
-  gdp.timespan <- rbind(gdp.timespan,z)
+  gdp_timespan <- rbind(gdp_timespan,z)
 }
-colnames(gdp.timespan) <- c("Country", "Last Observation", "First Observation")
+colnames(gdp_timespan) <- c("Country", "Last Observation", "First Observation")
 
-gdp.timespan
+gdp_timespan
