@@ -14,24 +14,31 @@
 \setcounter{page}{1}
 
 \input{frontmatter/acknowledgement}
+\phantomsection
+\addcontentsline{toc}{section}{Acknowledgement}
 \clearpage
 
 \input{frontmatter/abstract}
+\phantomsection
+\addcontentsline{toc}{section}{Abstract}
 \clearpage
 
 \tableofcontents
 \clearpage
 
+\phantomsection
 \addcontentsline{toc}{section}{List of Abbreviations}
 \ohead[]{LIST OF ABBREVIATIONS}
 \input{frontmatter/abbreviations}
 \clearpage
 
+\phantomsection
 \addcontentsline{toc}{section}{List of Figures}
 \ohead[]{\rightmark}
 \listoffigures
 \clearpage
 
+\phantomsection
 \addcontentsline{toc}{section}{List of Tables}
 \listoftables
 \clearpage
@@ -50,6 +57,8 @@
 \input{chapters/05-conclusion}
 
 \clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
 \bibliography{bibliography/references}
 
 \clearpage

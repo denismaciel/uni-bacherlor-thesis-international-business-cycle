@@ -14,7 +14,10 @@ The ability to borrow in international markets have a significant influence on t
 
 \begin{table}[ht]
 \centering
-\subfloat[Standard Deviation and Comovements within a Country]{
+\begin{subtable}{\textwidth}
+  \centering
+  \caption{Standard Deviation and Comovements within a Country}
+  \begin{adjustbox}{max width=\textwidth}
   \begin{tabular}{lcccccccccccc}
   \toprule
           &       &       & \multicolumn{4}{c}{Ratio of $\sigma$ to  $\sigma_y$} & \multicolumn{1}{c}{} & \multicolumn{5}{c}{Correlation with Output} \\
@@ -25,9 +28,15 @@ The ability to borrow in international markets have a significant influence on t
     Transport Cost & 1.35  & 0.37  & 0.47  & 2.91  & 0.47  & 0.75  &       & 0.81  & 0.92  & 0.23  & 0.92  & 0.98 \\
     Autarky & 1.26  &       & 0.54  & 2.65  & 0.91  & 0.99  &       & 0.90  & 0.96  &       & 0.91  & 0.99 \\
   \bottomrule
-    \end{tabular}}
-\qquad
-\subfloat[Comovements between the two Countries]{
+    \end{tabular}
+  \end{adjustbox}
+\end{subtable}
+
+\medskip
+
+\begin{subtable}{\textwidth}
+  \centering
+  \caption{Comovements between the two Countries}
     \begin{tabular}{lccccc}
     \toprule
           & \multicolumn{5}{c}{Cross-country Correlations} \\
@@ -38,7 +47,8 @@ The ability to borrow in international markets have a significant influence on t
     Transport Cost & -.05 & .89  & -.48 & -.70  & .25 \\
     Autarky & .08  & .56  & -.31 & -.51 & .25 \\
   \bottomrule
-    \end{tabular}}%
+    \end{tabular}
+\end{subtable}
 \caption{Standard Deviations, Within- and Cross-country Comovements from Models}
 \label{tab:modelresult}
 \end{table}

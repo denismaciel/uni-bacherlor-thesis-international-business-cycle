@@ -1,4 +1,4 @@
-\section{Appendix - Aspects of the Data}
+\section{Aspects of the Data}
 
 \subsection{Selection of Unit of Measurement \label{measure}}
 
@@ -18,6 +18,7 @@ If the data between 1947:1 and 2015:2 are considered, there are enough observati
 
 \begin{table}[htbp]
   \centering
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lrrrrrrrrrr}
   \toprule
  & AUS & AUT & CAN & CHE & DEU & FRA & GBR & ITA & JPN & USA \\
@@ -30,6 +31,7 @@ CARSA & .00 & .08 & .29 & .11 & .29 & -.14 & -.01 & -.04 & .22 & 1.00 \\
   VPVOBARSA & .35 & .29 & .71 & .41 & .66 & .39 & .62 & .37 & .60 & 1.00 \\
    \bottomrule
 \end{tabular}
+\end{adjustbox}
 \caption{Cross-country Correlation of US Output in four different Mesaures, 1970:1 - 1990:2}
 \label{tab:measure}
 \end{table}
@@ -44,14 +46,16 @@ BKK's quarterly data on civilian employment come from OECD's \textit{Main Econom
 
 \begin{table}[ht]
 \centering
-\resizebox{\textwidth}{!}{\begin{tabular}{rccccccccccc}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{rccccccccccc}
   \toprule
 Country & AUS & AUT & CAN & FRA & DEU & ITA & JPN & CHE & GBR & USA & EA19 \\
   \midrule
   Last  & 2015:2 & 2015:1 & 2015:2 & 2015:1 & 2015:1 & 2015:1 & 2015:2 & 2015:1 & 2015:1 & 2015:2 & 2015:1 \\
   First  & 1967:1 & 1969:1 & 1955:1 & 2003:1 & 1962:1 & 1998:1 & 1955:1 & 1998:2 & 1999:2 & 1955:1 & 2005:1 \\
    \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{adjustbox}
 \caption{Length of \textit{Employed Population} series from \textit{Short-Term Labour Market Statistics}}
 \label{tab:emptimespan}
 \end{table}
@@ -60,17 +64,28 @@ Before deciding whether to combine the \textit{Short-Term Labour Market Statisti
 
 \begin{figure}[htb]
 \centering
-\subfloat[France]{
+\begin{subfigure}{0.46\textwidth}
+  \centering
 \fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/fraemployment.png}}
-\label{fig:fraemp}}
+  \caption{France}
+  \label{fig:fraemp}
+\end{subfigure}
 \qquad
-\subfloat[United Kingdom]{
+\begin{subfigure}{0.46\textwidth}
+  \centering
 \fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/gbremployment.png}}
-\label{fig:gbremp}}
-\qquad
-\subfloat[Italy]{
+  \caption{United Kingdom}
+  \label{fig:gbremp}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}{0.62\textwidth}
+  \centering
 \fbox{\includegraphics[width=0.6\textwidth]{\generatedfigures/itaemployment.png}}
-\label{fig:itaemp}}
+  \caption{Italy}
+  \label{fig:itaemp}
+\end{subfigure}
 \caption{Civilian Employment Series}
 \label{fig:emp}
 \end{figure}

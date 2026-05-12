@@ -12,6 +12,7 @@
 ]{geometry}
 
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{adjustbox}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage[font=small,labelfont=bf]{caption}
@@ -21,7 +22,7 @@
 \usepackage{multirow}
 \usepackage{setspace}
 \usepackage[group-minimum-digits=4]{siunitx}
-\usepackage[lofdepth,lotdepth]{subfig}
+\usepackage{subcaption}
 \usepackage{placeins}
 \usepackage[authoryear]{natbib}
 \usepackage[automark]{scrlayer-scrpage}
@@ -31,7 +32,10 @@
   citecolor=black,
   urlcolor=blue,
   pdfauthor={Denis Maciel},
-  pdftitle={Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?}
+  pdftitle={Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?},
+  pdfsubject={Bachelor thesis on international business cycles},
+  pdfkeywords={international business cycles, quantity anomaly, Backus Kehoe Kydland, RBC model},
+  pdflang={en}
 ]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
@@ -58,7 +62,9 @@
 \newcommand{\generatedtable}[3]{%
   \begin{table}[htbp]
     \centering
-    \resizebox{\textwidth}{!}{\input{\generatedtables/#1}}%
+    \begin{adjustbox}{max width=\textwidth}
+      \input{\generatedtables/#1}%
+    \end{adjustbox}
     \caption{#2}
     \label{#3}
   \end{table}
