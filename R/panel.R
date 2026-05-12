@@ -2,14 +2,14 @@ build_standard_panel <- function(raw_data, variable_name) {
   data <- normalize_oecd_location(raw_data)
   data[[TIME_COL]] <- as.character(data[[TIME_COL]])
 
-  data %>%
+  data |>
     transmute(
       variable = .env$variable_name,
       location = .data[[LOCATION_COL]],
       TIME = .data[[TIME_COL]],
       Subject = .data[[SUBJECT_COL]],
       value = log(.data[[VALUE_COL]])
-    ) %>%
+    ) |>
     as.data.frame()
 }
 
@@ -26,14 +26,14 @@ build_net_exports_panel <- function(raw_net_exports) {
   gdp <- subset(gdp_current_prices, select = c(LOCATION_COL, TIME_COL, VALUE_COL))
   gdp <- rename(gdp, gdp = all_of(VALUE_COL))
 
-  merge(net_exports, gdp, by = c(LOCATION_COL, TIME_COL), all = TRUE) %>%
+  merge(net_exports, gdp, by = c(LOCATION_COL, TIME_COL), all = TRUE) |>
     transmute(
       variable = "net_exports",
       location = .data[[LOCATION_COL]],
       TIME = .data[[TIME_COL]],
       Subject = "Net Exports",
       value = net_exports / gdp
-    ) %>%
+    ) |>
     as.data.frame()
 }
 
@@ -81,33 +81,33 @@ build_employment_panel <- function(raw_employment, fred_employment) {
   emp <- bind_series_rows(emp_base, gbr_emp_def, ita_emp_def, fra_emp_def)
 
   list(
-    panel = emp %>%
+    panel = emp |>
       transmute(
         variable = "employment",
         location = .data[[LOCATION_COL]],
         TIME = as.character(.data[[TIME_COL]]),
         Subject = "civilian employment",
         value = log(.data[[VALUE_COL]])
-      ) %>%
+      ) |>
       as.data.frame(),
     initial_timespan = emp_timespan_initial
   )
 }
 
 build_solow_residual_panel <- function(panel, capital_share = CAPITAL_SHARE) {
-  panel %>%
-    filter(.data[[VARIABLE_COL]] %in% c("gdp", "employment")) %>%
-    select(all_of(c(LOCATION_COL, TIME_COL, VARIABLE_COL)), value) %>%
-    pivot_wider(names_from = all_of(VARIABLE_COL), values_from = value) %>%
-    filter(!is.na(gdp), !is.na(employment)) %>%
-    arrange(.data[[LOCATION_COL]], .data[[TIME_COL]]) %>%
+  panel |>
+    filter(.data[[VARIABLE_COL]] %in% c("gdp", "employment")) |>
+    select(all_of(c(LOCATION_COL, TIME_COL, VARIABLE_COL)), value) |>
+    pivot_wider(names_from = all_of(VARIABLE_COL), values_from = value) |>
+    filter(!is.na(gdp), !is.na(employment)) |>
+    arrange(.data[[LOCATION_COL]], .data[[TIME_COL]]) |>
     transmute(
       variable = "solow_residuals",
       location = .data[[LOCATION_COL]],
       TIME = .data[[TIME_COL]],
       Subject = "Solow Residulas",
       value = gdp - (1 - capital_share) * employment
-    ) %>%
+    ) |>
     as.data.frame()
 }
 

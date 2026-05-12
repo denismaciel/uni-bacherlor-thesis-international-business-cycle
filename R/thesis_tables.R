@@ -1,13 +1,13 @@
 series_from_panel <- function(panel, variable_name) {
-  panel %>%
-    filter(.data[[VARIABLE_COL]] == .env$variable_name) %>%
+  panel |>
+    filter(.data[[VARIABLE_COL]] == .env$variable_name) |>
     transmute(
       location = .data[[LOCATION_COL]],
       TIME = as.ordered(.data[[TIME_COL]]),
       Subject = .data[[SUBJECT_COL]],
       Value = value,
       filtered = .data[[FILTERED_COL]]
-    ) %>%
+    ) |>
     as.data.frame()
 }
 
@@ -114,7 +114,7 @@ build_within_country_correlations <- function(results) {
     country_gdp <- gdp[gdp$location == country,]$filtered
     autocorrelation <- round(cor(country_gdp, lag(country_gdp, 1), use = "pairwise.complete"), 2)
     country_data <- core_data[core_data$location == country,]
-    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) %>%
+    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
     correlation_values <- as.list(as.character(correlations[GDP_SUBJECT, table5_subjects]))
@@ -143,7 +143,7 @@ build_within_country_correlations <- function(results) {
   )
   labor_rows <- lapply(unique(labor_data$location), function(country) {
     country_data <- labor_data[labor_data$location == country,]
-    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) %>%
+    wide_data <- pivot_wider(country_data, names_from = Subject, values_from = filtered) |>
       select(-TIME, -location)
     correlations <- round(cor(wide_data, use = "pairwise.complete.obs"), 2)
     data.frame(
