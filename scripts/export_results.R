@@ -23,21 +23,21 @@ main <- function() {
   }
 
   write_table(
-    timespan,
+    results$tables$timespan,
     "output/tables/table_3_timespan.csv"
   )
 
   write_table(
-    standard_deviations,
+    results$tables$standard_deviations,
     "output/tables/table_4_standard_deviations.csv"
   )
 
   write_table(
-    within_country_correlations,
+    results$tables$within_country_correlations,
     "output/tables/table_5_within_country_correlations.csv"
   )
 
-  table_6_us_correlations <- usa_correlation_matrix
+  table_6_us_correlations <- results$tables$usa_correlation_matrix
   names(table_6_us_correlations) <- c(
     "Row.names",
     "usa.gdpcor",
@@ -55,7 +55,7 @@ main <- function() {
   )
 
   write_table_with_key(
-    average_cross_country_correlations,
+    results$tables$average_cross_country_correlations,
     "Variable",
     "output/tables/table_7_average_cross_country_correlations.csv"
   )

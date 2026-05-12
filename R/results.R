@@ -1,38 +1,34 @@
+suppressPackageStartupMessages({
+  library(xtable)
+})
+
+source("R/main.R")
+
 # Correlation of USA variables with other countries'
-usa_correlation_matrix
-xtable(usa_correlation_matrix)
+results$tables$usa_correlation_matrix
+xtable(results$tables$usa_correlation_matrix)
 
-#Averaged Correlations across all countries, USA Mean Correlations and quantiles
-average_cross_country_correlations
-xtable(average_cross_country_correlations)
+# Averaged correlations across all countries, USA mean correlations and quantiles
+results$tables$average_cross_country_correlations
+xtable(results$tables$average_cross_country_correlations)
 
-#Within-country Correlation between GDP and all other variables 
-within_country_correlations
-xtable(within_country_correlations)
+# Within-country correlation between GDP and all other variables
+results$tables$within_country_correlations
+xtable(results$tables$within_country_correlations)
 
-#Standard Deviations for each country
-standard_deviations 
-xtable(standard_deviations)
+# Standard deviations for each country
+results$tables$standard_deviations
+xtable(results$tables$standard_deviations)
 
-#Correlation Matrices between all countries for the following variables
-gdpcor #output
-concor #consumption
-invcor #investment
-govcor #government spending
-netcor #net exports
-empcor #civilian employment
-solcor #solow residuals
+# Correlation matrices between all countries
+results$correlations$gdp
+results$correlations$consumption
+results$correlations$investment
+results$correlations$government
+results$correlations$net_exports
+results$correlations$employment
+results$correlations$solow_residuals
 
 # Table showing when the series starts and ends for each country
-timespan
-xtable(timespan)
-
-
-#Plots of time series of civilian employment
-gbr_employment_plot #plot of the two time series for UK
-ita_employment_plot #plot of the two time series for Italy
-fra_employment_plot #plot of the two time series for France
-
-
-
-
+results$tables$timespan
+xtable(results$tables$timespan)
