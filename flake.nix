@@ -27,6 +27,7 @@
               dplyr
               ggplot2
               mFilter
+              readr
               tidyr
               xtable
               zoo
