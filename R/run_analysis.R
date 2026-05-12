@@ -31,7 +31,7 @@ process_net_exports <- function(raw_net_exports, gdp_series) {
   exports$`Net Exports` <- exports[[VALUE_COL]] - imports[[VALUE_COL]]
   net_exports <- subset(exports, select = c(LOCATION_COL, TIME_COL, "Net Exports"))
   gdp <- subset(gdp_current_prices, select = c(LOCATION_COL, TIME_COL, VALUE_COL))
-  names(gdp)[names(gdp) == VALUE_COL] <- "GDP"
+  gdp <- rename(gdp, GDP = all_of(VALUE_COL))
 
   net <- merge(net_exports, gdp, by = c(LOCATION_COL, TIME_COL), all = TRUE)
   net[[VALUE_COL]] <- net$`Net Exports` / net$GDP
@@ -82,8 +82,7 @@ process_employment <- function(raw_employment, fred_employment, output_figures =
   gbr_emp_oecd <- emp[emp$location == "GBR", c(LOCATION_COL, TIME_COL, VALUE_COL)]
   gbr_emp_fred <- format_fred_quarters(gbr_emp_fred)
   gbr_employment_splice <- merge(gbr_emp_fred, gbr_emp_oecd, by = TIME_COL, all = TRUE)
-  names(gbr_employment_splice)[names(gbr_employment_splice) == "Value.x"] <- "fred_value"
-  names(gbr_employment_splice)[names(gbr_employment_splice) == "Value.y"] <- "oecd_value"
+  gbr_employment_splice <- rename(gbr_employment_splice, fred_value = Value.x, oecd_value = Value.y)
   gbr_emp_def <- splice_employment_series(gbr_employment_splice, "GBR", "2011-Q4", "2015-Q1")
 
   ita_emp_fred <- fred_employment$ita
@@ -91,8 +90,7 @@ process_employment <- function(raw_employment, fred_employment, output_figures =
   ita_emp_oecd <- emp[emp$location == "ITA", c(LOCATION_COL, TIME_COL, VALUE_COL)]
   ita_emp_fred <- format_fred_quarters(ita_emp_fred)
   ita_employment_splice <- merge(ita_emp_fred, ita_emp_oecd, by = TIME_COL, all = TRUE)
-  names(ita_employment_splice)[names(ita_employment_splice) == "Value.x"] <- "fred_value"
-  names(ita_employment_splice)[names(ita_employment_splice) == "Value.y"] <- "oecd_value"
+  ita_employment_splice <- rename(ita_employment_splice, fred_value = Value.x, oecd_value = Value.y)
   ita_emp_def <- splice_employment_series(ita_employment_splice, "ITA", "2011-Q4", "2015-Q1")
 
   fra_emp_fred <- fred_employment$fra
@@ -102,8 +100,7 @@ process_employment <- function(raw_employment, fred_employment, output_figures =
   fra_emp_fred$Value <- fra_emp_fred$Value * fra_reference_value / 100
   fra_emp_fred <- format_fred_quarters(fra_emp_fred)
   fra_employment_splice <- merge(fra_emp_fred, fra_emp_oecd, by = TIME_COL, all = TRUE)
-  names(fra_employment_splice)[names(fra_employment_splice) == "Value.x"] <- "fred_value"
-  names(fra_employment_splice)[names(fra_employment_splice) == "Value.y"] <- "oecd_value"
+  fra_employment_splice <- rename(fra_employment_splice, fred_value = Value.x, oecd_value = Value.y)
   fra_emp_def <- splice_employment_series(fra_employment_splice, "FRA", "2011-Q4", "2015-Q1")
   fra_emp_def <- head(fra_emp_def, -5)
 
@@ -133,8 +130,7 @@ process_solow_residuals <- function(gdp_series, employment_series, capital_share
   gdp <- subset(gdp_series, select = c(LOCATION_COL, TIME_COL, VALUE_COL))
   emp <- subset(employment_series, select = c(LOCATION_COL, TIME_COL, VALUE_COL))
   sol <- merge(gdp, emp, by = c(LOCATION_COL, TIME_COL))
-  names(sol)[names(sol) == "Value.x"] <- "gdp"
-  names(sol)[names(sol) == "Value.y"] <- "labor"
+  sol <- rename(sol, gdp = Value.x, labor = Value.y)
   sol$Value <- sol$gdp - (1 - capital_share) * sol$labor
   sol <- apply_hp_filter_by_country(sol)
 

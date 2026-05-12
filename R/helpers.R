@@ -8,7 +8,9 @@ VALUE_COL <- "Value"
 FILTERED_COL <- "filtered"
 
 normalize_oecd_location <- function(data) {
-  names(data)[names(data) == OECD_LOCATION_COL] <- LOCATION_COL
+  if (OECD_LOCATION_COL %in% names(data)) {
+    data <- rename(data, !!LOCATION_COL := all_of(OECD_LOCATION_COL))
+  }
   data
 }
 
