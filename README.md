@@ -4,6 +4,23 @@ This repository contains the R code and data for the bachelor thesis:
 
 > Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?
 
+## Provenance Note
+
+The thesis was originally submitted at Humboldt-Universitaet zu Berlin on
+September 5, 2015, as shown on the submitted PDF title page. That original PDF
+is kept in this repository as:
+
+`Denis Maciel - Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed? .pdf`
+
+In May 2026, the repository was revisited and revamped with Codex. The goal of
+that work was engineering reproducibility: add a Nix-based R and LaTeX
+environment, reorganize the R analysis into a clearer pipeline, add regression
+checks for the generated thesis tables, modernize the LaTeX project structure,
+and remove legacy archive code that was no longer part of the maintained
+workflow. The revamp was not intended to materially change the thesis
+conclusions. The changes from the submitted version to the current
+reproducible repository are traceable through this repository's Git history.
+
 ## Running
 
 Use Nix:
