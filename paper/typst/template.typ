@@ -4,7 +4,7 @@
 #let light = rgb("edf3f1")
 
 #let thesis(body) = {
-  set document(title: "International Business Cycles: Theory and Evidence — Have the conclusions changed?", author: "Denis Augusto Pinto Maciel", date: datetime(year: 2015, month: 9, day: 5))
+  set document(title: "International Business Cycles: Theory and Evidence — Have the conclusions changed?", author: "Denis Augusto Pinto Maciel", date: datetime(year: 2026, month: 9, day: 6))
   set text(font: "Libertinus Serif", size: 11pt, fill: ink, lang: "en")
   set page(paper: "a4", margin: (left: 25mm, right: 23mm, top: 22mm, bottom: 23mm), numbering: "1", number-align: right,
     header: context {
@@ -30,6 +30,8 @@
   show ref: set text(fill: accent)
   set cite(style: "chicago-author-date")
   set bibliography(style: "chicago-author-date")
+  show bibliography: set text(size: 9.2pt)
+  show bibliography: set par(leading: 0.45em)
   show footnote.entry: set text(size: 8.5pt)
   set figure(gap: 8pt)
   show figure.caption: set text(size: 9pt)
@@ -41,7 +43,7 @@
 #let clean-table(headers, rows, columns: auto, size: 8.5pt) = {
   set text(font: "DejaVu Sans", size: size)
   set par(justify: false, leading: 0.4em)
-  table(columns: if columns == auto { headers.len() } else { columns },
+  table(columns: if columns == auto { (auto, ..range(headers.len() - 1).map(_ => 1fr)) } else { columns },
     table.hline(stroke: 0.8pt + accent),
     table.header(..headers.map(h => text(weight: "bold", h))),
     table.hline(stroke: 0.4pt + accent),
@@ -53,7 +55,8 @@
 #let pub = json("data/publication-tables.json")
 #let comparison(value) = {
   if type(value) != str { return value }
-  let parts = value.split(" ")
+  let normalized = value.replace("(", " (").replace("[", " [").trim()
+  let parts = normalized.split(regex(" +"))
   if parts.len() == 2 { [#parts.first()\ #text(size: 7pt, fill: muted, parts.last())] }
   else if value.starts-with("(") { [—\ #text(size: 7pt, fill: muted, value)] }
   else { value }
@@ -73,7 +76,7 @@
   } else if id == "4" { headers = ([Country], $y$, $n x$, $c$, $x$, $g$, $n$, $z$) }
   else if id == "5" { headers = ([Country], [Autocorr.], $c$, $x$, $g$, $n x$, $n$, $z$) }
   else if id == "6" { headers = ([Country], $y$, $c$, $x$, $g$, $n x$, $n$, $z$) }
-  else { headers = ([Variable], [Mean], [US mean], [0%], [10%], [25%], [40%], [50%], [60%], [75%], [90%], [100%]); size = 6.8pt }
+  else { headers = ([Variable], [Mean], [US mean], [0%], [10%], [25%], [40%], [50%], [60%], [75%], [90%], [100%]); size = 7.8pt }
   figure(kind: table, supplement: [Table], caption: caption, {
     if id == "4" { note[$y$ and $n x$: standard deviations (%). Remaining columns: ratio to output volatility.]; v(6pt) }
     clean-table(headers, rows.map(row => row.map(comparison)), size: size)

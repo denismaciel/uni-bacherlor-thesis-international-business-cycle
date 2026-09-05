@@ -53,6 +53,22 @@ nix run .#lint-tex # Lint the LaTeX source
 uv installs Python and dependencies on the first run; `uv.lock` fixes dependency
 versions. `nix develop` provides uv plus the original R and LaTeX environments.
 
+## Modern Typst edition
+
+An editable Typst edition and compiled PDF are in `paper/typst/`. It uses a
+modern title page, serif body text, green accents, native tables, vector charts,
+and linked contents/citations. The 2015 thesis and the 2026 extension stay separate.
+
+```sh
+nix run .#paper-typst   # Build paper/typst/thesis.pdf with pinned compiler/fonts
+nix run .#check-typst   # Check references, tables, figures and migration coverage
+```
+
+The prose follows committed source `9bef204`; Tables 4–7 preserve the submitted
+PDF's historical BKK/ACZ comparisons and publication values. See
+[edition notes](paper/typst/README.md) for provenance, differences from the
+current numerical reproduction, and chart regeneration instructions.
+
 ## Python analysis
 
 ```python

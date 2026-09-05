@@ -39,6 +39,7 @@
         {
           default = rEnv;
           paper = paperTex;
+          typst = pkgs.typst;
         }
       );
 
@@ -83,6 +84,23 @@
             text = ''
               uv run --locked bkk-business-cycle check --figures
               latexmk -pdf -interaction=nonstopmode -halt-on-error -cd "paper/main.tex"
+            '';
+          };
+          buildTypst = pkgs.writeShellApplication {
+            name = "build-thesis-typst";
+            runtimeInputs = [ pkgs.typst ];
+            text = ''
+              typst compile --root . --ignore-system-fonts \
+                --font-path "${pkgs.dejavu_fonts}/share/fonts/truetype" \
+                paper/typst/main.typ paper/typst/thesis.pdf "$@"
+            '';
+          };
+          checkTypst = pkgs.writeShellApplication {
+            name = "check-thesis-typst";
+            runtimeInputs = [ pkgs.typst pkgs.uv ];
+            text = ''
+              uv run --locked python scripts/check_typst.py \
+                --font-path "${pkgs.dejavu_fonts}/share/fonts/truetype"
             '';
           };
           lintTex = pkgs.writeShellApplication {
@@ -132,6 +150,14 @@
           paper = {
             type = "app";
             program = "${buildPaper}/bin/build-thesis-paper";
+          };
+          paper-typst = {
+            type = "app";
+            program = "${buildTypst}/bin/build-thesis-typst";
+          };
+          check-typst = {
+            type = "app";
+            program = "${checkTypst}/bin/check-thesis-typst";
           };
           lint-tex = {
             type = "app";
