@@ -60,6 +60,20 @@
               uv run --locked bkk-business-cycle check
             '';
           };
+          runExtension = pkgs.writeShellApplication {
+            name = "run-research-extension";
+            runtimeInputs = [ self.packages.${system}.default ];
+            text = ''
+              Rscript "scripts/run_extension.R" "$@"
+            '';
+          };
+          checkExtension = pkgs.writeShellApplication {
+            name = "check-research-extension";
+            runtimeInputs = [ self.packages.${system}.default ];
+            text = ''
+              Rscript "scripts/check_extension.R"
+            '';
+          };
           buildPaper = pkgs.writeShellApplication {
             name = "build-thesis-paper";
             runtimeInputs = [
@@ -106,6 +120,14 @@
           check = {
             type = "app";
             program = "${checkResults}/bin/check-thesis-results";
+          };
+          extension = {
+            type = "app";
+            program = "${runExtension}/bin/run-research-extension";
+          };
+          check-extension = {
+            type = "app";
+            program = "${checkExtension}/bin/check-research-extension";
           };
           paper = {
             type = "app";

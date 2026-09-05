@@ -41,7 +41,11 @@ bootstrap_extension <- function(panel, repetitions = 1999L, block_length = 8L, s
     if (had_seed) assign(".Random.seed", old_seed, envir = .GlobalEnv) else rm(".Random.seed", envir = .GlobalEnv)
   })
   set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion", sample.kind = "Rejection")
-  statistic <- function(sample) c(mean_moments(sample), pair_moments(sample)$gap)
+  statistic <- function(sample) {
+    pairs <- pair_moments(sample)
+    c(output = mean(pairs$output_correlation), consumption = mean(pairs$consumption_correlation),
+      gap = mean(pairs$gap), pairs$gap)
+  }
   resample <- function(source, indices) {
     source$y <- source$y[indices, , drop = FALSE]
     source$c <- source$c[indices, , drop = FALSE]

@@ -103,7 +103,7 @@ exactly. LaTeX tables matched apart from the generator comment.
 - `src/bkk_business_cycle/export.py`: publication CSV/LaTeX export and reference checks.
 - `src/bkk_business_cycle/figures.py`: seven thesis figures.
 - `tests/`: numerical checks, exact publication regression tests, optional R parity test.
-- `R/`: original R implementation, retained for validation.
+- `R/`: original R implementation plus the separate empirical research extension.
 - `scripts/export_r_oracle.R`: independent R intermediate results for parity checks.
 - `data/raw/oecd/`: original OECD CSV inputs.
 - `data/raw/fred/`: original FRED employment CSV inputs.
@@ -111,6 +111,44 @@ exactly. LaTeX tables matched apart from the generator comment.
 - `output/tables/`: generated table outputs.
 - `output/figures/`: generated figures, ignored by Git.
 - `paper/`: LaTeX thesis source.
+
+## Research extension in R
+
+The extension analyzes the current OECD snapshot while retaining both original
+thesis implementations. Run from the repository root:
+
+```sh
+nix run .#check-extension
+nix run .#extension
+# Optional explicit snapshot and number of bootstrap replications:
+nix run .#extension -- 2026-09-05T221752Z 1999
+# Independently check serialized growth-correlation results:
+nix shell .#default -c Rscript scripts/check_extension_outputs.R
+```
+
+The default run uses 1,999 joint circular time-block bootstrap draws, a fixed
+seed, ten countries and 45 unordered pairs. It compares HP cycles, quarterly
+log growth and Hamilton residuals on identical dates; reports four periods;
+and compares the original/current vintages on a matching sample. Additional
+outputs cover 40-quarter rolling estimates, block lengths, filter endpoints and
+individual years' influence. Conditional intervals are exploratory: they do
+not include filter-estimation uncertainty or identify causal crisis effects.
+
+Results are in `output/extension/2026-09-05T221752Z/`: start with `REPORT.md`
+and the three-page `figures.pdf`. CSV tables retain unrounded estimates.
+`config.R` records settings and input fingerprints; `session-info.txt` records
+the R environment. Running with different settings overwrites derived outputs
+for that snapshot; use Git commits to preserve reviewed research runs.
+
+`R/extension_data.R` handles validation and transformations;
+`R/extension_statistics.R` handles pair estimates and joint uncertainty;
+`R/extension_run.R` defines the comparisons; `R/extension_export.R` generates
+the report and figures. `scripts/check_extension.R` checks date alignment,
+scaling invariance, filter timing and bootstrap dependence/reproducibility.
+
+All methods use 1998-Q4 onward because the balanced raw history begins in
+1996-Q1 and Hamilton needs 11 initial quarters. Historical-vintage comparisons
+combine revisions and measurement changes; they are not pure revision effects.
 
 ## Data
 
@@ -126,7 +164,7 @@ uv run --no-project python scripts/collect_oecd.py
 This downloads full available quarterly histories for real GDP, household and
 NPISH consumption, government consumption, and gross fixed capital formation;
 plus current-price GDP, exports and imports. The downloader uses only Python's
-standard library. The existing analysis remains in R.
+standard library. Collection does not change either thesis reproduction pipeline.
 
 - `data/raw/oecd_snapshots/<UTC timestamp>/`: untouched OECD CSV responses,
   SDMX structure/code lists, and a manifest with request URLs, retrieval times,

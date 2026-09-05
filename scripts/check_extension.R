@@ -58,6 +58,18 @@ seed_before <- .Random.seed
 a <- bootstrap_extension(panel, repetitions = 99L, other = panel)
 b <- bootstrap_extension(panel, repetitions = 99L, other = panel)
 stopifnot(identical(a, b), identical(seed_before, .Random.seed), all(a$point == 0), all(a$upper == 0))
+baseline <- bootstrap_extension(panel, repetitions = 99L)
+swapped <- panel
+swapped$y <- panel$c
+swapped$c <- panel$y
+opposite <- bootstrap_extension(swapped, repetitions = 99L)
+stopifnot(abs(baseline$point[3] + opposite$point[3]) < 1e-12)
+stopifnot(abs(baseline$lower[3] + opposite$upper[3]) < 1e-12)
+reordered <- panel
+reordered$countries <- rev(panel$countries)
+reordered$y <- panel$y[, rev(seq_len(ncol(panel$y)))]
+reordered$c <- panel$c[, rev(seq_len(ncol(panel$c)))]
+stopifnot(isTRUE(all.equal(mean_moments(panel), mean_moments(reordered), tolerance = 1e-12)))
 expect_error(bootstrap_extension(slice_extension(panel, first, first + 20L), repetitions = 99L), "too short")
 expect_error(pair_moments(list(y = panel$y * 0, c = panel$c, countries = panel$countries)), "Zero-variance")
 message("Extension checks passed: alignment, missing dates, scaling, filter timing, paired bootstrap and RNG reproducibility.")
