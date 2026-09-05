@@ -1,3 +1,8 @@
+> **Moved to academia:** This project is now maintained at
+> [theses/bachelor-business-cycles](https://github.com/denismaciel/academia/tree/main/theses/bachelor-business-cycles).
+> Its code, manuscripts, data, and Git history were preserved.
+> This repository is retained as a historical archive.
+
 # BKK International Business Cycle
 
 This repository contains the Python/Polars analysis, original R implementation,
