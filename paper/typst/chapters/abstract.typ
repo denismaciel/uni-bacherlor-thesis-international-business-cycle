@@ -1,0 +1,5 @@
+#import "../template.typ": *
+
+#heading(level: 1, numbering: none)[Abstract]
+<abstract>
+Backus, Kehoe and Kydland (1993) identified many empirical regularities related to international business cycles. The recurrence of cross-country correlation of output that is higher than that of consumption is particularly interesting because models predict the exact opposite. This difference between theory and data is known as the quantity anomaly. Given the relevance for subsequent research, we reassess Backus, Kehoe and Kydland's (1993) results using 23 years of more recent data and conclude that, although cross-country correlations have generally decreased, the quantity anomaly still persists.

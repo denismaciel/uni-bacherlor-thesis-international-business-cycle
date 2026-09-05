@@ -1,0 +1,5 @@
+#import "../template.typ": *
+
+#heading(level: 1, numbering: none)[Acknowledgement]
+<acknowledgement>
+I would like to thank Catarina, Denis, Teresa, Rodrigo and João for everything, Steve Ambler, Emanuela Cardia and Christian Zimmermann for having shared their data set on international business cycle and the code used to analyze it, Francisco Pimentel for helping me make the data set and the code used in this paper available online, Hunter Orloff for his insightful comments and the many anonymous people form the Stack Overflow community who have made the task of learning R from scratch very enjoyable and much less difficult than it could have been. \
