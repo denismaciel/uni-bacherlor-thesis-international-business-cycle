@@ -68,7 +68,7 @@ def export_results(result: Result, root: Path, output: Path) -> None:
         frame.write_csv(output / f"{table.value}.csv", float_precision=17)
     fingerprints = {str(path.relative_to(root)): {"md5": hashlib.md5(path.read_bytes()).hexdigest(),
                     "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in input_paths(root, result.config)}
-    source_paths = [*Path(__file__).parent.glob("*.py"), Path(__file__).parents[1] / "panel.py"]
+    source_paths = [*Path(__file__).parent.glob("*.py"), Path(__file__).parents[1] / "panel.py", Path(__file__).parents[1] / "plot_style.py"]
     configuration = asdict(result.config) | {
         "countries": list(result.tables[Table.PAIRS]["country_i"].append(result.tables[Table.PAIRS]["country_j"]).unique().sort()),
         "methods": [m.value for m in Method], "level_start": quarter_text(result.level_start),

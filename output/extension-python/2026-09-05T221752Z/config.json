@@ -70,17 +70,18 @@
   },
   "implementation_sha256": {
     "bkk_business_cycle/extension/__init__.py": "0db2bc6167e6720aaa7c484a3b666204dec12271c70795771c13643f7a2413c4",
-    "bkk_business_cycle/extension/__main__.py": "32bd57dde6c6a11468c04747ae770e095c7473ab99af63a5ef8af757b0a65f08",
+    "bkk_business_cycle/extension/__main__.py": "62457fbbcc68936e48852b9e48060d55c26e61ccd5c020fc62982ff114382575",
     "bkk_business_cycle/extension/analysis.py": "27471fab781ceda87f6b26840b4789b116a9fd2cade57e9e3fe3050f6e185733",
     "bkk_business_cycle/extension/data.py": "ae1b5405612d60bf4d2503565d52fc5fa856054967b5ec5e596715df41b3cd38",
     "bkk_business_cycle/extension/domain.py": "02679bd7e1136c1e2ac79e606c339e233269ea57f71d2b4f2b7556ebda6b209f",
-    "bkk_business_cycle/extension/export.py": "fabc919014ad6e9b0caab90e2fada0e919e28e4a0dbfc9482887a56e0903e4ed",
-    "bkk_business_cycle/extension/figures.py": "db07a198fc89b054da4e40a180e011ba1e0d2959d47c61bc4c00c5845305289c",
+    "bkk_business_cycle/extension/export.py": "c4771cca5d8f2f7c670aecbc957282fd9f804548199dc06246eae18b6efb52cb",
+    "bkk_business_cycle/extension/figures.py": "6b4e46653efe046044f05ce15d475708d754ecb068fa9817d65b8f476db7249e",
     "bkk_business_cycle/extension/inputs.py": "478c138f754d71150807e0e76ceafe6c4ac0a698e63fbf590dc56e3202ff3c30",
     "bkk_business_cycle/extension/parity.py": "eae574703154b954b97b94cb5bd65a7c2eff265870e18b8de4f73969a0d3f686",
     "bkk_business_cycle/extension/random.py": "7dcfb7527a07981132a5e54141f253c6d2f1df0828602d7bde030b08edee2a56",
     "bkk_business_cycle/extension/statistics.py": "c9ab535228974686b5ed932d5a42d96139d54c7274c78298f13fa2040fde5f94",
-    "bkk_business_cycle/panel.py": "0047b966bc0109c4d084e43106d5c9c0c57ca5c58e1d4d390615318fdd0eb2ed"
+    "bkk_business_cycle/panel.py": "0047b966bc0109c4d084e43106d5c9c0c57ca5c58e1d4d390615318fdd0eb2ed",
+    "bkk_business_cycle/plot_style.py": "5393fdeaec7bff755a889a22ca99d42a8b397672909a4088bcba9b672ceb73f6"
   },
   "environment": {
     "python": "3.14.3",

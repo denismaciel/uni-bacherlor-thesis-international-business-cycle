@@ -41,6 +41,10 @@ Add dependencies with `uv add <package>`; build the package with `uv build`.
 `check` is read-only. Use `check --write-tables` to export after a match, or
 `check --figures` to export both tables and figures after a match.
 
+All thesis and extension figures share one visual style: consistent typography,
+colors, axes and legends. Each chart is exported as a 300 dpi PNG and vector
+SVG/PDF. The Typst asset renderer uses the same implementation.
+
 Nix wrappers use the same Python pipeline:
 
 ```sh

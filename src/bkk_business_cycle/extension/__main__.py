@@ -38,6 +38,9 @@ def main(argv: list[str] | None = None) -> int:
         # These sidecars describe this run; do not retain evidence from an older run.
         for name in ("parity.csv", "PARITY.md", "figures.pdf"):
             (output / name).unlink(missing_ok=True)
+        for stem in ("rolling_correlations", "country_pair_correlations", "period_sensitivity"):
+            for suffix in ("png", "svg", "pdf"):
+                (output / f"{stem}.{suffix}").unlink(missing_ok=True)
         if args.figures:
             export_figures(result, output)
         if args.command == "check-r":
