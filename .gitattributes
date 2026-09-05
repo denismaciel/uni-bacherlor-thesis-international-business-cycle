@@ -2,3 +2,5 @@
 data/raw/oecd_snapshots/** -text -whitespace
 # CSV writer uses standard CRLF record separators.
 data/processed/oecd/**/*.csv -text whitespace=cr-at-eol
+# Typst PDFs may contain long ASCII prefixes; always store them as binary.
+paper/typst/*.pdf binary
