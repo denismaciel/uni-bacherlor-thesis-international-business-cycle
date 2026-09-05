@@ -1,0 +1,10 @@
+table,matches,numeric_values,max_absolute_error,detail
+summary,true,156,0.00000000011018619,Matched
+pairs,true,2700,0.00000000021934610,Matched
+block_sensitivity,true,210,0.00000000011018619,Matched
+rolling,true,864,0.00000000006805845,Matched
+context_sensitivity,true,27,0.00000000002532224,Matched
+year_influence,true,324,0.00000000000443218,Matched
+episode_diagnostics,true,60,0.00000000018713764,Matched
+vintage_comparison,true,24,0.00000000002976136,Matched
+vintage_series,true,80,0.00000000000000488,Matched

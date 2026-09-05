@@ -1,0 +1,92 @@
+{
+  "snapshot": "2026-09-05T221752Z",
+  "repetitions": 1999,
+  "seed": 20260905,
+  "countries": [
+    "AUS",
+    "AUT",
+    "CAN",
+    "CHE",
+    "DEU",
+    "FRA",
+    "GBR",
+    "ITA",
+    "JPN",
+    "USA"
+  ],
+  "methods": [
+    "hp1600",
+    "growth",
+    "hamilton"
+  ],
+  "level_start": "1996-Q1",
+  "common_start": "1998-Q4",
+  "end": "2026-Q2",
+  "block_lengths": [
+    4,
+    8,
+    12
+  ],
+  "rolling_quarters": 40,
+  "periods": [
+    {
+      "period": "full_common",
+      "start": "1998-Q4",
+      "end": "2026-Q2"
+    },
+    {
+      "period": "pre_pandemic",
+      "start": "1998-Q4",
+      "end": "2019-Q4"
+    },
+    {
+      "period": "thesis_overlap",
+      "start": "1998-Q4",
+      "end": "2015-Q1"
+    },
+    {
+      "period": "post_thesis",
+      "start": "2015-Q2",
+      "end": "2026-Q2"
+    }
+  ],
+  "random_generator": "R MT19937 / Rejection, independent NumPy-backed implementation",
+  "quantile": "linear / R type 7",
+  "bootstrap": "joint circular time blocks of fitted transformed series",
+  "filter_context": "balanced start through each evaluation endpoint",
+  "inputs": {
+    "data/processed/oecd/2026-09-05T221752Z/panel.csv": {
+      "md5": "8ec85d955c4138e802353d01b7c44e4e",
+      "sha256": "faf0c85f0c1bc4339a3a734e516f8dc89477048e930e9b3477795ccb4be7a2cf"
+    },
+    "data/raw/oecd/gdp.csv": {
+      "md5": "4532a64c5e03a2bde899d85e512cc2c0",
+      "sha256": "d81afbdacc7fcfe90603bf232c12fea791105477451a7f414e4da6a7ec781b87"
+    },
+    "data/raw/oecd/consumption.csv": {
+      "md5": "417fae1410d17bd634fdca37bbcce890",
+      "sha256": "e8e85f9f14cd7da29830ef51b6166c6869fffb59fb00705a8ae385c1fcd20146"
+    }
+  },
+  "implementation_sha256": {
+    "bkk_business_cycle/extension/__init__.py": "0db2bc6167e6720aaa7c484a3b666204dec12271c70795771c13643f7a2413c4",
+    "bkk_business_cycle/extension/__main__.py": "32bd57dde6c6a11468c04747ae770e095c7473ab99af63a5ef8af757b0a65f08",
+    "bkk_business_cycle/extension/analysis.py": "27471fab781ceda87f6b26840b4789b116a9fd2cade57e9e3fe3050f6e185733",
+    "bkk_business_cycle/extension/data.py": "ae1b5405612d60bf4d2503565d52fc5fa856054967b5ec5e596715df41b3cd38",
+    "bkk_business_cycle/extension/domain.py": "02679bd7e1136c1e2ac79e606c339e233269ea57f71d2b4f2b7556ebda6b209f",
+    "bkk_business_cycle/extension/export.py": "fabc919014ad6e9b0caab90e2fada0e919e28e4a0dbfc9482887a56e0903e4ed",
+    "bkk_business_cycle/extension/figures.py": "db07a198fc89b054da4e40a180e011ba1e0d2959d47c61bc4c00c5845305289c",
+    "bkk_business_cycle/extension/inputs.py": "478c138f754d71150807e0e76ceafe6c4ac0a698e63fbf590dc56e3202ff3c30",
+    "bkk_business_cycle/extension/parity.py": "eae574703154b954b97b94cb5bd65a7c2eff265870e18b8de4f73969a0d3f686",
+    "bkk_business_cycle/extension/random.py": "7dcfb7527a07981132a5e54141f253c6d2f1df0828602d7bde030b08edee2a56",
+    "bkk_business_cycle/extension/statistics.py": "c9ab535228974686b5ed932d5a42d96139d54c7274c78298f13fa2040fde5f94",
+    "bkk_business_cycle/panel.py": "0047b966bc0109c4d084e43106d5c9c0c57ca5c58e1d4d390615318fdd0eb2ed"
+  },
+  "environment": {
+    "python": "3.14.3",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "polars": "1.44.1",
+    "matplotlib": "3.11.1"
+  }
+}
