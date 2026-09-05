@@ -169,6 +169,37 @@ All methods use 1998-Q4 onward because the balanced raw history begins in
 1996-Q1 and Hamilton needs 11 initial quarters. Historical-vintage comparisons
 combine revisions and measurement changes; they are not pure revision effects.
 
+## Research extension in Python
+
+The independent Python port reproduces all nine R result tables, including
+bootstrap intervals, vintage comparisons and sensitivity diagnostics:
+
+```sh
+uv run python -m bkk_business_cycle.extension run --figures
+uv run python -m bkk_business_cycle.extension check-r --figures
+uv run pytest tests/test_extension.py tests/test_extension_parity.py
+```
+
+Results, a research report, three-page PDF, and input/code fingerprints are
+written to `output/extension-python/2026-09-05T221752Z/`. `check-r` recomputes
+the Python results and compares the serialized CSVs against the committed R
+outputs. Every numeric cell must match within absolute tolerance `1e-9`
+(zero relative tolerance); labels, row order, counts and missing values must
+match. It exits unsuccessfully on differences and writes `PARITY.md` and
+`parity.csv`. Figures use matching data; their rendering differs.
+
+The port reproduces R's Mersenne-Twister initialization and Rejection sampling,
+so it uses identical joint bootstrap resamples without requiring R at runtime.
+Independent R fixtures additionally test transformations and alternate random
+seeds. Regenerate these with
+`nix shell .#default -c Rscript scripts/export_extension_oracle.R`.
+
+Implementation lives in `src/bkk_business_cycle/extension/`. Optional
+`--snapshot`, `--repetitions`, `--seed`, `--output-dir` and `--r-dir` select
+other runs; parity requires matching R settings. Use a separate output directory
+to preserve alternative runs. Running again replaces generated artifacts and
+removes stale parity/figure sidecars when they are not requested.
+
 ## Data
 
 ### Current OECD collection
