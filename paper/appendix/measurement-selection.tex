@@ -1,20 +1,20 @@
 \section{Aspects of the Data}
 
-\subsection{Selection of Unit of Measurement \label{measure}}
+\subsection{Selection of the Measure \label{measure}}
 
-One of the crucial tasks while writing this paper was to choose in which unit of measurement the data would be expressed. The OECD's \textit{National Accounts} offers 27 different measures, 20 of which might be relevant to measure stock values of the variables we are interested in. The other seven refer either to growth or population measurements.
+Selecting an appropriate measure was an important step in assembling the data. The OECD's \textit{National Accounts} offers 27 measures, of which 20 are potentially relevant for the levels of the variables studied here. The remaining seven concern growth or population.
 
-Unfortunately, BKK does not mention expressly which unit they have opted for noting only that they have used real values for all variables except for net exports, which was measured in current prices.
+BKK do not specify their chosen measure. They state only that the variables are measured in real terms, except for the net exports-to-output ratio, which uses current prices.
 
-Confronted with the dilemma of which unit of measurement to use, we have followed three steps to make a decision:
+We used three steps to select a comparable measure:
 
 \begin{enumerate}
-  \item Data on output was downloaded from OECD's website in all measures available.
-  \item A loop in R was applied to calculate the cross-country correlations of output between the United States with the ten other BKK countries in \textit{all} measures.
-  \item We compared the results and chose the one most similar to BKK's.
+  \item We downloaded output data from the OECD website in every available measure.
+  \item We used R to calculate output correlations between the United States and the ten other BKK countries for each measure.
+  \item We compared the results with BKK's and selected the closest comparable measure.
 \end{enumerate}
 
-If the data between 1947:1 and 2015:2 are considered, there are enough observations, such that the cross-correlation of output between the US and other the other sample can be computed in \textit{nine} units of measurement. But if only the BKK's interval (1970:1 - 1990:2) is considered, correlations between the US and all other countries can be computed in only \textit{four} different measures. \Cref{tab:measure} displays the cross-correlations of the United States resulting from these 4 measures along with the same correlations calculated by BKK and ACZ.
+Over the full period from 1947:1 to 2015:2, nine measures provide enough observations to calculate output correlations between the United States and the other sample countries. Restricting the comparison to BKK's period, 1970:1 to 1990:2, leaves four measures. \Cref{tab:measure} reports the resulting US output correlations alongside those from BKK and ACZ.
 
 \begin{table}[htbp]
   \centering
@@ -32,17 +32,17 @@ CARSA & .00 & .08 & .29 & .11 & .29 & -.14 & -.01 & -.04 & .22 & 1.00 \\
    \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Cross-country Correlation of US Output in four different Mesaures, 1970:1 - 1990:2}
+\caption{US Output Correlations under Four Measures, 1970:1--1990:2}
 \label{tab:measure}
 \end{table}
 
-We first dismiss CARSA and CPCARSA measures. They not only yield correlations that strongly differ from BKK's figures but also both refer to current prices. This contrasts sharply with BKK's data, which are expressed in real terms.
+We exclude CARSA and CPCARSA because they measure output at current prices, whereas BKK use real values. Their correlations also differ substantially from BKK's.
 
-VOBARSA and VPVOBARSA measures are clearly the closest not only to BKK's but also to ACZ's results. Both yield the same figures, because they represent the same measurement, only scaled by different factors: VOBARSA is expressed in national currency, while VPVOBARSA in US dollars. Multiplying a time series by a constant does not affect the standard deviation between its periods nor its correlation with other series. We then opt for VPVOBARSA. It allows for comparisons not only of variation (standard deviation) and comovements (correlation) but also of magnitude, since the outputs of all countries will be expressed in the same unit (US dollars).
+VOBARSA and VPVOBARSA produce identical correlations and are the closest to both BKK's and ACZ's estimates. They differ only in scale: VOBARSA is expressed in national currency, while VPVOBARSA is expressed in US dollars. Scaling a series by a positive constant leaves its correlations unchanged. For our analysis of HP-filtered log values, a fixed currency conversion adds only a constant to the log series and therefore leaves the cyclical component unchanged. We choose VPVOBARSA so that output levels are also expressed in a common unit.
 
 \subsection{Civilian Employment Series \label{app:employment}}
 
-BKK's quarterly data on civilian employment come from OECD's \textit{Main Economic Indicators}. Yet, the \textit{Main Economic Indicators}'s data on quarterly civilian employment  are not available on OECD's website as of this writing. Instead, OECD provides quarterly data on employed population in its \textit{Short-Term Labour Market Statistics}. As can be seen from \cref{tab:emptimespan}, the length of the series of some countries available in \textit{Short-Term Labour Market Statistics} are too short for the comparison with BKK's results to be reasonable. Fortunately, data on civilian employment from OECD's \textit{Main Economic Indicators} were available for France, United Kingdom and Italy in the Federal Reserve Bank of St. Louis website\footnote{\url{https://research.stlouisfed.org/}}, which allowed us to expand these series. Similar data for Switzerland and the European aggregate were not found and given the short length of \textit{Short-Term Labour Market Statistics}'s series for these two, we opted to exclude from our calculations of comovements of civilian employment.
+BKK obtain quarterly civilian employment data from the OECD's \textit{Main Economic Indicators}. At the time of data collection, these series were unavailable on the OECD website, which instead provided quarterly employed-population data through its \textit{Short-Term Labour Market Statistics}. As \cref{tab:emptimespan} shows, some of these series are too short for a useful comparison with BKK. The Federal Reserve Bank of St. Louis website\footnote{\url{https://research.stlouisfed.org/}} provides the \textit{Main Economic Indicators} series for France, the United Kingdom and Italy, allowing us to extend their coverage. We could not find comparable series for Switzerland or the European aggregate, so we exclude them from the employment comovement calculations.
 
 \begin{table}[ht]
 \centering
@@ -56,24 +56,24 @@ Country & AUS & AUT & CAN & FRA & DEU & ITA & JPN & CHE & GBR & USA & EA19 \\
    \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Length of \textit{Employed Population} series from \textit{Short-Term Labour Market Statistics}}
+\caption{Coverage of Employed Population Series from \textit{Short-Term Labour Market Statistics}}
 \label{tab:emptimespan}
 \end{table}
 
-Before deciding whether to combine the \textit{Short-Term Labour Market Statistics} and \textit{Main Economic Indicators} series on employment, we have plotted in \cref{fig:emp} the series together to see how similar they are. It turns out they are similar enough. For this reason and in order to obtain longer series, we have decided to chain the two series for France, United Kingdom and Italy. We multiply the \textit{Short-Term Labour Market} series by a factor such that both series have the same value at the period for which the \textit{Main Economic Indicators} series has its last observation. The two series were then merged with \textit{Short-Term Labour Market} complementing the missing values of \textit{Main Economic Indicators}. The length of the resulting time series can be seen in \cref{tab:timespan}.
+\Cref{fig:emp} compares the employment series from the two sources. Their similar behavior supports splicing them to obtain longer series for France, the United Kingdom and Italy. We rescale the \textit{Short-Term Labour Market Statistics} series so that it matches the \textit{Main Economic Indicators} series at the splice point, then use it to extend the earlier series. \Cref{tab:timespan} reports the coverage of the resulting series.
 
 \begin{figure}[htb]
 \centering
 \begin{subfigure}{0.46\textwidth}
   \centering
-\fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/fraemployment.png}}
+\includegraphics[width=\linewidth]{\generatedfigures/fraemployment.png}
   \caption{France}
   \label{fig:fraemp}
 \end{subfigure}
 \qquad
 \begin{subfigure}{0.46\textwidth}
   \centering
-\fbox{\includegraphics[width=0.44\textwidth]{\generatedfigures/gbremployment.png}}
+\includegraphics[width=\linewidth]{\generatedfigures/gbremployment.png}
   \caption{United Kingdom}
   \label{fig:gbremp}
 \end{subfigure}
@@ -82,7 +82,7 @@ Before deciding whether to combine the \textit{Short-Term Labour Market Statisti
 
 \begin{subfigure}{0.62\textwidth}
   \centering
-\fbox{\includegraphics[width=0.6\textwidth]{\generatedfigures/itaemployment.png}}
+\includegraphics[width=\linewidth]{\generatedfigures/itaemployment.png}
   \caption{Italy}
   \label{fig:itaemp}
 \end{subfigure}
