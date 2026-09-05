@@ -1,5 +1,5 @@
 {
-  description = "Reproducible R environment for the BKK international business cycle thesis code";
+  description = "BKK thesis reproduction with Python/Polars and an R validation environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -46,31 +46,28 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          rEnv = self.packages.${system}.default;
           runMain = pkgs.writeShellApplication {
             name = "run-thesis-code";
-            runtimeInputs = [ rEnv ];
+            runtimeInputs = [ pkgs.uv ];
             text = ''
-              Rscript -e 'invisible(suppressWarnings(capture.output(source("R/main.R")))); message("Thesis code completed.")'
+              uv run --locked bkk-business-cycle run
             '';
           };
           checkResults = pkgs.writeShellApplication {
             name = "check-thesis-results";
-            runtimeInputs = [ rEnv ];
+            runtimeInputs = [ pkgs.uv ];
             text = ''
-              Rscript "scripts/export_results.R"
-              Rscript "scripts/compare_results.R"
+              uv run --locked bkk-business-cycle check
             '';
           };
           buildPaper = pkgs.writeShellApplication {
             name = "build-thesis-paper";
             runtimeInputs = [
-              rEnv
+              pkgs.uv
               self.packages.${system}.paper
             ];
             text = ''
-              Rscript "scripts/export_results.R"
-              Rscript "scripts/export_figures.R"
+              uv run --locked bkk-business-cycle check --figures
               latexmk -pdf -interaction=nonstopmode -halt-on-error -cd "paper/main.tex"
             '';
           };
@@ -129,6 +126,7 @@
         {
           default = pkgs.mkShell {
             packages = [
+              pkgs.uv
               self.packages.${system}.default
               self.packages.${system}.paper
               pkgs.texlivePackages.chktex

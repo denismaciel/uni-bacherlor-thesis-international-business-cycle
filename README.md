@@ -1,6 +1,7 @@
 # BKK International Business Cycle
 
-This repository contains the R code and data for the bachelor thesis:
+This repository contains the Python/Polars analysis, original R implementation,
+and data for the bachelor thesis:
 
 > Backus, Kehoe and Kydland (1993) - International Business Cycles: Theory and Evidence - Have the conclusions changed?
 
@@ -23,61 +24,93 @@ reproducible repository are traceable through this repository's Git history.
 
 ## Running
 
-Use Nix:
+Python 3.14.3 and dependencies are managed by uv:
 
 ```sh
-nix run .
+uv sync --locked
+uv run bkk-business-cycle run             # Export Tables 3–7 as CSV and LaTeX
+uv run bkk-business-cycle check           # Require exact reference CSV matches
+uv run bkk-business-cycle run --figures   # Also render all seven thesis figures
+uv run ty check
+uv run pytest
 ```
 
-Check that the exported thesis tables still match the committed reference artifacts:
+Run from the repository root, or supply `--data-dir`, `--output-dir`, and
+`--reference-dir`. `uv run python -m bkk_business_cycle` also runs the analysis.
+Add dependencies with `uv add <package>`; build the package with `uv build`.
+
+Nix wrappers use the same Python pipeline:
 
 ```sh
-nix run .#check
+nix run .          # Export tables
+nix run .#check    # Compare tables against references
+nix run .#paper    # Check/export tables and figures, then compile the thesis PDF
+nix run .#lint-tex # Lint the LaTeX source
 ```
 
-Build the thesis PDF from the generated tables and figures:
+uv installs Python and dependencies on the first run; `uv.lock` fixes dependency
+versions. `nix develop` provides uv plus the original R and LaTeX environments.
+
+## Python analysis
+
+```python
+from bkk_business_cycle import run_analysis
+
+results = run_analysis()
+results.tables["standard_deviations"]  # Polars DataFrame
+results.panel                        # Logged/ratio values and HP cycles
+results.series["gdp"]
+results.correlations["gdp"]
+```
+
+Polars handles CSV ingestion, joins, reshaping, and statistics. NumPy/SciPy solve
+the HP filter's banded linear system; Matplotlib renders the figures. No pandas
+or R runtime is needed for the Python analysis.
+
+The port preserves the original inputs, row ordering, employment splice at
+2011-Q4, France's final-five-row truncation, HP lambda of 1600, capital share of
+0.36, sample standard deviations, and pairwise-complete correlations. Cross-country
+correlations are rounded to three decimals **before** computing means and R
+type-1 quantiles. CSV export reproduces R's quoting and numeric formatting.
+All five publication CSVs match the committed R references byte for byte.
+Figure data and filenames are preserved; Matplotlib's appearance differs from R.
+
+## Verify against R
+
+The original R code remains an independent validation baseline. To compare the
+entire panel, all seven correlation matrices, unrounded standard deviations,
+and initial employment timespans:
 
 ```sh
-nix run .#paper
+nix shell .#default -c Rscript scripts/export_r_oracle.R /tmp/bkk-r-oracle
+BKK_R_ORACLE=/tmp/bkk-r-oracle uv run pytest
 ```
 
-Lint the LaTeX source:
+Panel values and unrounded standard deviations use absolute tolerance `1e-10`
+(zero relative tolerance); identifiers, row order, correlation matrices, and
+publication CSVs must match exactly. The optional R test is skipped when
+`BKK_R_ORACLE` is unset; the five reference-table checks always run.
 
-```sh
-nix run .#lint-tex
-```
-
-For an interactive R environment with all required packages:
-
-```sh
-nix develop
-```
+The migration check covered all 16,128 panel rows: maximum absolute differences
+were `4.98e-14` for input transformations, `4.13e-12` for HP cycles, and
+`2.65e-13` for standard deviations. All seven correlation matrices matched
+exactly. LaTeX tables matched apart from the generator comment.
 
 ## Layout
 
-- `R/main.R`: main reproduction script.
-- `R/run_analysis.R`: list-based analysis pipeline.
-- `R/helpers.R`: shared HP-filter, correlation, standard-deviation and timespan helpers.
-- `scripts/export_results.R`: exports Tables 3-7 to `output/tables/`.
-- `scripts/compare_results.R`: compares generated tables against `reference/tables/`.
-- `data/raw/oecd/`: OECD CSV inputs.
-- `data/raw/fred/`: FRED employment CSV inputs.
-- `reference/tables/`: committed regression artifacts.
+- `src/bkk_business_cycle/panel.py`: input loading, employment splicing, Solow residuals, HP filtering.
+- `src/bkk_business_cycle/analysis.py`: country statistics and Tables 3–7.
+- `src/bkk_business_cycle/export.py`: publication CSV/LaTeX export and reference checks.
+- `src/bkk_business_cycle/figures.py`: seven thesis figures.
+- `tests/`: numerical checks, exact publication regression tests, optional R parity test.
+- `R/`: original R implementation, retained for validation.
+- `scripts/export_r_oracle.R`: independent R intermediate results for parity checks.
+- `data/raw/oecd/`: original OECD CSV inputs.
+- `data/raw/fred/`: original FRED employment CSV inputs.
+- `reference/tables/`: committed R regression artifacts.
 - `output/tables/`: generated table outputs.
 - `output/figures/`: generated figures, ignored by Git.
-- `paper/`: organized LaTeX thesis source.
-
-## Main Result Objects
-
-After sourcing `R/main.R`, use `results$tables`:
-
-- `results$tables$timespan`: Table 3.
-- `results$tables$standard_deviations`: Table 4.
-- `results$tables$within_country_correlations`: Table 5.
-- `results$tables$usa_correlation_matrix`: Table 6.
-- `results$tables$average_cross_country_correlations`: Table 7.
-
-`R/results.R` prints the central result objects.
+- `paper/`: LaTeX thesis source.
 
 ## Data
 

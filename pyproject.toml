@@ -1,0 +1,30 @@
+[project]
+name = "bkk-business-cycle"
+version = "0.1.0"
+description = "Python tools for international business cycle research"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.2",
+    "polars>=1.44.1",
+    "scipy>=1.18.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.4,<0.13.0"]
+build-backend = "uv_build"
+
+[project.scripts]
+bkk-business-cycle = "bkk_business_cycle.cli:main"
+
+[tool.ty.src]
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ty>=0.0.78",
+]
