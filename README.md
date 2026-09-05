@@ -38,6 +38,8 @@ uv run pytest
 Run from the repository root, or supply `--data-dir`, `--output-dir`, and
 `--reference-dir`. `uv run python -m bkk_business_cycle` also runs the analysis.
 Add dependencies with `uv add <package>`; build the package with `uv build`.
+`check` is read-only. Use `check --write-tables` to export after a match, or
+`check --figures` to export both tables and figures after a match.
 
 Nix wrappers use the same Python pipeline:
 
@@ -54,18 +56,30 @@ versions. `nix develop` provides uv plus the original R and LaTeX environments.
 ## Python analysis
 
 ```python
-from bkk_business_cycle import run_analysis
+from pathlib import Path
+from bkk_business_cycle import InvalidInputs, Variable, analyze, load_inputs
 
-results = run_analysis()
-results.tables["standard_deviations"]  # Polars DataFrame
-results.panel                        # Logged/ratio values and HP cycles
-results.series["gdp"]
-results.correlations["gdp"]
+inputs = load_inputs(Path("data/raw"))
+if isinstance(inputs, InvalidInputs):
+    print(inputs.issues)
+else:
+    results = analyze(inputs)  # Pure: no filesystem reads
+    results.tables.standard_deviations  # Polars DataFrame
+    results.panel                      # Logged/ratio values and HP cycles
+    results.series[Variable.GDP]
+    results.correlations[Variable.GDP]
+    results.statistic_status            # Availability reasons and sample counts
 ```
 
 Polars handles CSV ingestion, joins, reshaping, and statistics. NumPy/SciPy solve
 the HP filter's banded linear system; Matplotlib renders the figures. No pandas
 or R runtime is needed for the Python analysis.
+
+`load_inputs` returns `ValidatedInputs | InvalidInputs`; `analyze` accepts only
+validated data. The `run_analysis(path)` convenience adapter performs both steps
+and returns `AnalysisResult | InvalidInputs`. See
+[Python architecture](docs/python-architecture.md) for the boundary contracts,
+explicit methodology and unavailable-statistic results.
 
 The port preserves the original inputs, row ordering, employment splice at
 2011-Q4, France's final-five-row truncation, HP lambda of 1600, capital share of
@@ -98,10 +112,15 @@ exactly. LaTeX tables matched apart from the generator comment.
 
 ## Layout
 
-- `src/bkk_business_cycle/panel.py`: input loading, employment splicing, Solow residuals, HP filtering.
+- `src/bkk_business_cycle/domain.py`: named methodology, variables, tables, and result states.
+- `src/bkk_business_cycle/inputs.py`: CSV parsing and boundary validation.
+- `src/bkk_business_cycle/panel.py`: pure employment splicing, Solow residuals, HP filtering.
 - `src/bkk_business_cycle/analysis.py`: country statistics and Tables 3–7.
 - `src/bkk_business_cycle/export.py`: publication CSV/LaTeX export and reference checks.
+- `src/bkk_business_cycle/figure_data.py`: pure preparation of figure datasets.
 - `src/bkk_business_cycle/figures.py`: seven thesis figures.
+- `src/bkk_business_cycle/application.py`: filesystem adapters.
+- `docs/python-architecture.md`: contracts, methodology, and command effects.
 - `tests/`: numerical checks, exact publication regression tests, optional R parity test.
 - `R/`: original R implementation plus the separate empirical research extension.
 - `scripts/export_r_oracle.R`: independent R intermediate results for parity checks.

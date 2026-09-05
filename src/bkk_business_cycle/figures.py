@@ -1,74 +1,86 @@
-"""Render the seven thesis figures without an R runtime."""
+"""Matplotlib rendering adapter; all analytical choices arrive as figure data."""
 
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
 import polars as pl
 
-from .analysis import AnalysisResult, correlation_pairs
-from .panel import employment_sources, load_raw_data
+from .domain import Variable
+from .figure_data import FigureData
 
 
-def quarter_axis(series: pl.Series) -> list[float]:
-    return [int(time[:4]) + (int(time[-1]) - 1) / 4 for time in series.to_list()]
-
-
-def export_figures(results: AnalysisResult, data_dir: Path, output_dir: Path) -> None:
+def export_figures(data: FigureData, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    def save(name: str) -> None:
-        plt.gcf().set_size_inches(2600 / 300, 2000 / 300)
-        plt.tight_layout()
-        plt.savefig(output_dir / name, dpi=300)
-        plt.close()
+    def figure() -> Figure:
+        fig = Figure(figsize=(2600 / 300, 2000 / 300), dpi=300)
+        FigureCanvasAgg(fig)
+        return fig
 
-    usa = results.series["gdp"].filter(pl.col("location") == "USA")
-    x = quarter_axis(usa["time"])
-    _, axes = plt.subplots(2, 1, sharex=True)
-    axes[0].plot(x, usa["value"].to_list(), label="Logged GDP")
-    axes[0].plot(x, (usa["value"] - usa["filtered"]).to_list(), label="HP trend")
+    def save(fig: Figure, name: str) -> None:
+        fig.tight_layout()
+        fig.savefig(output_dir / name, dpi=300)
+        fig.clear()
+
+    fig = figure()
+    axes = fig.subplots(2, 1, sharex=True)
+    usa = data.usa_gdp
+    axes[0].plot(usa["quarter"], usa["value"], label="Logged GDP")
+    axes[0].plot(usa["quarter"], usa["trend"], label="HP trend")
     axes[0].set_title("Logged GDP of the United States")
     axes[0].legend()
-    axes[1].plot(x, usa["filtered"].to_list())
+    axes[1].plot(usa["quarter"], usa["filtered"])
     axes[1].set_ylabel("HP cycle")
     axes[1].set_xlabel("Quarter")
-    save("filteredgdp.png")
+    save(fig, "filteredgdp.png")
 
-    for variable, filename in (("gdp", "gdpcor.png"), ("consumption", "concor.png")):
-        pairs = correlation_pairs(results.correlations[variable]).sort("correlation").with_row_index("rank", offset=1)
-        plt.figure()
-        for is_usa, label, color in ((False, "Other Countries", "#f8766d"), (True, "USA", "#00bfc4")):
-            subset = pairs.filter((pl.col("right") == "USA") == is_usa)
-            plt.scatter(subset["rank"].to_list(), subset["correlation"].to_list(), label=label, color=color)
-        plt.xlabel("Correlations in Ascending Order")
-        plt.ylabel("Correlation Magnitude")
-        plt.legend(title="Country")
-        save(filename)
+    for variable, filename in (
+        (Variable.GDP, "gdpcor.png"),
+        (Variable.CONSUMPTION, "concor.png"),
+    ):
+        fig = figure()
+        ax = fig.subplots()
+        for label, color in (("Other Countries", "#f8766d"), ("USA", "#00bfc4")):
+            subset = data.distributions[variable].filter(pl.col("group") == label)
+            ax.scatter(
+                subset["rank"].to_list(),
+                subset["correlation"].to_list(),
+                label=label,
+                color=color,
+            )
+        ax.set_xlabel("Correlations in Ascending Order")
+        ax.set_ylabel("Correlation Magnitude")
+        ax.legend(title="Country")
+        save(fig, filename)
 
-    pairs = correlation_pairs(results.correlations["gdp"]).rename({"correlation": "gdp"}).join(
-        correlation_pairs(results.correlations["consumption"]).rename({"correlation": "consumption"}),
-        on=["left", "right"], validate="1:1",
+    fig = figure()
+    ax = fig.subplots()
+    pairs = data.gdp_consumption
+    colors = {
+        "output_at_least_consumption": "#00bfc4",
+        "consumption_above_output": "#f8766d",
+    }
+    ax.scatter(
+        pairs["consumption"].to_list(),
+        pairs["gdp"].to_list(),
+        c=[colors[group] for group in pairs["comparison"].to_list()],
     )
-    plt.figure()
-    plt.scatter(pairs["consumption"].to_list(), pairs["gdp"].to_list(),
-                c=["#00bfc4" if above else "#f8766d" for above in (pairs["gdp"] >= pairs["consumption"]).to_list()])
-    plt.plot([-1, 1], [-1, 1], color="black", linewidth=1)
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
-    plt.xlabel("Consumption Correlation")
-    plt.ylabel("Output Correlation")
-    save("gdpconplot.png")
+    ax.plot([-1, 1], [-1, 1], color="black", linewidth=1)
+    ax.set(
+        xlim=(-1, 1),
+        ylim=(-1, 1),
+        xlabel="Consumption Correlation",
+        ylabel="Output Correlation",
+    )
+    save(fig, "gdpconplot.png")
 
-    raw = load_raw_data(data_dir)
-    for country in ("FRA", "GBR", "ITA"):
-        fred, oecd = employment_sources(raw, country)
-        plt.figure()
-        for data, label in ((fred, "FRED"), (oecd, "OECD")):
-            data = data.sort("time")
-            plt.plot(quarter_axis(data["time"]), data["value"].to_list(), label=label)
-        plt.xlabel("Quarter")
-        plt.ylabel("Employment")
-        plt.legend()
-        save(f"{country.lower()}employment.png")
+    for country, comparison in data.employment.items():
+        fig = figure()
+        ax = fig.subplots()
+        for label in ("FRED", "OECD"):
+            source = comparison.filter(pl.col("source") == label)
+            ax.plot(source["quarter"].to_list(), source["value"].to_list(), label=label)
+        ax.set(xlabel="Quarter", ylabel="Employment")
+        ax.legend()
+        save(fig, f"{country.lower()}employment.png")
