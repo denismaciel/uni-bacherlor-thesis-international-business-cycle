@@ -81,6 +81,57 @@ After sourcing `R/main.R`, use `results$tables`:
 
 ## Data
 
+### Current OECD collection
+
+Collect a new, dated snapshot of the ten individual thesis countries (excluding
+the overlapping EU aggregate):
+
+```sh
+uv run --no-project python scripts/collect_oecd.py
+```
+
+This downloads full available quarterly histories for real GDP, household and
+NPISH consumption, government consumption, and gross fixed capital formation;
+plus current-price GDP, exports and imports. The downloader uses only Python's
+standard library. The existing analysis remains in R.
+
+- `data/raw/oecd_snapshots/<UTC timestamp>/`: untouched OECD CSV responses,
+  SDMX structure/code lists, and a manifest with request URLs, retrieval times,
+  response headers and SHA-256 hashes.
+- `data/processed/oecd/<UTC timestamp>/panel.csv`: sorted, unfiltered long panel
+  with source measurement metadata and observation flags.
+- `data/processed/oecd/<UTC timestamp>/coverage.csv`: all 70 series' dates,
+  gaps, observation counts and status summaries.
+- `data/processed/oecd/<UTC timestamp>/COVERAGE.md`: readable coverage and
+  measurement limitations.
+
+Raw snapshots are never overwritten. Rebuild derived files offline and verify
+raw checksums with:
+
+```sh
+uv run --no-project python scripts/collect_oecd.py --rebuild data/raw/oecd_snapshots/<UTC-timestamp>
+uv run --no-project python -m unittest discover -s scripts -p 'test_collect_oecd.py'
+```
+
+The normalized panel can be read directly with `readr::read_csv()` in R.
+It is deliberately separate from `R/main.R` and the original thesis inputs.
+Real values are national-currency chain-linked volumes, not the original
+fixed-PPP dollar measure. Values remain in the units specified by `unit_mult`;
+quarterly levels are not annualized. For net exports/GDP, join the three nominal
+series by country and quarter and verify their currency and scale before
+calculating `(exports_nominal - imports_nominal) / gdp_nominal`.
+
+Do not append the new observations to old-vintage data. Use the full new vintage
+for extension analysis, and compare vintages on their overlapping dates to
+assess revisions. Latest observations may be provisional, and country histories
+need substantive break/definition review before publication. No interpolation,
+filtering, currency conversion or automatic splicing is performed.
+
+Source: [OECD quarterly national accounts](https://www.oecd.org/en/data/datasets/gdp-and-non-financial-accounts.html),
+[API documentation](https://www.oecd.org/en/data/insights/data-explainers/2024/09/api.html).
+
+### Original thesis inputs
+
 OECD National Accounts:
 
 - `data/raw/oecd/consumption.csv`

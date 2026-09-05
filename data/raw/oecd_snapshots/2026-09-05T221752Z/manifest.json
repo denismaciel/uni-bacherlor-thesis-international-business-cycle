@@ -1,0 +1,63 @@
+{
+  "source": "OECD Quarterly National Accounts",
+  "dataflow": "OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1",
+  "countries": [
+    "AUS",
+    "AUT",
+    "CAN",
+    "CHE",
+    "DEU",
+    "FRA",
+    "GBR",
+    "ITA",
+    "JPN",
+    "USA"
+  ],
+  "requests": {
+    "structure.xml": {
+      "url": "https://sdmx.oecd.org/public/rest/v1/dataflow/OECD.SDD.NAD/DSD_NAMAIN1@DF_QNA/1.1?references=all",
+      "accept": "application/vnd.sdmx.structure+xml;version=2.1",
+      "retrieved_at_utc": "2026-09-05T22:17:55.298138+00:00",
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sat, 05 Sep 2026 22:17:55 GMT",
+        "Content-Type": "application/vnd.sdmx.structure+xml; charset=utf-8; version=2.1",
+        "Cache-Control": "public,max-age=86400",
+        "api-supported-versions": "1"
+      },
+      "sha256": "8cac86ad3043d5dc8ece4a6d210b7592d80ef8ab5214e16b17229a6812bce92a",
+      "bytes": 3747993
+    },
+    "real.csv": {
+      "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1/Q.Y.AUS+AUT+CAN+CHE+DEU+FRA+GBR+ITA+JPN+USA.S1+S1M+S13.S1.B1GQ+P3+P51G._Z._Z+_T._Z+_T.XDC.L.N.T0102",
+      "accept": "text/csv",
+      "retrieved_at_utc": "2026-09-05T22:18:00.524993+00:00",
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sat, 05 Sep 2026 22:17:59 GMT",
+        "Content-Type": "text/csv; charset=utf-8",
+        "Cache-Control": "public,max-age=7200",
+        "Content-Language": "en,en-US",
+        "api-supported-versions": "1"
+      },
+      "sha256": "71a43fcda317613e42fda63890e9a656683ab66a676d1d471defe651cdecc30e",
+      "bytes": 1136653
+    },
+    "nominal.csv": {
+      "url": "https://sdmx.oecd.org/public/rest/v1/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1/Q.Y.AUS+AUT+CAN+CHE+DEU+FRA+GBR+ITA+JPN+USA.S1.S1.B1GQ+P6+P7._Z._Z._Z.XDC.V.N.T0102",
+      "accept": "text/csv",
+      "retrieved_at_utc": "2026-09-05T22:18:00.756936+00:00",
+      "http_status": 200,
+      "response_headers": {
+        "Date": "Sat, 05 Sep 2026 22:18:00 GMT",
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Length": "658158",
+        "Cache-Control": "public,max-age=7200",
+        "Content-Language": "en,en-US",
+        "Age": "66"
+      },
+      "sha256": "e2e2279423bab66f494f332c1abee2257d59f64f038e02d6e10495044383bf5c",
+      "bytes": 658158
+    }
+  }
+}

@@ -1,0 +1,71 @@
+location,variable,first,last,observations,missing_quarters,observations_after_2015_Q1,status_counts,currency,unit_mult,reference_year
+AUS,consumption,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,2023-2024
+AUS,exports_nominal,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,
+AUS,gdp,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,2023-2024
+AUS,gdp_nominal,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,
+AUS,government,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,2023-2024
+AUS,imports_nominal,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,
+AUS,investment,1959-Q3,2026-Q2,268,,45,"{""A"": 268}",AUD,6,2023-2024
+AUT,consumption,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,2015
+AUT,exports_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+AUT,gdp,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,2015
+AUT,gdp_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+AUT,government,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,2015
+AUT,imports_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+AUT,investment,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,2015
+CAN,consumption,1981-Q1,2026-Q2,182,,45,"{""A"": 182}",CAD,6,2017
+CAN,exports_nominal,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,
+CAN,gdp,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,2017
+CAN,gdp_nominal,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,
+CAN,government,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,2017
+CAN,imports_nominal,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,
+CAN,investment,1961-Q1,2026-Q2,262,,45,"{""A"": 262}",CAD,6,2017
+CHE,consumption,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,2020
+CHE,exports_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,
+CHE,gdp,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,2020
+CHE,gdp_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,
+CHE,government,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,2020
+CHE,imports_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,
+CHE,investment,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",CHF,6,2020
+DEU,consumption,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,2020
+DEU,exports_nominal,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,
+DEU,gdp,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,2020
+DEU,gdp_nominal,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,
+DEU,government,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,2020
+DEU,imports_nominal,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,
+DEU,investment,1991-Q1,2026-Q2,142,,45,"{""A"": 128, ""P"": 14}",EUR,6,2020
+FRA,consumption,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,2020
+FRA,exports_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,
+FRA,gdp,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,2020
+FRA,gdp_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,
+FRA,government,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,2020
+FRA,imports_nominal,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,
+FRA,investment,1980-Q1,2026-Q2,186,,45,"{""A"": 186}",EUR,6,2020
+GBR,consumption,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",GBP,6,2023
+GBR,exports_nominal,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,
+GBR,gdp,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,2023
+GBR,gdp_nominal,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,
+GBR,government,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,2023
+GBR,imports_nominal,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,
+GBR,investment,1955-Q1,2026-Q2,286,,45,"{""A"": 286}",GBP,6,2023
+ITA,consumption,1996-Q1,2026-Q2,122,,45,"{""A"": 122}",EUR,6,2020
+ITA,exports_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+ITA,gdp,1996-Q1,2026-Q2,122,,45,"{""A"": 122}",EUR,6,2020
+ITA,gdp_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+ITA,government,1996-Q1,2026-Q2,122,,45,"{""A"": 122}",EUR,6,2020
+ITA,imports_nominal,1995-Q1,2026-Q2,126,,45,"{""A"": 126}",EUR,6,
+ITA,investment,1996-Q1,2026-Q2,122,,45,"{""A"": 122}",EUR,6,2020
+JPN,consumption,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,2020
+JPN,exports_nominal,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,
+JPN,gdp,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,2020
+JPN,gdp_nominal,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,
+JPN,government,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,2020
+JPN,imports_nominal,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,
+JPN,investment,1994-Q1,2026-Q2,130,,45,"{""A"": 130}",JPY,6,2020
+USA,consumption,1947-Q1,2026-Q2,318,,45,"{""A"": 318}",USD,6,2017
+USA,exports_nominal,1947-Q1,2026-Q2,318,,45,"{""A"": 318}",USD,6,
+USA,gdp,1947-Q1,2026-Q2,318,,45,"{""A"": 318}",USD,6,2017
+USA,gdp_nominal,1947-Q1,2026-Q2,318,,45,"{""A"": 318}",USD,6,
+USA,government,2002-Q1,2026-Q2,98,,45,"{""A"": 98}",USD,6,2017
+USA,imports_nominal,1947-Q1,2026-Q2,318,,45,"{""A"": 318}",USD,6,
+USA,investment,1972-Q1,2026-Q2,218,,45,"{""A"": 218}",USD,6,2017
