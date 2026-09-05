@@ -1,10 +1,16 @@
+write_extension_text <- function(lines, path) {
+  lines <- sub("[[:blank:]]+$", "", lines)
+  while (length(lines) > 0L && tail(lines, 1L) == "") lines <- head(lines, -1L)
+  writeLines(lines, path)
+}
+
 export_extension <- function(results, output) {
   dir.create(output, recursive = TRUE, showWarnings = FALSE)
   for (name in setdiff(names(results), "config")) {
     utils::write.csv(results[[name]], file.path(output, paste0(name, ".csv")), row.names = FALSE, na = "")
   }
-  dput(results$config, file = file.path(output, "config.R"))
-  writeLines(capture.output(sessionInfo()), file.path(output, "session-info.txt"))
+  write_extension_text(capture.output(dput(results$config)), file.path(output, "config.R"))
+  write_extension_text(capture.output(sessionInfo()), file.path(output, "session-info.txt"))
   extension_figures(results, output)
   extension_report(results, output)
 }
@@ -137,5 +143,5 @@ extension_report <- function(results, output) {
     "- R boot documentation and references on time-series block resampling: https://stat.ethz.ch/R-manual/R-patched/RHOME/library/boot/html/tsboot.html",
     "- OECD source: https://www.oecd.org/en/data/datasets/gdp-and-non-financial-accounts.html", ""
   )
-  writeLines(lines, file.path(output, "REPORT.md"))
+  write_extension_text(lines, file.path(output, "REPORT.md"))
 }

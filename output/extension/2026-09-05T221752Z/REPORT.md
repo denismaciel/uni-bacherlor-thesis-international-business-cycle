@@ -105,4 +105,3 @@ The comparison combines statistical revisions, source-methodology changes and me
 - Hamilton, Why You Should Never Use the Hodrick-Prescott Filter: https://www.nber.org/papers/w23429
 - R boot documentation and references on time-series block resampling: https://stat.ethz.ch/R-manual/R-patched/RHOME/library/boot/html/tsboot.html
 - OECD source: https://www.oecd.org/en/data/datasets/gdp-and-non-financial-accounts.html
-
