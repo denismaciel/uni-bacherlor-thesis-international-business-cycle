@@ -1,0 +1,4 @@
+# Preserve downloaded response bytes so manifest checksums survive checkout.
+data/raw/oecd_snapshots/** -text -whitespace
+# CSV writer uses standard CRLF record separators.
+data/processed/oecd/**/*.csv -text whitespace=cr-at-eol
